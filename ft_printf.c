@@ -11,107 +11,81 @@ static char *to_type(char *fmt)
 	return (fmt);
 }
 
-static char	*ft_uitoabase(t_ull value, int base)
+static char	*ft_uitoabase(t_ull n, int base)
 {
 	unsigned int	i;
-	unsigned int	pow;
+	t_ull			pow;
 	char			*str;
 	int				toupper;
 
 	i = 0;
 	pow = 1;
 	toupper = (base > 20 && (base -= 20)) ? 1 : 0;
-	while (pow - 1 < value && ++i)
+	while (pow - 1 < n && ++i)
 		pow = pow * base;
 	str = ft_strnew(i);
 	while (i-- > 0)
 	{
-		str[i] = (value % base) + (value % base > 9 ? 'A' - 10 : 'O');
-		value = value / base;
+		str[i] = (n % base) + ((base > 10) && (n % base > 9) ? 'A' - 10 : '0');
+		n = n / base;
 	}
 	return ((toupper) ? ft_strupper(str) : str);
 }
 
-static char	*ft_itoabase(long long int value, int base)
+static char	*ft_itoabase(long long int n, int base)
 {
-	int		i;
-	int		pow;
-	int		sign;
-	char	*str;
+	int				i;
+	long long int	pow;
+	int				s;
+	char			*str;
 
 	i = 0;
 	pow = 1;
-	sign = (base == 10 && value < 0) ? 1 : 0;
-	value = (value < 0) ? value * -1 : value;
-	while (pow - 1 < value && ++i)
+	s = (base == 10 && n < 0) ? 1 : 0;
+	if (s)
+		++i;
+	n = (n < 0) ? n * -1 : n;
+	while (pow - 1 < n && ++i)
 		pow = pow * base;
-	str = ft_strnew(i);
+	str = ft_strnew(i + s);
 	while (i-- > 0)
 	{
-		str[i + sign] = (value % base) + (value % base > 9 ? 'A' - 10 : 'O');
-		value = value / base;
+		str[i] = (n % base) + ((base > 10) && (n % base > 9) ? 'A' - 10 : '0');
+		n = n / base;
 	}
-	if (sign)
+	if (s)
 		str[0] = '-';
 	return (str);
 }
 
 static char	*clean(char *s, char *sub, char *fmt)
 {
-	char	*cur;
+	int		d;
 
-	if (!sub && *fmt != '%' && ft_strchr(fmt, '%') && s)
+	d = ft_strlend(fmt, '%');
+	if (!s && !sub && *fmt != '%')
+		return (ft_strncpy(ft_strnew(d), fmt, d));
+	if (s && !sub && *fmt != '%' && ft_strchr(fmt, '%'))
 		return (s);
-	if (sub)
-	{
+	if (s && sub)
 		s = ft_stresize(&s, 0, ft_strlen(s) + ft_strlen(sub));
-		cur = s + ft_strlen(s);
-		while (sub && *sub)
-			*cur++ = *sub++;
-		*cur = '\0';
-	}
-	fmt = (*fmt == '%') ? to_type(fmt) + 1 : fmt;
-	s = ft_stresize(&s, 0, ft_strlend(fmt, '%'));
-	cur = s + ft_strlen(s);
-	while (fmt && *fmt != '%')
-		*cur++ = *fmt++;
-	*cur = '\0';
-	return (s);
-
-//	i = 0;
-//	end = start;
-//	while (!ft_isalpha(*cur))
-//		++cur;
-//	if (*cur == 'l' || *cur == 'h' || *cur == 'j' || *cur == 'z')
-//		++cur;
-//	if (*cur == 'l' || *cur == 'h')
-//		++cur;
-//	++cur;
-//	str = ft_stresize(&str, 0, ft_strlen(fmt) + ft_strlen(str) - end - start);
-//	while (i <= start)
-//	{
-//		str[i + start] = str[i];
-//		str[i] = fmt[i];
-//		++i;
-//	}
-//	while (fmt[end])
-//	{
-//		str[i + start + end] = fmt[end];
-//		++end;
-//	}
-//	str[i + start + end] = '\0';
-//	return (str);
+	else if (!s && sub)
+		s = ft_strnew(ft_strlen(sub));
+	s = ft_strcat(s, sub);
+	fmt = to_type(fmt) + 1;
+	s = ft_stresize(&s, 0, ft_strlen(s) + ft_strlend(fmt, '%'));
+	return (ft_strncat(s, fmt, ft_strlend(fmt, '%')));
 }
 
 static int		base(char *fmt)
 {
 	fmt = to_type(fmt);
 	if (*fmt == 'o' || *fmt == 'O')
-		return (!ft_isupper(*fmt) ? 26 : 6);
+		return (!ft_isupper(*fmt) ? 6 : 26);
 	if (*fmt == 'x' || *fmt == 'X')
-		return (!ft_isupper(*fmt) ? 28 : 8);
+		return (!ft_isupper(*fmt) ? 8 : 28);
 	if (*fmt == 'u' || *fmt == 'U')
-		return (!ft_isupper(*fmt) ? 30 : 10);
+		return (!ft_isupper(*fmt) ? 10 : 30);
 	return (0);
 }
 
@@ -169,17 +143,11 @@ static char	*parse(char *fmt, va_list ap)
 	char	*s;
 	s = 0;
 	if (cmp(fmt, "%"))
-	{
 		s = ft_strdup("%");
-	}
 	else if (cmp(fmt, ",di"))
-	{
 		s = ft_itoabase((long long int)va_arg(ap, int), 10);
-	}	
 	else if (cmp(fmt, "hh,di"))
-	{
 		s = ft_ctoa(va_arg(ap, int));
-	}
 	else if (cmp(fmt, "h,di"))
 		s = ft_itoabase((long long int)va_arg(ap, int), 10);
 	else if (cmp(fmt, "l,di"))
@@ -192,7 +160,6 @@ static char	*parse(char *fmt, va_list ap)
 		s = ft_itoabase((long long int)va_arg(ap, size_t), 10);
 	if (!s)
 		s = parse2(fmt, s, ap);
-	printf("test\n");
 //	s = addsign(s, fmt);
 //	s = cutandpad(s, fmt);
 	return (s);
@@ -206,8 +173,9 @@ int		ft_printf(const char *fmt, ...)
 
 	cur = (char *)fmt;
 	va_start(ap, fmt);
-	s = 0;	
+	s = clean(0, 0, (char *)fmt);
 	while (cur && *cur)
+	{
 		if (!(cur = ft_strchr(cur, '%')))
 		{
 			s = clean(s, 0, (char *)fmt);
@@ -215,6 +183,7 @@ int		ft_printf(const char *fmt, ...)
 		}
 		s = clean(s, parse(cur, ap), cur);
 		++cur;
+	}
 	ft_putstr(s);
 	va_end(ap);
 	return (0);
@@ -237,10 +206,11 @@ int		ft_printf(const char *fmt, ...)
 
 int		main()
 {
-	int		i = 12345;
-	char 	*str = "this is a string";
+//	int		i = 12345;
+	unsigned long int longboi= 3688522574;
+//	int		c = 75;
 	
-	ft_printf("FT_PRINTF:\nint: %d\nstring: %s\n\n", i, str);
-	printf("PRINTF:\nint: %d\nstring: %s\n\n", i, str);
+	ft_printf("FT_PRINTF:\nunsigned long int: %lu\n\n", longboi);
+	printf("PRINTF:\nunsigned long int: %lu\n\n", longboi);
 	return (0);
 }
