@@ -6,30 +6,41 @@
 #    By: mint </var/spool/mail/mint>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/10 16:37:25 by mint              #+#    #+#              #
-#    Updated: 2018/08/10 16:46:38 by mint             ###   ########.fr        #
+#    Updated: 2018/08/12 16:39:14 by rreedy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-b_NAME := printf
-NAME := libftprintf.a;
-CFLAGS := -Wall -Wextra -Werror 
-SRCS := $(wildcard *.c)
+NAME := libftprintf
+LNAME := libft
 
-OBJS := $(SRCS .c=.o)
+OBJS := $(patsubst %.c,%.o,$(wildcard ./*.c))
+LOBJS := $(patsubst %.c,%.o,$(wildcard ./$(LNAME)/*.c))
 
-.PHONY: all clean fclean re
+CFLAGS += -Wall -Wextra -Werror -I./includes -I./libft/includes
+LFLAGS += -L./$(LNAME) -lft
+
+.PHONY: all $(LNAME) clean fclean re
 
 all: $(NAME)
 
-$(NAME): $(SRCS)
-	$(CC) $(CFLAGS) -c $(SRCS)
-	ar rc $(NAME) $(OBJS)
-	ranlib $(NAME)
+$(NAME): $(LNAME) $(OBJS)
+	ar rc $(NAME).a $(OBJS)
+	ranlib $(NAME).a
+
+$(LNAME): $(LOBJS)
+	ar rc $(LNAME)/$(LNAME).a $(LOBJS)
+	ranlib $(LNAME)/$(LNAME).a
+
+binary: $(NAME)
+	$(CC) $(CFLAGS) -I./includes $(OBJS) $(LFLAGS) -o $(NAME)
+
+rmbinary:
+	@- $(RM) libftprintf
 
 clean:
-	@- $(RM) $(OBJS)
+	@- $(RM) $(OBJS) $(LOBJS)
 
-fclean: clean
-	@- $(RM) $(NAME)
+fclean: clean rmbinary
+	@- $(RM) $(NAME).a $(LNAME)/$(LNAME).a
 
-re: fclean all
+re: rmbinary fclean all
