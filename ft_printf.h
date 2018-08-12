@@ -7,7 +7,7 @@
 # include <stdlib.h>
 # include <wchar.h>
 # include <stdint.h>
-# include "libft.h"
+# include "./libft/libft.h"
 
 typedef unsigned long long t_ull;
 
