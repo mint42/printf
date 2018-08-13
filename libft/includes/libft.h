@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:16:02 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/10 17:22:19 by mint             ###   ########.fr       */
+/*   Updated: 2018/08/12 18:05:44 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void				*ft_memmove(void *dst, const void *src, size_t len);
 void				*ft_memset(void *ptr, int c, size_t len);
 void				*ft_memsec(void *ptr, int c, size_t len);
 size_t				ft_numlen(long n);
+int					ft_nutstr(char *s);
 void				ft_putchar(char c);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putendl(const char *s);

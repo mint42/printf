@@ -6,11 +6,11 @@
 #    By: mint </var/spool/mail/mint>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/10 16:37:25 by mint              #+#    #+#              #
-#    Updated: 2018/08/12 17:01:34 by rreedy           ###   ########.fr        #
+#    Updated: 2018/08/12 17:09:37 by rreedy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME := libftprintf
+NAME := libftprintf.a
 
 OBJS := $(patsubst %.c,%.o,$(wildcard ./*.c))
 LOBJS := $(patsubst %.c,%.o,$(wildcard ./libft/*.c))
@@ -23,8 +23,8 @@ LFLAGS += -L./ -lftprintf
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LOBJS)
-	ar rc $(NAME).a $(OBJS) $(LOBJS)
-	ranlib $(NAME).a
+	ar rc $(NAME) $(OBJS) $(LOBJS)
+	ranlib $(NAME)
 
 binary: $(NAME)
 	$(CC) $(CFLAGS) ~/cadet/test_main/ft_printf_main.c $(LFLAGS) -o binary
@@ -36,6 +36,6 @@ clean:
 	@- $(RM) $(OBJS) $(LOBJS)
 
 fclean: clean rmbinary
-	@- $(RM) $(NAME).a
+	@- $(RM) $(NAME)
 
 re: fclean all

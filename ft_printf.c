@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:30:34 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/12 16:26:12 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/12 18:09:02 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ char	*clean(char *s, char *sub, char *fmt)
 	int		d;
 
 	d = ft_strlend(fmt, '%');
-	if (!s && !sub && *fmt != '%')
+	if (!s && !sub)
 		return (ft_strncpy(ft_strnew(d), fmt, d));
-	if (s && !sub && *fmt != '%' && ft_strchr(fmt, '%'))
+	if (s && !sub && ft_strchr(fmt, '%'))
 		return (s);
 	if (s && sub)
 		s = ft_stresize(&s, 0, ft_strlen(s) + ft_strlen(sub));
@@ -54,14 +54,10 @@ int		ft_printf(const char *fmt, ...)
 	while (cur && *cur)
 	{
 		if (!(cur = ft_strchr(cur, '%')))
-		{
-			s = clean(s, 0, (char *)fmt);
-			break;
-		}
+			return (ft_nutstr(clean(s, 0, (char *)fmt)));
 		s = clean(s, parse(cur, ap), cur);
 		++cur;
 	}
-	ft_putstr(s);
 	va_end(ap);
 	return (0);
 }
