@@ -6,41 +6,36 @@
 #    By: mint </var/spool/mail/mint>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/10 16:37:25 by mint              #+#    #+#              #
-#    Updated: 2018/08/12 16:39:14 by rreedy           ###   ########.fr        #
+#    Updated: 2018/08/12 17:01:34 by rreedy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := libftprintf
-LNAME := libft
 
 OBJS := $(patsubst %.c,%.o,$(wildcard ./*.c))
-LOBJS := $(patsubst %.c,%.o,$(wildcard ./$(LNAME)/*.c))
+LOBJS := $(patsubst %.c,%.o,$(wildcard ./libft/*.c))
 
 CFLAGS += -Wall -Wextra -Werror -I./includes -I./libft/includes
-LFLAGS += -L./$(LNAME) -lft
+LFLAGS += -L./ -lftprintf
 
-.PHONY: all $(LNAME) clean fclean re
+.PHONY: all clean fclean binary rmbinary re
 
 all: $(NAME)
 
-$(NAME): $(LNAME) $(OBJS)
-	ar rc $(NAME).a $(OBJS)
+$(NAME): $(OBJS) $(LOBJS)
+	ar rc $(NAME).a $(OBJS) $(LOBJS)
 	ranlib $(NAME).a
 
-$(LNAME): $(LOBJS)
-	ar rc $(LNAME)/$(LNAME).a $(LOBJS)
-	ranlib $(LNAME)/$(LNAME).a
-
 binary: $(NAME)
-	$(CC) $(CFLAGS) -I./includes $(OBJS) $(LFLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) ~/cadet/test_main/ft_printf_main.c $(LFLAGS) -o binary
 
 rmbinary:
-	@- $(RM) libftprintf
+	@- $(RM) binary
 
 clean:
 	@- $(RM) $(OBJS) $(LOBJS)
 
 fclean: clean rmbinary
-	@- $(RM) $(NAME).a $(LNAME)/$(LNAME).a
+	@- $(RM) $(NAME).a
 
-re: rmbinary fclean all
+re: fclean all
