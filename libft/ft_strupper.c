@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strupper.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mint </var/spool/mail/mint>                +#+  +:+       +#+        */
+/*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/10 15:44:42 by mint              #+#    #+#             */
-/*   Updated: 2018/08/10 15:55:13 by mint             ###   ########.fr       */
+/*   Created: 2018/08/16 09:14:59 by rreedy            #+#    #+#             */
+/*   Updated: 2018/08/16 09:15:19 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char 	*ft_strupper(char *s)
+char	*ft_strupper(char *s)
 {
 	char	*cur;
 
@@ -21,7 +21,7 @@ char 	*ft_strupper(char *s)
 	{
 		if (ft_islower(*cur))
 			*cur = ft_toupper(*cur);
-		++cur; 
+		++cur;
 	}
 	return (s);
 }

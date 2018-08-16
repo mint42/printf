@@ -6,13 +6,13 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:30:34 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/12 18:09:02 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/16 09:12:18 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char *to_type(char *fmt)
+char	*to_type(char *fmt)
 {
 	while (!ft_isalpha(*fmt))
 		++fmt;
@@ -30,7 +30,7 @@ char	*clean(char *s, char *sub, char *fmt)
 	d = ft_strlend(fmt, '%');
 	if (!s && !sub)
 		return (ft_strncpy(ft_strnew(d), fmt, d));
-	if (s && !sub && ft_strchr(fmt, '%'))
+	if (s && !sub)
 		return (s);
 	if (s && sub)
 		s = ft_stresize(&s, 0, ft_strlen(s) + ft_strlen(sub));

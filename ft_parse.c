@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/12 16:33:37 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/16 09:18:06 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		cmp(char *fmt, char *type)
 
 char	*parse2(char *fmt, char *s, va_list ap)
 {
-	if (cmp(fmt,",ouUxX"))
+	if (cmp(fmt, ",ouUxX"))
 		s = ft_uitoabase((t_ull)va_arg(ap, unsigned int), base(fmt));
 //	else if (cmp(fmt, "hh,ouUxX"))
 //		s = ft_uctoa(va_arg(ap, unsigned char), base(fmt));
@@ -76,7 +76,7 @@ char	*parse2(char *fmt, char *s, va_list ap)
 char	*parse(char *fmt, va_list ap)
 {
 	char	*s;
-	
+
 	s = 0;
 	if (cmp(fmt, "%"))
 		s = ft_strdup("%");
@@ -87,7 +87,7 @@ char	*parse(char *fmt, va_list ap)
 	else if (cmp(fmt, "h,di"))
 		s = ft_itoabase((long long int)va_arg(ap, int), 10);
 	else if (cmp(fmt, "l,di"))
-		s = ft_itoabase ((long long int)va_arg(ap, long int), 10);
+		s = ft_itoabase((long long int)va_arg(ap, long int), 10);
 	else if (cmp(fmt, "ll,di"))
 		s = ft_itoabase((long long int)va_arg(ap, long long int), 10);
 	else if (cmp(fmt, "j,di"))
