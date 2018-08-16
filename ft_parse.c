@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/16 09:18:06 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/16 09:30:32 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ char	*parse(char *fmt, va_list ap)
 
 	s = 0;
 	if (cmp(fmt, "%"))
+	{
 		s = ft_strdup("%");
+	}
 	else if (cmp(fmt, ",di"))
 		s = ft_itoabase((long long int)va_arg(ap, int), 10);
 	else if (cmp(fmt, "hh,di"))

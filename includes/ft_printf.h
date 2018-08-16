@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/16 09:18:40 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/16 10:12:47 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		cmp(char *fmt, char *type);
 char	*parse(char *fmt, va_list ap);
 char	*parse2(char *fmt, char *s, va_list ap);
 char	*to_type(char *fmt);
-char	*clean(char *s, char *sub, char *fmt);
+char	*clean(char *s, char *sub, char **fmt);
 int		ft_printf(const char *format, ...);
 
 #endif
