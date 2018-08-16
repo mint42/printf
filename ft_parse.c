@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/16 09:30:32 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/16 14:07:39 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ int		base(char *fmt)
 int		cmp(char *fmt, char *type)
 {
 	++fmt;
+	while (fmt && !ft_isalpha(*fmt) && *fmt != '%')
+		++fmt;
 	if (*fmt == '%' && *type == '%')
 		return (1);
-	while (fmt && !ft_isalpha(*fmt))
-		++fmt;
 	while (type && *type != ',' && *type == *fmt)
 	{
 		++type;
@@ -46,19 +46,19 @@ int		cmp(char *fmt, char *type)
 
 char	*parse2(char *fmt, char *s, va_list ap)
 {
-	if (cmp(fmt, ",ouUxX"))
+	if (cmp(fmt, ",ouxX"))
 		s = ft_uitoabase((t_ull)va_arg(ap, unsigned int), base(fmt));
-//	else if (cmp(fmt, "hh,ouUxX"))
+//	else if (cmp(fmt, "hh,ouxX"))
 //		s = ft_uctoa(va_arg(ap, unsigned char), base(fmt));
-	else if (cmp(fmt, "h,ouUxX"))
+	else if (cmp(fmt, "h,ouxX"))
 		s = ft_uitoabase((t_ull)va_arg(ap, int), base(fmt));
-	else if (cmp(fmt, "l,ouUxX"))
+	else if (cmp(fmt, "l,ouxX") || cmp(fmt, ",U"))
 		s = ft_uitoabase((t_ull)va_arg(ap, unsigned long int), base(fmt));
-	else if (cmp(fmt, "ll,ouUxX"))
+	else if (cmp(fmt, "ll,ouxX"))
 		s = ft_uitoabase(va_arg(ap, unsigned long long int), base(fmt));
-	else if (cmp(fmt, "j,ouUxX"))
+	else if (cmp(fmt, "j,ouxX"))
 		s = ft_uitoabase((t_ull)va_arg(ap, uintmax_t), base(fmt));
-	else if (cmp(fmt, "z,ouUxX"))
+	else if (cmp(fmt, "z,ouxX"))
 		s = ft_itoabase((long long int)va_arg(ap, size_t), base(fmt));
 	else if (cmp(fmt, ",c"))
 		s = ft_ctoa(va_arg(ap, int));
@@ -83,19 +83,19 @@ char	*parse(char *fmt, va_list ap)
 		s = ft_strdup("%");
 	}
 	else if (cmp(fmt, ",di"))
-		s = ft_itoabase((long long int)va_arg(ap, int), 10);
+		s = ft_itoabase(va_arg(ap, int), 10);
 	else if (cmp(fmt, "hh,di"))
-		s = ft_ctoa(va_arg(ap, int));
+		s = ft_itoabase((char)va_arg(ap, int), 10);
 	else if (cmp(fmt, "h,di"))
-		s = ft_itoabase((long long int)va_arg(ap, int), 10);
+		s = ft_itoabase((short)va_arg(ap, int), 10);
 	else if (cmp(fmt, "l,di"))
-		s = ft_itoabase((long long int)va_arg(ap, long int), 10);
+		s = ft_itoabase(va_arg(ap, long int), 10);
 	else if (cmp(fmt, "ll,di"))
-		s = ft_itoabase((long long int)va_arg(ap, long long int), 10);
+		s = ft_itoabase(va_arg(ap, long long int), 10);
 	else if (cmp(fmt, "j,di"))
-		s = ft_itoabase((long long int)va_arg(ap, intmax_t), 10);
+		s = ft_itoabase(va_arg(ap, intmax_t), 10);
 	else if (cmp(fmt, "z,di"))
-		s = ft_itoabase((long long int)va_arg(ap, size_t), 10);
+		s = ft_itoabase(va_arg(ap, size_t), 10);
 	if (!s)
 		s = parse2(fmt, s, ap);
 //	s = addsign(s, fmt);
