@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/16 14:07:39 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/16 17:53:21 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ int		base(char *fmt)
 {
 	fmt = to_type(fmt);
 	if (*fmt == 'o' || *fmt == 'O')
-		return (!ft_isupper(*fmt) ? 6 : 26);
+		return (6);
+	if (*fmt == 'u' || *fmt == 'U')
+		return (10);
 	if (*fmt == 'x' || *fmt == 'X')
 		return (!ft_isupper(*fmt) ? 8 : 28);
-	if (*fmt == 'u' || *fmt == 'U')
-		return (!ft_isupper(*fmt) ? 10 : 30);
 	return (0);
 }
 
@@ -79,9 +79,7 @@ char	*parse(char *fmt, va_list ap)
 
 	s = 0;
 	if (cmp(fmt, "%"))
-	{
 		s = ft_strdup("%");
-	}
 	else if (cmp(fmt, ",di"))
 		s = ft_itoabase(va_arg(ap, int), 10);
 	else if (cmp(fmt, "hh,di"))
