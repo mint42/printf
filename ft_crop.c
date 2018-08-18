@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 15:55:00 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/16 18:20:42 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/17 21:18:18 by mint             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,61 +27,72 @@ char	*precision(char *s, char *fmt)
 	return (s);
 }
 
-char	*signs(char *s, char *fmt, char type)
+
+char	*shift(char **s, int in, size_t size)
 {
+	char	*str;
+
+	str = ft_strnew(len);
+	if (!str)
+		return (0);
+	strcpy(str + in, *s, size);
+	ft_strdel(s);
+	return (str);
+}
+
 	char	*signs;
 
-	while (fmt && !ft_isalpha(*fmt))
-	{
-		if (*fmt == ' ' || *fmt == '+' || *fmt == '#')
-			break;
-		++fmt;
-	}
-	if (!ft_strchr("+ #", *fmt))
-		return (s);
-	if ((*fmt == ' ' || *fmt == '+') && ft_strchr(s, '-'))
-		return (s);
 	if (*fmt == '#' && (type == 'x' || type == 'X'))
 		signs = (type == 'x') ? ft_strdup("0x") : ft_strdup("0X");
 	else if (*fmt == '#')
 		signs = ft_strdup('0');
-	signs = (*fmt == ' ') ? ft_strdup(' ') : ft_strdup('+');
-	s = ft_shift(s, ft_strlen(signs) + ft_strlen(s));
-	s = ft_strcpy(s, signs);
-	return (s);
+
+
+
+
+char	*fill_flags(char *fmt)
+{
+	char	*flags;
+
+	flags = ft_strnew(5);
+	while (fmt && !ft_isalpha(*fmt))
+	{
+		++fmt;
+		while (!ft_isalpha(*fmt) && ft_strchr("0# +-", *fmt))
+			*flags++ = *fmt++;
+	}
+	return (flags);
 }
 
-char	*justify(char *s, char *fmt)
+char	*crop(char *s, char *fmt)
 {
+	char	*cur;
+	char	*flags;
 	int		width;
-	int		left;
-	char	flag;
 
-	left = 0;
-	while (fmt && (!ft_isdigit(*fmt) || *fmt == '0'))
-	{
-		if (*fmt == '-')
-			left = 1;
-		++fmt;
-	}
-	width = ft_atoi(fmt);
+	cur = to_type(fmt);
+	flags = fill_flags(fmt);
+	if (*cur == 's')
+		s = precision(s, fmt);
+	if (ft_strchr(flags, '#'))
+		s = hashtag(s, *(to_type(fmt)));
+
+	+ - width ' ' 0 
+
 	if (width <= ft_strlen(s))
 		return (s);
-	s = (left) ? ft_stresize(s, 0, width) : ft_shift(s, width);
+	if (!flags)
+		return (s);
+	s = left ? ft_stresize(s, 0, width) : ft_shift(s, width - ft_strlen(s), width);
+	
+	if (!ft_strchr(flags, '-') && ft_strchr(flags, '0'))
+
+
+	if (ft_strchr(flags, '+') || ft_strchr(flags, ' '))
+		not be negative number
+
+
 	if (left && *flag == ' ')
 		return (ft_strcat(s, memset(*flag, width - ft_strlen(s))));
 	s = ft_strncpy (s, *flag);
-}
-
-char	*ft_crop(char *s, char *fmt)
-{
-	char	*cur;
-
-	cur = to_type(fmt);
-	if (*cur == 's')
-		s = precision(s, fmt);
-	if (ft_strchr("dDioOuUxX", *cur)
-		s = signs(s, fmt, *cur); // add #, ' ', or +
-	s = justify(s, fmt); // justify with 0 or ' '
-
 }
