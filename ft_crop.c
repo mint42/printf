@@ -6,11 +6,11 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 15:55:00 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/17 21:18:18 by mint             ###   ########.fr       */
+/*   Updated: 2018/08/18 13:55:22 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include <ft_printf.h>
 
 char	*precision(char *s, char *fmt)
 {
@@ -18,81 +18,117 @@ char	*precision(char *s, char *fmt)
 
 	while (fmt && !ft_isalpha(*fmt) && *fmt != '.')
 		++fmt;
-	if (!fmt)
+	if (!fmt || *fmt != '.')
 		return (s);
+	++fmt;
 	i = ft_atoi(fmt);
-	while (i--)
-		++s;
-	*s = '\0';
+	s[i] = '\0';
 	return (s);
 }
 
-
-char	*shift(char **s, int in, size_t size)
+char	*ft_shift(char **s, int in, size_t size)
 {
 	char	*str;
+	char	*cur;
 
-	str = ft_strnew(len);
+	str = ft_strinit(' ', size);
+	cur = *s;
 	if (!str)
 		return (0);
-	strcpy(str + in, *s, size);
+	while (cur && *cur && size)
+	{
+		str[in] = *cur;
+		++cur;
+		++in;
+		--size;
+	}
 	ft_strdel(s);
 	return (str);
 }
 
-	char	*signs;
-
-	if (*fmt == '#' && (type == 'x' || type == 'X'))
-		signs = (type == 'x') ? ft_strdup("0x") : ft_strdup("0X");
-	else if (*fmt == '#')
-		signs = ft_strdup('0');
-
-
-
-
-char	*fill_flags(char *fmt)
+char	*flag(char *s, char *flags, char type)
 {
-	char	*flags;
+	int		i;
 
-	flags = ft_strnew(5);
-	while (fmt && !ft_isalpha(*fmt))
+	i = 0;
+	if (!ft_strchr(flags, '+') && ft_strchr(flags, ' ') && s[0] == '0')
+		return (s);
+	if (s[0] == '-')
+		return (s);
+	if (s[0] != ' ' || s[0] != '0')
+		s = ft_shift(&s, 1, ft_strlen(s) + 1);
+	if (ft_strchr(flags, '#'))
 	{
-		++fmt;
-		while (!ft_isalpha(*fmt) && ft_strchr("0# +-", *fmt))
-			*flags++ = *fmt++;
+		if ((type == 'x' || type == 'X') && (s[1] != ' ' || s[1] != '0'))
+			s = ft_shift(&s, 1, ft_strlen(s) + 1);
+		while (s[i + 2] == ' ')
+			++i;
+		if (type == 'x' || type == 'X')
+			s[i-- + 1] = type;
+		s[i] = '0';
+		return (s);
 	}
-	return (flags);
+	else if (ft_strchr(flags, '+'))
+	{
+		while (s[i + 1] == ' ')
+			++i;
+		s[i] = '+';
+	}
+	return (s);
+}
+
+char	*width(char *s, char *fmt, char *flags)
+{
+	int		i;
+	int		width;
+
+	i = 0;
+	while (fmt && !ft_isdigit(*fmt) && !ft_isalpha(*fmt) && *fmt != '.')
+		++fmt;
+	if (!ft_isdigit(*fmt))
+		return (s);
+	width = ft_atoi(fmt);
+	if ((size_t)width <= ft_strlen(s))
+		return (s);
+	if (ft_strchr(flags, '-'))
+		return (ft_shift(&s, 0, width));
+	s = ft_shift(&s, width - ft_strlen(s), width);	
+	if (!ft_strchr(flags, '0'))
+		return (s);
+	while (s && s[i] == ' ')
+		s[i++] = '0';
+	if (s[i] == '-')
+	{
+		s[0] = '-';
+		s[i] = '0';
+	}
+	return (s);
 }
 
 char	*crop(char *s, char *fmt)
 {
 	char	*cur;
 	char	*flags;
-	int		width;
+	int		i;
 
+	flags = ft_strnew(5);
+	cur = fmt;
+	i = 0;
+	while (++cur && !ft_isalpha(*cur) && *cur != '%')
+	{
+		if (ft_strchr("-0# +", *cur))
+		{
+			flags[i] = *cur;
+			++i;
+		}
+	}
 	cur = to_type(fmt);
-	flags = fill_flags(fmt);
 	if (*cur == 's')
 		s = precision(s, fmt);
-	if (ft_strchr(flags, '#'))
-		s = hashtag(s, *(to_type(fmt)));
-
-	+ - width ' ' 0 
-
-	if (width <= ft_strlen(s))
+	s = width(s, fmt, flags);
+	if (!flags || ft_strchr("sScCp", *to_type(fmt)))
 		return (s);
-	if (!flags)
-		return (s);
-	s = left ? ft_stresize(s, 0, width) : ft_shift(s, width - ft_strlen(s), width);
-	
-	if (!ft_strchr(flags, '-') && ft_strchr(flags, '0'))
-
-
-	if (ft_strchr(flags, '+') || ft_strchr(flags, ' '))
-		not be negative number
-
-
-	if (left && *flag == ' ')
-		return (ft_strcat(s, memset(*flag, width - ft_strlen(s))));
-	s = ft_strncpy (s, *flag);
+	if (ft_strchr(flags, '#') || ft_strchr(flags, '+') || ft_strchr(flags, ' '))
+		s = flag(s, flags, *(to_type(fmt)));
+	return (s);
 }

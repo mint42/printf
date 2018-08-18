@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/16 10:12:47 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/18 10:45:10 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ char	*parse(char *fmt, va_list ap);
 char	*parse2(char *fmt, char *s, va_list ap);
 char	*to_type(char *fmt);
 char	*clean(char *s, char *sub, char **fmt);
-int		ft_printf(const char *format, ...);
+int		ft_printf(const char *fmt, ...);
+char	*crop(char *s, char *fmt);
+char	*flag(char *s, char *flags, char type);
+char	*width(char *s, char *fmt, char *flags);
+char	*precision(char *s, char *fmt);
+char	*fill_flags(char *fmt);
+char	*ft_shift(char **s, int in, size_t size);
 
 #endif
