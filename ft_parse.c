@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/18 12:35:39 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/19 11:29:21 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ int		base(char *fmt)
 {
 	fmt = to_type(fmt);
 	if (*fmt == 'o' || *fmt == 'O')
-		return (6);
+		return (8);
 	if (*fmt == 'u' || *fmt == 'U')
 		return (10);
 	if (*fmt == 'x' || *fmt == 'X')
-		return (!ft_isupper(*fmt) ? 8 : 28);
+		return (!ft_isupper(*fmt) ? 16 : 36);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/18 17:59:40 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/19 13:45:56 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ char	*clean(char *s, char *sub, char **fmt);
 int		ft_printf(const char *fmt, ...);
 char	*crop(char *s, char *fmt);
 char	*flag(char *s, char *flags, char type);
-char	*width(char *s, char *fmt, char *flags);
-char	*precision(char *s, char *fmt);
+char	*width(char *s, char *flags, int width);
+char	*precision(char *s, char type, int i);
 char	*fill_flags(char *fmt);
 char	*ft_shift(char **s, int in, size_t size);
 char	*addzeros(char *s);

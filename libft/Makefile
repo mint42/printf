@@ -6,12 +6,12 @@
 #    By: rreedy <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/18 14:31:20 by rreedy            #+#    #+#              #
-#    Updated: 2018/06/06 20:27:05 by rreedy           ###   ########.fr        #
+#    Updated: 2018/08/19 14:33:41 by rreedy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := libft.a
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror -I./includes
 SRCS := $(wildcard *.c)
 OBJS := $(SRCS:.c=.o)
 

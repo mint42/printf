@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:35:14 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/16 15:00:32 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/19 11:53:07 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*ft_uitoabase(t_ull n, int base)
 	str = ft_strnew(i);
 	while (i-- > 0)
 	{
-		str[i] = (n % base) + ((base > 10) && (n % base > 9) ? 'A' - 10 : '0');
+		str[i] = (n % base) + ((base > 10) && (n % base > 9) ? 'a' - 10 : '0');
 		n = n / base;
 	}
 	return ((toupper) ? ft_strupper(str) : str);
@@ -55,7 +55,7 @@ char	*ft_itoabase(long long int n, int base)
 	str = ft_strnew(i + s);
 	while (i-- > 0)
 	{
-		str[i] = (n % base) + ((base > 10) && (n % base > 9) ? 'A' - 10 : '0');
+		str[i] = (n % base) + ((base > 10) && (n % base > 9) ? 'a' - 10 : '0');
 		n = n / base;
 	}
 	if (s)
