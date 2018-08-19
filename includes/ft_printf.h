@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/18 10:45:10 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/18 17:59:40 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ char	*width(char *s, char *fmt, char *flags);
 char	*precision(char *s, char *fmt);
 char	*fill_flags(char *fmt);
 char	*ft_shift(char **s, int in, size_t size);
+char	*addzeros(char *s);
 
 #endif
