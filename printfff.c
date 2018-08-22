@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strinit.c                                       :+:      :+:    :+:   */
+/*   printfff.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/18 11:54:22 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/21 16:47:31 by rreedy           ###   ########.fr       */
+/*   Created: 2018/08/19 21:23:15 by rreedy            #+#    #+#             */
+/*   Updated: 2018/08/21 17:21:34 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stdio.h>
 
-char	*ft_strinit(int c, size_t size)
+int		main()
 {
-	char	*b;
-	char	*ptr;
-
-	b = (char *)malloc(size + 1);
-	ptr = b;
-	while (size-- && ptr)
-		*ptr++ = (unsigned char)c;
-	*ptr = '\0';
-	return (b);
+	printf("%010.5i\n", 123);
+	printf("%04.5i\n", 123);
+	printf("%02.12i\n", 123);
+//	printf("%04\n", "string");
+//	printf("%jX\n", "string");
+//	printf("%zX\n", "string");
+	return (0);
 }
