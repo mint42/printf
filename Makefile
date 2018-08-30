@@ -6,7 +6,7 @@
 #    By: mint </var/spool/mail/mint>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/10 16:37:25 by mint              #+#    #+#              #
-#    Updated: 2018/08/12 17:09:37 by rreedy           ###   ########.fr        #
+#    Updated: 2018/08/30 15:22:54 by rreedy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,6 @@ clean:
 	@- $(RM) $(OBJS) $(LOBJS)
 
 fclean: clean rmbinary
-	@- $(RM) $(NAME)
+	@- $(RM) $(NAME) libft/libft.a
 
 re: fclean all

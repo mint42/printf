@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printfff.c                                         :+:      :+:    :+:   */
+/*   ft_memcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/19 21:23:15 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/21 17:21:34 by rreedy           ###   ########.fr       */
+/*   Created: 2018/08/24 18:49:39 by rreedy            #+#    #+#             */
+/*   Updated: 2018/08/30 15:32:21 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <stdio.h>
 
-int		main()
+void	*ft_memcat(void *dst, const void *src, int i, size_t size)
 {
-	printf("%010.5i\n", 123);
-	printf("%04.5i\n", 123);
-	printf("%02.12i\n", 123);
-//	printf("%04\n", "string");
-//	printf("%jX\n", "string");
-//	printf("%zX\n", "string");
-	return (0);
+	unsigned char	*cur;
+	unsigned char	*cur2;
+
+	cur = (unsigned char *)dst + size;
+	cur2 = (unsigned char *)src;
+	while (i--)
+		*cur++ = *cur2++;
+	return (dst);
 }

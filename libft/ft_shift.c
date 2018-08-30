@@ -1,19 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nutstr.c                                           :+:      :+:    :+:   */
+/*   ft_shift.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/12 17:58:16 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/12 18:03:17 by rreedy           ###   ########.fr       */
+/*   Created: 2018/08/30 15:35:11 by rreedy            #+#    #+#             */
+/*   Updated: 2018/08/30 15:35:24 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_nutstr(char *s)
+char	*ft_shift(char **s, int in, size_t size)
 {
-	ft_putstr(s);
-	return (ft_strlen(s));
+	char	*str;
+	char	*cur;
+
+	str = ft_strinit(' ', size);
+	cur = *s;
+	if (!str)
+		return (0);
+	while (cur && *cur && size)
+	{
+		str[in] = *cur;
+		++cur;
+		++in;
+		--size;
+	}
+	ft_strdel(s);
+	return (str);
 }

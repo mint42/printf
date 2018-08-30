@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 15:55:00 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/21 22:28:41 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/30 15:42:27 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ char	*precision(char *s, char type, int precision)
 char	*addzeros(char *s)
 {
 	int		i;
+
 	i = 0;
 	while (s && s[i] == ' ')
 	{
@@ -55,35 +56,6 @@ char	*addzeros(char *s)
 		s[i] = '0';
 	}
 	return (s);
-}
-
-char	*ft_shift(char **s, int in, size_t size)
-{
-	char	*str;
-	char	*cur;
-
-	str = ft_strinit(' ', size);
-	cur = *s;
-	if (!str)
-		return (0);
-	while (cur && *cur && size)
-	{
-		str[in] = *cur;
-		++cur;
-		++in;
-		--size;
-	}
-	ft_strdel(s);
-	return (str);
-}
-
-char	*width(char *s, char *flags, int width)
-{
-	if ((size_t)width <= ft_strlen(s))
-		return (s);
-	if (ft_strchr(flags, '-'))
-		return (ft_shift(&s, 0, width));
-	return(ft_shift(&s, width - ft_strlen(s), width));
 }
 
 char	*flag(char *s, char *flags, char type)
@@ -148,11 +120,14 @@ char	*crop(char *s, char *fmt)
 	while (fmt && !ft_isalpha(*fmt) && *fmt != '.')
 		++fmt;
 	p = (*fmt++ == '.') ? ft_atoi(fmt) : -1;
-	if (p >= 0)	
+	if (p >= 0 && !ft_strchr("cCSp", type))
 		s = precision(s, type, p);
 	if (ft_strchr(flags, '#') || ft_strchr(flags, '+') || ft_strchr(flags, ' '))
 		s = flag(s, flags, type);
-	s = width(s, flags, w);
+	if (ft_strchr(flags, '-') && (size_t)w >= ft_strlen(s))
+		s = ft_shift(&s, 0, w);
+	else if ((size_t)w >= ft_strlen(s))
+		s = ft_shift(&s, w - ft_strlen(s), w);
 	if (ft_strchr(flags, '0') && p == -1)
 		s = addzeros(s);
 	return (s);

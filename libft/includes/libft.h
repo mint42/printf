@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:16:02 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/18 11:55:31 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/30 15:36:48 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void				ft_lstiter(t_list *list, void (*f)(t_list *link));
 t_list				*ft_lstmap(t_list *list, t_list *(*f)(t_list *link));
 t_list				*ft_lstnew(const void *content, size_t content_size);
 void				*ft_memalloc(size_t size);
+void				*ft_memcat(void *dst, const void *src, int i, size_t size);
 void				*ft_memccpy(void *dst, const void *src, int c, size_t len);
 void				*ft_memchr(const void *s, int c, size_t len);
 int					ft_memcmp(const void *s1, const void *s2, size_t len);
@@ -52,7 +53,6 @@ void				*ft_memmove(void *dst, const void *src, size_t len);
 void				*ft_memset(void *ptr, int c, size_t len);
 void				*ft_memsec(void *ptr, int c, size_t len);
 size_t				ft_numlen(long n);
-int					ft_nutstr(char *s);
 void				ft_putchar(char c);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putendl(const char *s);
@@ -61,6 +61,7 @@ void				ft_putnbr(int n);
 void				ft_putnbr_fd(int n, int fd);
 void				ft_putstr(const char *s);
 void				ft_putstr_fd(const char *s, int fd);
+char				*ft_shift(char **s, int i, size_t size);
 char				*ft_strcat(char *s1, const char *s2);
 char				*ft_strchr(const char *s, int c);
 void				ft_strclr(char *s);
@@ -68,7 +69,7 @@ int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_strcpy(char *dst, const char *src);
 void				ft_strdel(char **as);
 char				*ft_strdup(const char *s1);
-char				*ft_stresize(char **s, int in, int size);
+char				*ft_stresize(char **s, int in, size_t size);
 int					ft_strequ(const char *s1, const char *s2);
 char				*ft_strinit(int c, size_t size);
 void				ft_striter(char *s, void (*f)(char *));

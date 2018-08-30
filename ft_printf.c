@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:30:34 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/21 21:58:32 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/30 15:33:00 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,30 @@ char	*to_type(char *fmt)
 		++fmt;
 	if (*fmt == 'l' || *fmt == 'h' || *fmt == 'j' || *fmt == 'z')
 		++fmt;
-	if (*fmt == 'l' || *fmt == 'h')	
+	if (*fmt == 'l' || *fmt == 'h')
 		++fmt;
 	return (fmt);
 }
 
-char	*clean(char *s, char *sub, char **fmt)
+char	*clean(char *s, char *sub, char **fmt, size_t *len)
 {
 	int		d;
 
 	d = ft_strlend(*fmt, '%');
 	if (!s && !sub)
+	{
+		*len = d;
 		return (ft_strncpy(ft_strnew(d), *fmt, d));
-	if (s && sub)
-		s = ft_stresize(&s, 0, ft_strlen(s) + ft_strlen(sub));
-	else if (!s && sub)
-		s = ft_strnew(ft_strlen(sub));
-	s = ft_strcat(s, sub);
+	}
 	*fmt = to_type(*fmt) + 1;
-	s = ft_stresize(&s, 0, ft_strlen(s) + ft_strlend(*fmt, '%'));
-	return (ft_strncat(s, *fmt, ft_strlend(*fmt, '%')));
+	d = ft_strlend(*fmt, '%');
+	if (s && !(*sub) && *(*fmt - 1) == 'c')
+		*len = *len + 1;
+	*len = *len + ft_strlen(sub);
+	s = ft_stresize(&s, 0, *len);
+	s = (char *)ft_memcat(s, sub, ft_strlen(sub), *len - ft_strlen(sub));
+	*len = *len + d;
+	return (ft_memcat(s, *fmt, d, *len - d));
 }
 
 int		ft_printf(const char *fmt, ...)
@@ -46,16 +50,18 @@ int		ft_printf(const char *fmt, ...)
 	va_list		ap;
 	char		*cur;
 	char		*s;
+	size_t		len;
 
 	cur = (char *)fmt;
 	va_start(ap, fmt);
-	s = clean(0, 0, (char **)&fmt);
+	len = 0;
+	s = clean(0, 0, (char **)&fmt, &len);
 	while (cur && *cur)
 	{
 		if (!(cur = ft_strchr(cur, '%')))
-			return (ft_nutstr(s));
-		s = clean(s, parse(cur, ap), &cur);
+			return (write(1, s, len));
+		s = clean(s, parse(cur, ap), &cur, &len);
 	}
 	va_end(ap);
-	return (ft_nutstr(s));
+	return (write(1, s, len));
 }

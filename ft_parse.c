@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/19 11:29:21 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/30 15:41:48 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int		base(char *fmt)
 		return (10);
 	if (*fmt == 'x' || *fmt == 'X')
 		return (!ft_isupper(*fmt) ? 16 : 36);
+	if (*fmt == 'D')
+		return (10);
 	return (0);
 }
 
@@ -48,8 +50,8 @@ char	*parse2(char *fmt, char *s, va_list ap)
 {
 	if (cmp(fmt, ",ouxX"))
 		s = ft_uitoabase((t_ull)va_arg(ap, unsigned int), base(fmt));
-//	else if (cmp(fmt, "hh,ouxX"))
-//		s = ft_uctoa(va_arg(ap, unsigned char), base(fmt));
+	else if (cmp(fmt, "hh,ouxX"))
+		s = ft_ctoa(va_arg(ap, int));
 	else if (cmp(fmt, "h,ouxX"))
 		s = ft_uitoabase((t_ull)va_arg(ap, int), base(fmt));
 	else if (cmp(fmt, "l,ouxX") || cmp(fmt, ",U"))
@@ -58,16 +60,16 @@ char	*parse2(char *fmt, char *s, va_list ap)
 		s = ft_uitoabase(va_arg(ap, unsigned long long int), base(fmt));
 	else if (cmp(fmt, "j,ouxX"))
 		s = ft_uitoabase((t_ull)va_arg(ap, uintmax_t), base(fmt));
+	else if (cmp(fmt, "j,DOU"))
+		s = ft_uitoabase((t_ull)va_arg(ap, unsigned int), base(fmt));
 	else if (cmp(fmt, "z,ouxX"))
-		s = ft_itoabase((long long int)va_arg(ap, size_t), base(fmt));
+		s = ft_uitoabase((t_ull)va_arg(ap, size_t), base(fmt));
+	else if (cmp(fmt, "z,DOU"))
+		s = ft_uitoabase((t_ull)va_arg(ap, ssize_t), base(fmt));
 	else if (cmp(fmt, ",c"))
 		s = ft_ctoa(va_arg(ap, int));
-//	else if (cmp(fmt, "l,c") || cmp(fmt, ",C"))
-//		s = va_arg(ap, wint_t);
 	else if (cmp(fmt, ",s"))
 		s = ft_strdup(va_arg(ap, char *));
-//	else if (cmp(fmt, "l,s") || cmp(fmt, "S"))
-//		s = va_arg(ap, wint_t *);
 	else if (cmp(fmt, ",p"))
 		s = ft_strdup((char *)va_arg(ap, void *));
 	return (s);
