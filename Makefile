@@ -3,39 +3,32 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mint </var/spool/mail/mint>                +#+  +:+       +#+         #
+#    By: rreedy <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/08/10 16:37:25 by mint              #+#    #+#              #
-#    Updated: 2018/08/30 15:22:54 by rreedy           ###   ########.fr        #
+#    Created: 2018/04/18 14:31:20 by rreedy            #+#    #+#              #
+#    Updated: 2018/08/31 16:07:14 by rreedy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := libftprintf.a
 
-OBJS := $(patsubst %.c,%.o,$(wildcard ./*.c))
-LOBJS := $(patsubst %.c,%.o,$(wildcard ./libft/*.c))
+POBJS := $(patsubst %.c,%.o,$(wildcard ./srcs/printf/*.c))
+LOBJS := $(patsubst %.c,%.o,$(wildcard ./srcs/*.c))
 
-CFLAGS += -Wall -Wextra -Werror -I./includes -I./libft/includes
-LFLAGS += -L./ -lftprintf
+CFLAGS += -Wall -Wextra -Werror -I./includes
 
-.PHONY: all clean fclean binary rmbinary re
+.PHONY: all clean fclean re
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LOBJS)
-	ar rc $(NAME) $(OBJS) $(LOBJS)
+$(NAME): $(POBJS) $(LOBJS)
+	ar rc $(NAME) $(POBJS) $(LOBJS)
 	ranlib $(NAME)
 
-binary: $(NAME)
-	$(CC) $(CFLAGS) ~/cadet/test_main/ft_printf_main.c $(LFLAGS) -o binary
-
-rmbinary:
-	@- $(RM) binary
-
 clean:
-	@- $(RM) $(OBJS) $(LOBJS)
+	@- $(RM) $(LOBJS) $(POBJS)
 
-fclean: clean rmbinary
-	@- $(RM) $(NAME) libft/libft.a
+fclean: clean
+	@- $(RM) $(NAME) 
 
 re: fclean all

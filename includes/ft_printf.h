@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/30 15:40:21 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/08/31 16:37:35 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <wchar.h>
 # include <stdint.h>
 # include <limits.h>
-# include "../libft/includes/libft.h"
+# include "libft.h"
 
 typedef unsigned long long t_ull;
 
