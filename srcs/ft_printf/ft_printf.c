@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:30:34 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/30 15:33:00 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/03 21:24:16 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ char	*clean(char *s, char *sub, char **fmt, size_t *len)
 	if (s && !(*sub) && *(*fmt - 1) == 'c')
 		*len = *len + 1;
 	*len = *len + ft_strlen(sub);
-	s = ft_stresize(&s, 0, *len);
-	s = (char *)ft_memcat(s, sub, ft_strlen(sub), *len - ft_strlen(sub));
+	s = ft_crop(&s, 0, *len);
+	s = (char *)ft_memcat(s, sub, *len - ft_strlen(sub), ft_strlen(sub));
 	*len = *len + d;
-	return (ft_memcat(s, *fmt, d, *len - d));
+	return (ft_memcat(s, *fmt, *len - d, d));
 }
 
 int		ft_printf(const char *fmt, ...)

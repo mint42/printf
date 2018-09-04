@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:16:02 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/30 15:36:48 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/03 21:45:52 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct		s_list
 
 int					ft_atoi(const char *str);
 void				ft_bzero(void *s, size_t len);
+char				*ft_crop(char **s, int in, size_t len);
 char				*ft_ctoa(int c);
 int					ft_cw(const char *s, int c);
 int					ft_isalnum(int c);
@@ -43,7 +44,7 @@ void				ft_lstiter(t_list *list, void (*f)(t_list *link));
 t_list				*ft_lstmap(t_list *list, t_list *(*f)(t_list *link));
 t_list				*ft_lstnew(const void *content, size_t content_size);
 void				*ft_memalloc(size_t size);
-void				*ft_memcat(void *dst, const void *src, int i, size_t size);
+void				*ft_memcat(void *dst, const void *src, size_t dstlen, size_t srclen);
 void				*ft_memccpy(void *dst, const void *src, int c, size_t len);
 void				*ft_memchr(const void *s, int c, size_t len);
 int					ft_memcmp(const void *s1, const void *s2, size_t len);
@@ -69,9 +70,8 @@ int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_strcpy(char *dst, const char *src);
 void				ft_strdel(char **as);
 char				*ft_strdup(const char *s1);
-char				*ft_stresize(char **s, int in, size_t size);
 int					ft_strequ(const char *s1, const char *s2);
-char				*ft_strinit(int c, size_t size);
+char				*ft_strinit(int c, size_t len);
 void				ft_striter(char *s, void (*f)(char *));
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 char				*ft_strjoin(const char *s1, const char *s2);

@@ -6,22 +6,17 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/18 11:54:22 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/21 16:47:31 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/03 21:53:58 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
-char	*ft_strinit(int c, size_t size)
+char	*ft_strinit(int c, size_t len)
 {
-	char	*b;
-	char	*ptr;
+	char	*s;
 
-	b = (char *)malloc(size + 1);
-	ptr = b;
-	while (size-- && ptr)
-		*ptr++ = (unsigned char)c;
-	*ptr = '\0';
-	return (b);
+	s = (char *)ft_memsec(malloc(len + 1), c, len + 1);
+	s[len] = '\0';
+	return (s);
 }

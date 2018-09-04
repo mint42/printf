@@ -6,21 +6,20 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/24 18:49:39 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/30 15:32:21 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/03 21:25:51 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
-void	*ft_memcat(void *dst, const void *src, int i, size_t size)
+void	*ft_memcat(void *dst, const void *src, size_t dstlen, size_t srclen)
 {
 	unsigned char	*cur;
 	unsigned char	*cur2;
 
-	cur = (unsigned char *)dst + size;
+	cur = (unsigned char *)dst + dstlen;
 	cur2 = (unsigned char *)src;
-	while (i--)
+	while (srclen--)
 		*cur++ = *cur2++;
 	return (dst);
 }
