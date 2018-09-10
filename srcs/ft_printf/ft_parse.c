@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/30 15:41:48 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/09 16:51:16 by abarnett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ char	*parse2(char *fmt, char *s, va_list ap)
 	if (cmp(fmt, ",ouxX"))
 		s = ft_uitoabase((t_ull)va_arg(ap, unsigned int), base(fmt));
 	else if (cmp(fmt, "hh,ouxX"))
-		s = ft_ctoa(va_arg(ap, int));
+		s = ft_itoa((uint8_t)va_arg(ap, int));
 	else if (cmp(fmt, "h,ouxX"))
 		s = ft_uitoabase((t_ull)va_arg(ap, int), base(fmt));
-	else if (cmp(fmt, "l,ouxX") || cmp(fmt, ",U"))
+	else if (cmp(fmt, "l,ouxX") || cmp(fmt, ",OU") || cmp(fmt, "h,U"))
 		s = ft_uitoabase((t_ull)va_arg(ap, unsigned long int), base(fmt));
 	else if (cmp(fmt, "ll,ouxX"))
 		s = ft_uitoabase(va_arg(ap, unsigned long long int), base(fmt));
@@ -88,7 +88,7 @@ char	*parse(char *fmt, va_list ap)
 		s = ft_itoabase((char)va_arg(ap, int), 10);
 	else if (cmp(fmt, "h,di"))
 		s = ft_itoabase((short)va_arg(ap, int), 10);
-	else if (cmp(fmt, "l,di"))
+	else if (cmp(fmt, "l,di") || cmp(fmt, ",D"))
 		s = ft_itoabase(va_arg(ap, long int), 10);
 	else if (cmp(fmt, "ll,di"))
 		s = ft_itoabase(va_arg(ap, long long int), 10);

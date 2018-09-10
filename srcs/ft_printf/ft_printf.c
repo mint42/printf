@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:30:34 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/03 21:24:16 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/09 17:30:13 by abarnett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ char	*clean(char *s, char *sub, char **fmt, size_t *len)
 	}
 	*fmt = to_type(*fmt) + 1;
 	d = ft_strlend(*fmt, '%');
-	if (s && !(*sub) && *(*fmt - 1) == 'c')
+	if (s && (*sub) == '\0' && *(*fmt - 1) == 'c')
 		*len = *len + 1;
 	*len = *len + ft_strlen(sub);
-	s = ft_crop(&s, 0, *len);
+	s = ft_crop(&s, 0, *len + d);
 	s = (char *)ft_memcat(s, sub, *len - ft_strlen(sub), ft_strlen(sub));
 	*len = *len + d;
 	return (ft_memcat(s, *fmt, *len - d, d));
@@ -48,20 +48,20 @@ char	*clean(char *s, char *sub, char **fmt, size_t *len)
 int		ft_printf(const char *fmt, ...)
 {
 	va_list		ap;
-	char		*cur;
 	char		*s;
 	size_t		len;
 
-	cur = (char *)fmt;
 	va_start(ap, fmt);
 	len = 0;
 	s = clean(0, 0, (char **)&fmt, &len);
-	while (cur && *cur)
+	while (fmt && *fmt)
 	{
-		if (!(cur = ft_strchr(cur, '%')))
-			return (write(1, s, len));
-		s = clean(s, parse(cur, ap), &cur, &len);
+		if (!(fmt = ft_strchr((char *)fmt, '%')))
+			break ;
+		s = clean(s, parse((char *)fmt, ap), (char **)&fmt, &len);
 	}
 	va_end(ap);
-	return (write(1, s, len));
+	write(1, s, len);
+	ft_strdel(&s);
+	return (len);
 }
