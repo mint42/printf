@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/09 18:08:40 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/09 20:32:05 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ char	*parse2(char *fmt, char *s, va_list ap)
 		s = ft_uitoabase((t_ull)va_arg(ap, ssize_t), base(fmt));
 	else if (cmp(fmt, ",cC"))
 		s = ft_ctoa(va_arg(ap, int));
-	else if (cmp(fmt, ",s"))
+	else if (cmp(fmt, ",sS"))
 		s = ft_strdup(va_arg(ap, char *));
 	else if (cmp(fmt, ",p"))
-		s = ft_strdup((char *)va_arg(ap, void *));
+		s = ft_ptoa(va_arg(ap, uintptr_t));
 	return (s);
 }
 
