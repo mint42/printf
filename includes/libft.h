@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:16:02 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/03 21:45:52 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/09 17:51:36 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void				ft_lstiter(t_list *list, void (*f)(t_list *link));
 t_list				*ft_lstmap(t_list *list, t_list *(*f)(t_list *link));
 t_list				*ft_lstnew(const void *content, size_t content_size);
 void				*ft_memalloc(size_t size);
-void				*ft_memcat(void *dst, const void *src, size_t dstlen, size_t srclen);
+void				*ft_memcat(void *d, const void *s, size_t dl, size_t sl);
 void				*ft_memccpy(void *dst, const void *src, int c, size_t len);
 void				*ft_memchr(const void *s, int c, size_t len);
 int					ft_memcmp(const void *s1, const void *s2, size_t len);

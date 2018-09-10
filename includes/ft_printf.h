@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/31 16:37:35 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/09 20:05:51 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*to_type(char *fmt);
 char	*clean(char *s, char *sub, char **fmt, size_t *len);
 int		ft_printf(const char *fmt, ...);
 char	*crop(char *s, char *fmt);
-char	*flag(char *s, char *flags, char type);
+char	*addflags(char *s, char *flags, char type);
 char	*precision(char *s, char type, int precision);
 char	*fill_flags(char *s, char *fmt, char type);
 char	*addzeros(char *s);

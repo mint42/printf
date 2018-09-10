@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 15:55:00 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/07 19:26:05 by abarnett         ###   ########.fr       */
+/*   Updated: 2018/09/09 20:28:48 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,15 @@ char	*addzeros(char *s)
 	return (s);
 }
 
-char	*flag(char *s, char *flags, char type)
+char	*addflags(char *s, char *flags, char type)
 {
 	s = ft_shift(&s, 1, ft_strlen(s) + 1);
-	if (ft_strchr(flags, '#'))
+	if (ft_strchr(flags, '#') || type == 'p')
 	{
-		if (type == 'x' || type == 'X')
+		if (type == 'x' || type == 'X' || type == 'p')
 		{
 			s = ft_shift(&s, 1, ft_strlen(s) + 1);
-			s[1] = type;
+			s[1] = (type == 'X') ? 'X' : 'x';
 		}
 		s[0] = '0';
 		return (s);
@@ -84,19 +84,19 @@ char	*fill_flags(char *s, char *fmt, char type)
 	flags = ft_strnew(5);
 	i = 0;
 	while (++fmt && (!ft_isalnum(*fmt) || *fmt == '0') && *fmt != '%')
-		if ((*fmt == '-') || (*fmt == '0' && !ft_strchr("sScCp", type)) ||
-			((*fmt == '+' || *fmt == ' ') && ft_strchr("dDi", type)) ||
-			(*fmt == '#' && ft_strchr("oOxX", type)))
-			if (!ft_strchr(flags, *fmt))
-				flags[i++] = *fmt;
+		if (ft_strchr("-+ 0#", *fmt) && !ft_strchr(flags, *fmt))
+			flags[i++] = *fmt;
 	i = 0;
 	while (flags[i] != '\0')
 	{
-		if ((flags[i] == '+' || flags[i] == '#') && s[0] == '-')
+		if (flags[i] == '+' && (s[0] == '-' || !ft_strchr("dDi", type)))
 			flags[i] = '.';
-		if (flags[i] == ' ' && (ft_strchr(flags, '+') || s[0] == '-'))
+		if (flags[i] == ' ' && (s[0] == '-' || ft_strchr(flags, '+') || \
+			!ft_strchr("dDi", type)))
 			flags[i] = '.';
-		if (flags[i] == '0' && ft_strchr(flags, '-'))
+		if (flags[i] == '0' && (ft_strchr(flags, '-') || ft_strchr("sScCp", type)))
+			flags[i] = '.';
+		if (flags[i] == '#' && (!ft_strchr("oOxX", type) || s[0] == '-'))
 			flags[i] = '.';
 		if (flags[i] == '#' && ft_strequ(s, "0") && ft_strchr("xX", type))
 			flags[i] = '.';
@@ -123,12 +123,13 @@ char	*crop(char *s, char *fmt)
 	if (p >= 0 && !ft_strchr("cCSp", type))
 		s = precision(s, type, p);
 	if (ft_strchr(flags, '#') || ft_strchr(flags, '+') || ft_strchr(flags, ' '))
-		s = flag(s, flags, type);
-	if (ft_strchr(flags, '-') && (size_t)w >= ft_strlen(s))
+		s = addflags(s, flags, type);
+	if (ft_strchr(flags, '-') && (size_t)w > ft_strlen(s))
 		s = ft_shift(&s, 0, w);
-	else if ((size_t)w >= ft_strlen(s))
+	else if ((size_t)w > ft_strlen(s))
 		s = ft_shift(&s, w - ft_strlen(s), w);
 	if (ft_strchr(flags, '0') && p == -1)
 		s = addzeros(s);
+	ft_strdel(&flags);
 	return (s);
 }
