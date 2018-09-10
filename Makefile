@@ -6,11 +6,12 @@
 #    By: rreedy <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/18 14:31:20 by rreedy            #+#    #+#              #
-#    Updated: 2018/09/09 17:01:27 by abarnett         ###   ########.fr        #
+#    Updated: 2018/09/09 17:45:02 by abarnett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := libftprintf.a
+MAIN := ~/cadet/test_main/ft_printf_main.c
 
 POBJS := $(patsubst %.c,%.o,$(wildcard ./srcs/ft_printf/*.c))
 LOBJS := $(patsubst %.c,%.o,$(wildcard ./srcs/*.c))
@@ -29,6 +30,6 @@ clean:
 	@- $(RM) $(LOBJS) $(POBJS)
 
 fclean: clean
-	@- $(RM) $(NAME) 
+	@- $(RM) $(NAME)
 
 re: fclean all
