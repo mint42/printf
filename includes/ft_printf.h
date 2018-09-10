@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/31 16:37:35 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/09 20:17:33 by abarnett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef unsigned long long t_ull;
 
 char	*ft_uitoabase(t_ull n, int base);
 char	*ft_itoabase(long long int n, int base);
+char	*ft_ptoa(uintptr_t p);
 int		base(char *fmt);
 int		cmp(char *fmt, char *type);
 char	*parse(char *fmt, va_list ap);
