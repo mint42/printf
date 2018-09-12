@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 15:55:00 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/12 15:34:22 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/12 15:49:04 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ char	*addflags(char *sub, char *flg, char type)
 {
 	if (!ft_strchr(flg, '#') && !ft_strchr(flg, '+') && !ft_strchr(flg, ' '))
 		return (sub);
+	if (ft_strequ(sub, "0") && type == 'o')
+		return (sub);
 	sub = ft_shift(&sub, 1, ft_strlen(sub) + 1);
 	if (ft_strchr(flg, '#') || type == 'p')
 	{
@@ -100,7 +102,7 @@ char	*fill_flags(char *sub, char *fmt, char type)
 			!ft_strchr("dDi", type))) || (flg[i] == '0' && (ft_strchr(flg, '-')
 			|| ft_strchr("sScCp", type))) || (flg[i] == '#' &&
 			(!ft_strchr("oOxX", type) || sub[0] == '-')) ||
-			(flg[i] == '#' && ft_strequ(sub, "0") && ft_strchr("oxX", type)))
+			(flg[i] == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
 			flg[i] = '.';
 		++i;
 	}
