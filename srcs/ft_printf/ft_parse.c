@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/12 14:42:58 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/12 16:27:10 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,22 @@ char	*parse2(char *fmt, char *s, va_list ap)
 	return (s);
 }
 
+static void	stars(char *fmt, va_list ap)
+{
+	while (fmt && !ft_isalpha(*fmt) && *fmt != '%')
+	{
+		if (*fmt == '*')
+			(void)va_arg(ap, int);
+		++fmt;
+	}
+}
+
 char	*parse(char *fmt, va_list ap)
 {
 	char	*s;
 
 	s = 0;
+	stars(fmt, ap);
 	if (cmp(fmt, "%"))
 		s = getstr("%");
 	else if (cmp(fmt, ",di"))
