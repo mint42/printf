@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/11 17:10:17 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/12 14:42:58 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,18 @@ char	*parse2(char *fmt, char *s, va_list ap)
 		s = ft_uitoabase(va_arg(ap, unsigned long long int), base(fmt));
 	else if (cmp(fmt, "j,ouxX"))
 		s = ft_uitoabase((t_ull)va_arg(ap, uintmax_t), base(fmt));
-	else if (cmp(fmt, "j,DOU"))
-		s = ft_uitoabase((t_ull)va_arg(ap, unsigned int), base(fmt));
 	else if (cmp(fmt, "z,ouxX"))
 		s = ft_uitoabase((t_ull)va_arg(ap, size_t), base(fmt));
+	else if (cmp(fmt, "j,DOU"))
+		s = ft_uitoabase((t_ull)va_arg(ap, unsigned int), base(fmt));
 	else if (cmp(fmt, "z,DOU"))
 		s = ft_uitoabase((t_ull)va_arg(ap, ssize_t), base(fmt));
 	else if (cmp(fmt, ",cC"))
 		s = ft_ctoa(va_arg(ap, int));
-	else if (cmp(fmt, ",sS"))
-		s = ft_strdup(va_arg(ap, char *));
-	else if (cmp(fmt, ",p"))
-		s = ft_ptoa(va_arg(ap, uintptr_t));
+	else if (cmp(fmt, ",s"))
+		s = getstr(va_arg(ap, char *));
+	else
+		s = getstr(0);
 	return (s);
 }
 
@@ -81,7 +81,7 @@ char	*parse(char *fmt, va_list ap)
 
 	s = 0;
 	if (cmp(fmt, "%"))
-		s = ft_strdup("%");
+		s = getstr("%");
 	else if (cmp(fmt, ",di"))
 		s = ft_itoabase(va_arg(ap, int), 10);
 	else if (cmp(fmt, "hh,di"))
@@ -96,6 +96,8 @@ char	*parse(char *fmt, va_list ap)
 		s = ft_itoabase(va_arg(ap, intmax_t), 10);
 	else if (cmp(fmt, "z,di"))
 		s = ft_itoabase(va_arg(ap, size_t), 10);
+	else if (cmp(fmt, ",p"))
+		s = ft_ptoa(va_arg(ap, uintptr_t));
 	if (!s)
 		s = parse2(fmt, s, ap);
 	return (s);

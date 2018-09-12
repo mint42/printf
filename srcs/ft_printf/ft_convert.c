@@ -6,11 +6,22 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:35:14 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/11 18:47:26 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/12 14:41:20 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+
+char	*getstr(const char *s1)
+{
+	char	*cpy;
+
+	if (s1 == NULL)
+		return (ft_strdup("(null)"));
+	cpy = ft_strnew(ft_strlen(s1));
+	return (cpy ? ft_strcpy(cpy, s1) : 0);
+}
 
 char	*ft_uitoabase(t_ull n, int base)
 {
