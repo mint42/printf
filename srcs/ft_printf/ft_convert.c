@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:35:14 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/09 20:27:17 by abarnett         ###   ########.fr       */
+/*   Updated: 2018/09/11 18:47:26 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ char	*ft_ptoa(uintptr_t p)
 	char	*s;
 	char	*cur;
 
+	if (!p)
+		return (ft_strdup("0x0"));
 	i = (sizeof(p) << 3) - 4;
 	while (((p >> i) & 0xF) == 0)
 		i -= 4;

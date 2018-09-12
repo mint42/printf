@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:30:34 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/09 17:44:32 by abarnett         ###   ########.fr       */
+/*   Updated: 2018/09/11 18:17:02 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,44 +24,49 @@ char	*to_type(char *fmt)
 	return (fmt);
 }
 
-char	*clean(char *s, char *sub, char **fmt, size_t *len)
+char	*clean(char *s, char *sub, char **fmt, size_t *slen)
 {
-	int		d;
+	size_t	d;
+	size_t	sublen;
 
+	sublen = 0;
 	d = ft_strlend(*fmt, '%');
 	if (!s && !sub)
 	{
-		*len = d;
+		*slen = d;
 		return (ft_strncpy(ft_strnew(d), *fmt, d));
 	}
+	sub = crop(sub, *fmt, &sublen);
 	*fmt = to_type(*fmt) + 1;
 	d = ft_strlend(*fmt, '%');
-	if (s && (*sub) == '\0' && *(*fmt - 1) == 'c')
-		*len = *len + 1;
-	*len = *len + ft_strlen(sub);
-	s = ft_crop(&s, 0, *len + d);
-	s = (char *)ft_memcat(s, sub, *len - ft_strlen(sub), ft_strlen(sub));
-	*len = *len + d;
-	return (ft_memcat(s, *fmt, *len - d, d));
+	s = ft_crop(&s, 0, *slen + sublen + d);
+	s = (char *)ft_memcat(s, sub, *slen, sublen);
+	*slen = *slen + sublen;
+	s = ft_memcat(s, *fmt, *slen, d);
+	*slen = *slen + d;
+	ft_strdel(&sub);
+	return (s);
 }
 
 int		ft_printf(const char *fmt, ...)
 {
 	va_list		ap;
 	char		*s;
-	size_t		len;
+	char		*sub;
+	size_t		slen;
 
 	va_start(ap, fmt);
-	len = 0;
-	s = clean(0, 0, (char **)&fmt, &len);
+	slen = 0;
+	s = clean(0, 0, (char **)&fmt, &slen);
 	while (fmt && *fmt)
 	{
 		if (!(fmt = ft_strchr((char *)fmt, '%')))
 			break ;
-		s = clean(s, parse((char *)fmt, ap), (char **)&fmt, &len);
+		sub = parse((char *)fmt, ap);
+		s = clean(s, sub, (char **)&fmt, &slen);
 	}
 	va_end(ap);
-	write(1, s, len);
+	write(1, s, slen);
 	ft_strdel(&s);
-	return (len);
+	return (slen);
 }

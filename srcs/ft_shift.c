@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 15:35:11 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/09 18:32:46 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/10 09:30:13 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ char	*ft_shift(char **s, int in, size_t size)
 		str[in] = *cur;
 		++cur;
 		++in;
-		--size;
 	}
 	ft_strdel(s);
 	return (str);

@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/09 20:32:05 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/11 17:10:17 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,5 @@ char	*parse(char *fmt, va_list ap)
 		s = ft_itoabase(va_arg(ap, size_t), 10);
 	if (!s)
 		s = parse2(fmt, s, ap);
-	s = crop(s, fmt);
 	return (s);
 }

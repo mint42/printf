@@ -6,130 +6,132 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 15:55:00 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/09 20:28:48 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/11 18:42:21 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*precision(char *s, char type, int precision)
+char	*precision(char *sub, char *flg, char type, int precision)
 {
+	if (precision < 0 || ft_strchr("cCSp", type))
+		return (sub);
 	if (type == 's')
 	{
-		if (ft_strlen(s) >= (size_t)precision)
-			s[precision] = '\0';
-		return (s);
+		if (ft_strlen(sub) >= (size_t)precision)
+			sub[precision] = '\0';
+		return (sub);
 	}
-	if (precision == 0 && ft_strequ(s, "0"))
-		return (ft_shift(&s, 0, 0));
-	if (s[0] != '-' && (size_t)precision <= ft_strlen(s))
-		return (s);
-	if (s[0] == '-' && (size_t)precision < ft_strlen(s))
-		return (s);
-	if (s[0] != '-')
-		s = ft_shift(&s, precision - ft_strlen(s), precision);
+	if (precision == 0 && ft_strequ(sub, "0"))
+		return (ft_shift(&sub, 0, 0));
+	if (sub[0] != '-' && (size_t)precision <= ft_strlen(sub))
+		return (sub);
+	if (sub[0] == '-' && (size_t)precision < ft_strlen(sub))
+		return (sub);
+	if (sub[0] != '-')
+		sub = ft_shift(&sub, precision - ft_strlen(sub), precision);
 	else
-		s = ft_shift(&s, precision - ft_strlen(s) + 1, precision + 1);
-	s = addzeros(s);
-	return (s);
+		sub = ft_shift(&sub, precision - ft_strlen(sub) + 1, precision + 1);
+	sub = addzeros(sub, flg, 1);
+	return (sub);
 }
 
-char	*addzeros(char *s)
+char	*addzeros(char *sub, char *flg, int p)
 {
 	int		i;
 
-	i = 0;
-	while (s && s[i] == ' ')
+	i = (ft_strchr(flg, ' ') && !p) ? 1 : 0;
+	while (sub && sub[i] == ' ')
 	{
-		s[i] = '0';
+		sub[i] = '0';
 		++i;
 	}
-	if (s[i] == '0' && (s[i + 1] == 'x' || s[i + 1] == 'X') && i > 0)
+	if (sub[i] == '0' && (sub[i + 1] == 'x' || sub[i + 1] == 'X') && i > 0)
 	{
 		++i;
-		s[1] = s[i];
-		s[i] = '0';
+		sub[1] = sub[i];
+		sub[i] = '0';
 	}
-	else if ((s[i] == '-' || s[i] == '+') && i > 0)
+	else if ((sub[i] == '-' || sub[i] == '+') && i > 0)
 	{
-		s[0] = s[i];
-		s[i] = '0';
+		sub[0] = sub[i];
+		sub[i] = '0';
 	}
-	return (s);
+	return (sub);
 }
 
-char	*addflags(char *s, char *flags, char type)
+char	*addflags(char *sub, char *flg, char type)
 {
-	s = ft_shift(&s, 1, ft_strlen(s) + 1);
-	if (ft_strchr(flags, '#') || type == 'p')
+	if (!ft_strchr(flg, '#') && !ft_strchr(flg, '+') && !ft_strchr(flg, ' '))
+		return (sub);
+	sub = ft_shift(&sub, 1, ft_strlen(sub) + 1);
+	if (ft_strchr(flg, '#') || type == 'p')
 	{
 		if (type == 'x' || type == 'X' || type == 'p')
 		{
-			s = ft_shift(&s, 1, ft_strlen(s) + 1);
-			s[1] = (type == 'X') ? 'X' : 'x';
+			sub = ft_shift(&sub, 1, ft_strlen(sub) + 1);
+			sub[1] = (type == 'X') ? 'X' : 'x';
 		}
-		s[0] = '0';
-		return (s);
+		sub[0] = '0';
+		return (sub);
 	}
-	if (ft_strchr(flags, '+'))
-		s[0] = '+';
-	return (s);
+	if (ft_strchr(flg, '+'))
+		sub[0] = '+';
+	return (sub);
 }
 
-char	*fill_flags(char *s, char *fmt, char type)
+char	*fill_flags(char *sub, char *fmt, char type)
 {
-	char	*flags;
+	char	*flg;
 	int		i;
 
-	flags = ft_strnew(5);
+	flg = ft_strnew(6);
 	i = 0;
+	if (type == 'c' && (*sub) == '\0')
+		flg[i++] = 'n';
 	while (++fmt && (!ft_isalnum(*fmt) || *fmt == '0') && *fmt != '%')
-		if (ft_strchr("-+ 0#", *fmt) && !ft_strchr(flags, *fmt))
-			flags[i++] = *fmt;
+		if (ft_strchr("-+ 0#", *fmt) && !ft_strchr(flg, *fmt))
+			flg[i++] = *fmt;
 	i = 0;
-	while (flags[i] != '\0')
+	while (flg[i] != '\0')
 	{
-		if (flags[i] == '+' && (s[0] == '-' || !ft_strchr("dDi", type)))
-			flags[i] = '.';
-		if (flags[i] == ' ' && (s[0] == '-' || ft_strchr(flags, '+') || \
-			!ft_strchr("dDi", type)))
-			flags[i] = '.';
-		if (flags[i] == '0' && (ft_strchr(flags, '-') || ft_strchr("sScCp", type)))
-			flags[i] = '.';
-		if (flags[i] == '#' && (!ft_strchr("oOxX", type) || s[0] == '-'))
-			flags[i] = '.';
-		if (flags[i] == '#' && ft_strequ(s, "0") && ft_strchr("xX", type))
-			flags[i] = '.';
+		if ((flg[i] == '+' && (sub[0] == '-' || !ft_strchr("dDi", type))) ||
+			(flg[i] == ' ' && (sub[0] == '-' || ft_strchr(flg, '+') ||
+			!ft_strchr("dDi", type))) || (flg[i] == '0' && (ft_strchr(flg, '-')
+			|| ft_strchr("sScCp", type))) || (flg[i] == '#' &&
+			(!ft_strchr("oOxX", type) || sub[0] == '-')) ||
+			(flg[i] == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
+			flg[i] = '.';
 		++i;
 	}
-	return (flags);
+	return (flg);
 }
 
-char	*crop(char *s, char *fmt)
+char	*crop(char *sub, char *fmt, size_t *sublen)
 {
-	char	*flags;
+	char	*flg;
 	char	type;
 	int		p;
 	int		w;
 
 	type = *to_type(fmt);
-	flags = fill_flags(s, fmt, type);
+	flg = fill_flags(sub, fmt, type);
 	while (fmt && (!ft_isalnum(*fmt) || *fmt == '0') && *fmt != '.')
 		++fmt;
 	w = (ft_isdigit(*fmt)) ? ft_atoi(fmt) : 0;
 	while (fmt && !ft_isalpha(*fmt) && *fmt != '.')
 		++fmt;
 	p = (*fmt++ == '.') ? ft_atoi(fmt) : -1;
-	if (p >= 0 && !ft_strchr("cCSp", type))
-		s = precision(s, type, p);
-	if (ft_strchr(flags, '#') || ft_strchr(flags, '+') || ft_strchr(flags, ' '))
-		s = addflags(s, flags, type);
-	if (ft_strchr(flags, '-') && (size_t)w > ft_strlen(s))
-		s = ft_shift(&s, 0, w);
-	else if ((size_t)w > ft_strlen(s))
-		s = ft_shift(&s, w - ft_strlen(s), w);
-	if (ft_strchr(flags, '0') && p == -1)
-		s = addzeros(s);
-	ft_strdel(&flags);
-	return (s);
+	sub = precision(sub, flg, type, p);
+	sub = addflags(sub, flg, type);
+	if (ft_strchr(flg, '-') && (size_t)w > ft_strlen(sub))
+		sub = ft_shift(&sub, 0, w);
+	else if ((size_t)w > ft_strlen(sub))
+		sub = ft_shift(&sub, w - ft_strlen(sub), w);
+	*sublen = ((*sub) == '\0' && type == 'c') ? 1 : ft_strlen(sub);
+	if (ft_strchr(flg, 'n') && w)
+		sub[(ft_strchr(flg, '-')) ? 0 : w - 1] = '\0';
+	sub = (ft_strchr(flg, '0') && p == -1) ? addzeros(sub, flg, 0) : sub;
+	ft_strdel(&flg);
+	return (sub);
 }
