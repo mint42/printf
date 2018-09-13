@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/12 14:40:46 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/12 17:42:07 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char	*crop(char *sub, char *fmt, size_t *sublen);
 char	*addflags(char *sub, char *flg, char type);
 char	*precision(char *sub, char *flg, char type, int precision);
 char	*fill_flags(char *sub, char *fmt, char type);
+int		fill_pow(char *fmt, va_list ap, char pow);
 char	*addzeros(char *sub, char *flg, int p);
 
 #endif

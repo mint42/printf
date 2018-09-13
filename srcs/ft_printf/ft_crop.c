@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 15:55:00 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/12 15:49:04 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/12 17:42:37 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,14 @@ char	*crop(char *sub, char *fmt, size_t *sublen)
 
 	type = *to_type(fmt);
 	flg = fill_flags(sub, fmt, type);
-	while (fmt && (!ft_isalnum(*fmt) || *fmt == '0') && *fmt != '.')
-		++fmt;
-	w = (ft_isdigit(*fmt)) ? ft_atoi(fmt) : 0;
-	while (fmt && !ft_isalpha(*fmt) && *fmt != '.')
-		++fmt;
-	p = (*fmt++ == '.') ? ft_atoi(fmt) : -1;
+	w = fill_pow(fmt, 0, 'w');
+	p = fill_pow(fmt, 0, 'p');
+//	while (fmt && (!ft_isalnum(*fmt) || *fmt == '0') && *fmt != '.')
+//		++fmt;
+//	w = (ft_isdigit(*fmt)) ? ft_atoi(fmt) : 0;
+//	while (fmt && !ft_isalpha(*fmt) && *fmt != '.')
+//		++fmt;
+//	p = (*fmt++ == '.') ? ft_atoi(fmt) : -1;
 	sub = precision(sub, flg, type, p);
 	sub = addflags(sub, flg, type);
 	if (ft_strchr(flg, '-') && (size_t)w > ft_strlen(sub))

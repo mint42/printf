@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:30:34 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/12 15:17:23 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/12 17:57:40 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int		ft_printf(const char *fmt, ...)
 	{
 		if (!(fmt = ft_strchr((char *)fmt, '%')))
 			break ;
+		if (!(*(fmt + 1) == '%'))
+			(void)fill_pow((char *)fmt, ap, 0);
 		sub = parse((char *)fmt, ap);
 		s = clean(s, sub, (char **)&fmt, &slen);
 	}

@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/12 16:27:10 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/12 17:53:44 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,28 @@ char	*parse2(char *fmt, char *s, va_list ap)
 	return (s);
 }
 
-static void	stars(char *fmt, va_list ap)
+int		fill_pow(char *fmt, va_list ap, char pow)
 {
-	while (fmt && !ft_isalpha(*fmt) && *fmt != '%')
-	{
-		if (*fmt == '*')
-			(void)va_arg(ap, int);
+	static int	precision;
+	static int	width;
+
+	if (!pow)
+		return ((pow == 'w') ? width : precision);
+	width = 0;
+	precision = -1;
+	while (fmt && (!ft_isalnum(*fmt) || *fmt == '0') && !ft_strchr(".*", *fmt))
 		++fmt;
-	}
+	if (*fmt == '*')
+		width = va_arg(ap, int);
+	else
+		width = (ft_isdigit(*fmt)) ? ft_atoi(fmt) : 0;
+	while (fmt && !ft_isalpha(*fmt) && !ft_strchr(".*", *fmt))
+		++fmt;
+	if (*fmt == '*')
+		precision = va_arg(ap, int);
+	else
+		precision = (*fmt++ == '.') ? ft_atoi(fmt) : -1;
+	return ((pow == 'w') ? width : precision);
 }
 
 char	*parse(char *fmt, va_list ap)
@@ -90,7 +104,6 @@ char	*parse(char *fmt, va_list ap)
 	char	*s;
 
 	s = 0;
-	stars(fmt, ap);
 	if (cmp(fmt, "%"))
 		s = getstr("%");
 	else if (cmp(fmt, ",di"))
