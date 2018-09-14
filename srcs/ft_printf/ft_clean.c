@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 15:55:00 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/12 17:42:37 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/14 08:33:28 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,60 +82,42 @@ char	*addflags(char *sub, char *flg, char type)
 	return (sub);
 }
 
-char	*fill_flags(char *sub, char *fmt, char type)
+char	*crop(t_sub sub, size_t *sublen)
 {
-	char	*flg;
-	int		i;
-
-	flg = ft_strnew(6);
-	i = 0;
-	if (type == 'c' && (*sub) == '\0')
-		flg[i++] = 'n';
-	while (++fmt && (!ft_isalnum(*fmt) || *fmt == '0') && *fmt != '%')
-		if (ft_strchr("-+ 0#", *fmt) && !ft_strchr(flg, *fmt))
-			flg[i++] = *fmt;
-	i = 0;
-	while (flg[i] != '\0')
-	{
-		if ((flg[i] == '+' && (sub[0] == '-' || !ft_strchr("dDi", type))) ||
-			(flg[i] == ' ' && (sub[0] == '-' || ft_strchr(flg, '+') ||
-			!ft_strchr("dDi", type))) || (flg[i] == '0' && (ft_strchr(flg, '-')
-			|| ft_strchr("sScCp", type))) || (flg[i] == '#' &&
-			(!ft_strchr("oOxX", type) || sub[0] == '-')) ||
-			(flg[i] == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
-			flg[i] = '.';
-		++i;
-	}
-	return (flg);
+	sub.s = precision(sub.s, sub.flags, sub.type, sub.p);
+	sub.s = addflags(sub.s, sub.flags, sub.type);
+	if (ft_strchr(sub.flags, '-') && (size_t)sub.w > ft_strlen(sub.s))
+		sub.s = ft_shift(&(sub.s), 0, sub.w);
+	else if ((size_t)sub.w > ft_strlen(sub.s))
+		sub.s = ft_shift(&(sub.s), sub.w - ft_strlen(sub.s), sub.w);
+	*sublen = (*(sub.s) == '\0' && sub.type == 'c') ? 1 : ft_strlen(sub.s);
+	if (ft_strchr(sub.flags, 'n') && sub.w)
+		sub.s[(ft_strchr(sub.flags, '-')) ? 0 : sub.w - 1] = '\0';
+	if (ft_strchr(sub.flags, '0') && sub.p == -1)
+		sub.s = addzeros(sub.s, sub.flags, 0);
+	return (sub.s);
 }
 
-char	*crop(char *sub, char *fmt, size_t *sublen)
+char	*clean(char *s, t_sub sub, char **fmt, size_t *slen)
 {
-	char	*flg;
-	char	type;
-	int		p;
-	int		w;
+	size_t	d;
 
-	type = *to_type(fmt);
-	flg = fill_flags(sub, fmt, type);
-	w = fill_pow(fmt, 0, 'w');
-	p = fill_pow(fmt, 0, 'p');
-//	while (fmt && (!ft_isalnum(*fmt) || *fmt == '0') && *fmt != '.')
-//		++fmt;
-//	w = (ft_isdigit(*fmt)) ? ft_atoi(fmt) : 0;
-//	while (fmt && !ft_isalpha(*fmt) && *fmt != '.')
-//		++fmt;
-//	p = (*fmt++ == '.') ? ft_atoi(fmt) : -1;
-	sub = precision(sub, flg, type, p);
-	sub = addflags(sub, flg, type);
-	if (ft_strchr(flg, '-') && (size_t)w > ft_strlen(sub))
-		sub = ft_shift(&sub, 0, w);
-	else if ((size_t)w > ft_strlen(sub))
-		sub = ft_shift(&sub, w - ft_strlen(sub), w);
-	*sublen = ((*sub) == '\0' && type == 'c') ? 1 : ft_strlen(sub);
-	if (ft_strchr(flg, 'n') && w)
-		sub[(ft_strchr(flg, '-')) ? 0 : w - 1] = '\0';
-	sub = (ft_strchr(flg, '0') && p == -1) ? addzeros(sub, flg, 0) : sub;
-	ft_strdel(&flg);
-	return (sub);
+	sub.len = (ft_strequ(sub.s, "%")) ? 1 : 0;
+	d = ft_strlend(*fmt, '%');
+	if (!s)
+	{
+		*slen = d;
+		return (ft_strncpy(ft_strnew(d), *fmt, d));
+	}
+	if (!ft_strequ(sub.s, "%") || *(*fmt + 1) != '%')
+		sub.s = crop(sub, &(sub.len));
+	*fmt = to_type(*fmt) + 1;
+	d = ft_strlend(*fmt, '%');
+	s = ft_crop(&s, 0, *slen + sub.len + d);
+	s = (char *)ft_memcat(s, sub.s, *slen, sub.len);
+	*slen = *slen + sub.len;
+	s = ft_memcat(s, *fmt, *slen, d);
+	*slen = *slen + d;
+	delsub(&sub.s, &sub.flags);
+	return (s);
 }

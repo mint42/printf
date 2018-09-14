@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/12 17:53:44 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/13 14:15:56 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,34 +69,10 @@ char	*parse2(char *fmt, char *s, va_list ap)
 	else if (cmp(fmt, ",cC"))
 		s = ft_ctoa(va_arg(ap, int));
 	else if (cmp(fmt, ",s"))
-		s = getstr(va_arg(ap, char *));
+		s = vatostr(va_arg(ap, char *));
 	else
-		s = getstr(0);
+		s = vatostr(0);
 	return (s);
-}
-
-int		fill_pow(char *fmt, va_list ap, char pow)
-{
-	static int	precision;
-	static int	width;
-
-	if (!pow)
-		return ((pow == 'w') ? width : precision);
-	width = 0;
-	precision = -1;
-	while (fmt && (!ft_isalnum(*fmt) || *fmt == '0') && !ft_strchr(".*", *fmt))
-		++fmt;
-	if (*fmt == '*')
-		width = va_arg(ap, int);
-	else
-		width = (ft_isdigit(*fmt)) ? ft_atoi(fmt) : 0;
-	while (fmt && !ft_isalpha(*fmt) && !ft_strchr(".*", *fmt))
-		++fmt;
-	if (*fmt == '*')
-		precision = va_arg(ap, int);
-	else
-		precision = (*fmt++ == '.') ? ft_atoi(fmt) : -1;
-	return ((pow == 'w') ? width : precision);
 }
 
 char	*parse(char *fmt, va_list ap)
@@ -105,7 +81,7 @@ char	*parse(char *fmt, va_list ap)
 
 	s = 0;
 	if (cmp(fmt, "%"))
-		s = getstr("%");
+		s = vatostr("%");
 	else if (cmp(fmt, ",di"))
 		s = ft_itoabase(va_arg(ap, int), 10);
 	else if (cmp(fmt, "hh,di"))

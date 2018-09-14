@@ -6,13 +6,13 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:35:14 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/12 17:45:29 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/13 12:56:56 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*getstr(const char *s1)
+char	*vatostr(const char *s1)
 {
 	char	*cpy;
 
