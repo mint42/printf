@@ -6,86 +6,87 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 15:55:00 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/14 11:24:12 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/14 13:22:52 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*precision(char *sub, char *flg, char type, int precision)
+char	*precision(t_sub sub)
 {
-	if (precision < 0 || ft_strchr("cCSp", type))
-		return (sub);
-	if (type == 's')
+	if (sub.p < 0 || ft_strchr("cCSp", sub.type))
+		return (sub.s);
+	if (sub.type == 's')
 	{
-		if (ft_strlen(sub) >= (size_t)precision)
-			sub[precision] = '\0';
-		return (sub);
+		if (ft_strlen(sub.s) >= (size_t)sub.p)
+			sub.s[sub.p] = '\0';
+		return (sub.s);
 	}
-	if (precision == 0 && ft_strequ(sub, "0"))
-		return (ft_shift(&sub, 0, 0));
-	if (sub[0] != '-' && (size_t)precision <= ft_strlen(sub))
-		return (sub);
-	if (sub[0] == '-' && (size_t)precision < ft_strlen(sub))
-		return (sub);
-	if (sub[0] != '-')
-		sub = ft_shift(&sub, precision - ft_strlen(sub), precision);
+	if (sub.p == 0 && ft_strequ(sub.s, "0"))
+		return (ft_shift(&(sub.s), 0, 0));
+	if (sub.s[0] != '-' && (size_t)sub.p <= ft_strlen(sub.s))
+		return (sub.s);
+	if (sub.s[0] == '-' && (size_t)sub.p < ft_strlen(sub.s))
+		return (sub.s);
+	if (sub.s[0] != '-')
+		sub.s = ft_shift(&(sub.s), sub.p - ft_strlen(sub.s), sub.p);
 	else
-		sub = ft_shift(&sub, precision - ft_strlen(sub) + 1, precision + 1);
-	sub = addzeros(sub, flg, 1);
-	return (sub);
+		sub.s = ft_shift(&(sub.s), sub.p - ft_strlen(sub.s) + 1, sub.p + 1);
+	sub.s = addzeros(sub, 1);
+	return (sub.s);
 }
 
-char	*addzeros(char *sub, char *flg, int p)
+char	*addzeros(t_sub sub, int p)
 {
 	int		i;
 
-	i = (ft_strchr(flg, ' ') && !p) ? 1 : 0;
-	while (sub && sub[i] == ' ')
+	i = (ft_strchr(sub.flags, ' ') && !p) ? 1 : 0;
+	while (sub.s && sub.s[i] == ' ')
 	{
-		sub[i] = '0';
+		sub.s[i] = '0';
 		++i;
 	}
-	if (sub[i] == '0' && (sub[i + 1] == 'x' || sub[i + 1] == 'X') && i > 0)
+	if (sub.s[i] == '0' && (sub.s[i + 1] == 'x' || sub.s[i + 1] == 'X') && i)
 	{
 		++i;
-		sub[1] = sub[i];
-		sub[i] = '0';
+		sub.s[1] = sub.s[i];
+		sub.s[i] = '0';
 	}
-	else if ((sub[i] == '-' || sub[i] == '+') && i > 0)
+	else if ((sub.s[i] == '-' || sub.s[i] == '+') && i > 0)
 	{
-		sub[0] = sub[i];
-		sub[i] = '0';
+		sub.s[0] = sub.s[i];
+		sub.s[i] = '0';
 	}
-	return (sub);
+	return (sub.s);
 }
 
-char	*addflags(char *sub, char *flg, char type)
+char	*addflags(t_sub sub)
 {
-	if (!ft_strchr(flg, '#') && !ft_strchr(flg, '+') && !ft_strchr(flg, ' '))
-		return (sub);
-	if (ft_strequ(sub, "0") && type == 'o')
-		return (sub);
-	sub = ft_shift(&sub, 1, ft_strlen(sub) + 1);
-	if (ft_strchr(flg, '#') || type == 'p')
+	if (!ft_strchr(sub.flags, '#') && !ft_strchr(sub.flags, '+') && \
+		!ft_strchr(sub.flags, ' '))
+		return (sub.s);
+	if (ft_strequ(sub.s, "0") && sub.type == 'o')
+		return (sub.s);
+	sub.s = ft_shift(&(sub.s), 1, ft_strlen(sub.s) + 1);
+	if (ft_strchr(sub.flags, '#') || sub.type == 'p')
 	{
-		if (type == 'x' || type == 'X' || type == 'p')
+		if (sub.type == 'x' || sub.type == 'X' || sub.type == 'p')
 		{
-			sub = ft_shift(&sub, 1, ft_strlen(sub) + 1);
-			sub[1] = (type == 'X') ? 'X' : 'x';
+			sub.s = ft_shift(&(sub.s), 1, ft_strlen(sub.s) + 1);
+			sub.s[1] = (sub.type == 'X') ? 'X' : 'x';
 		}
-		sub[0] = '0';
-		return (sub);
+		sub.s[0] = '0';
+		return (sub.s);
 	}
-	if (ft_strchr(flg, '+'))
-		sub[0] = '+';
-	return (sub);
+	if (ft_strchr(sub.flags, '+'))
+		sub.s[0] = '+';
+	return (sub.s);
 }
 
 char	*crop(t_sub sub, size_t *sublen)
 {
-	sub.s = precision(sub.s, sub.flags, sub.type, sub.p);
-	sub.s = addflags(sub.s, sub.flags, sub.type);
+	sub.s = precision(sub);
+	sub.s = addflags(sub);
 	if (ft_strchr(sub.flags, '-') && (size_t)sub.w > ft_strlen(sub.s))
 		sub.s = ft_shift(&(sub.s), 0, sub.w);
 	else if ((size_t)sub.w > ft_strlen(sub.s))
@@ -94,7 +95,7 @@ char	*crop(t_sub sub, size_t *sublen)
 	if (ft_strchr(sub.flags, 'n') && sub.w)
 		sub.s[(ft_strchr(sub.flags, '-')) ? 0 : sub.w - 1] = '\0';
 	if (ft_strchr(sub.flags, '0') && sub.p == -1)
-		sub.s = addzeros(sub.s, sub.flags, 0);
+		sub.s = addzeros(sub, 0);
 	return (sub.s);
 }
 

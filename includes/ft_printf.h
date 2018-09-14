@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/14 08:46:59 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/14 12:38:50 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int				ft_printf(const char *fmt, ...);
 
 t_sub			makesub(char *fmt, va_list ap, int init);
 void			delsub(char **s, char **flags);
-char			*fill_flags(char *sub, char *fmt, char type);
+char			*fill_flags(char *sub, char *fmt, char type, int width);
 void			fill_pw(char *fmt, va_list ap, int *precision, int *width);
 char			*to_type(char *fmt);
 
@@ -54,8 +54,8 @@ char			*ft_ptoa(uintptr_t p);
 
 char			*clean(char *s, t_sub sub, char **fmt, size_t *slen);
 char			*crop(t_sub sub, size_t *sublen);
-char			*addflags(char *sub, char *flg, char type);
-char			*addzeros(char *sub, char *flg, int p);
-char			*precision(char *sub, char *flg, char type, int precision);
+char			*addflags(t_sub sub);
+char			*addzeros(t_sub sub, int p);
+char			*precision(t_sub sub);
 
 #endif
