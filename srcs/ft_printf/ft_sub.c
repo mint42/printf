@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/13 12:16:05 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/14 13:23:21 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/14 17:59:41 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 char	*to_type(char *fmt)
 {
-	++fmt;
-	while (!ft_isalpha(*fmt) && *fmt != '%')
+	if (*fmt == '%' && *(fmt + 1))
+		++fmt;
+	while (fmt && !ft_isalpha(*fmt) && *fmt != '%')
 		++fmt;
 	if (*fmt == 'l' || *fmt == 'h' || *fmt == 'j' || *fmt == 'z')
 		++fmt;
 	if (*fmt == 'l' || *fmt == 'h')
 		++fmt;
-	return (fmt);
+	return (ft_strchr("sSpdDioOuUxXcC%", *fmt) ? fmt : --fmt);
+//	return (fmt);
 }
 
 char	*fill_flags(char *sub, char *fmt, char type, int width)
@@ -92,7 +94,10 @@ t_sub	makesub(char *fmt, va_list ap, int init)
 	}
 	fill_pw(fmt, ap, &(sub.p), &(sub.w));
 	sub.type = *to_type(fmt);
-	sub.s = parse(fmt, ap);
+	if (!ft_strchr("sSpdDioOuUxXcC%", sub.type))
+		sub.type = 0;
+	sub.s = (sub.type) ? parse(fmt, ap) : ft_strnew(0);
+	printf("type: %c\n", sub.type);
 	sub.flags = fill_flags(sub.s, fmt, sub.type, sub.w);
 	if (sub.w < 0)
 		sub.w = sub.w * -1;

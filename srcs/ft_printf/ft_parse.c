@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/14 10:39:47 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/14 17:07:39 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	*parse(char *fmt, va_list ap)
 		s = ft_itoabase(va_arg(ap, intmax_t), 10);
 	else if (cmp(fmt, "z,di"))
 		s = ft_itoabase(va_arg(ap, size_t), 10);
-	else if (cmp(fmt, ",p"))
+	else if (cmp(fmt, ",p") || cmp(fmt, "l,p"))
 		s = ft_ptoa(va_arg(ap, uintptr_t));
 	if (!s)
 		s = parse2(fmt, s, ap);

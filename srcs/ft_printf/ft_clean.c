@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 15:55:00 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/14 13:22:52 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/14 17:43:25 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*crop(t_sub sub, size_t *sublen)
 		sub.s = ft_shift(&(sub.s), 0, sub.w);
 	else if ((size_t)sub.w > ft_strlen(sub.s))
 		sub.s = ft_shift(&(sub.s), sub.w - ft_strlen(sub.s), sub.w);
-	*sublen = (*(sub.s) == '\0' && sub.type == 'c') ? 1 : ft_strlen(sub.s);
+	*sublen = (!*(sub.s) && ft_strchr("cC", sub.type)) ? 1 : ft_strlen(sub.s);
 	if (ft_strchr(sub.flags, 'n') && sub.w)
 		sub.s[(ft_strchr(sub.flags, '-')) ? 0 : sub.w - 1] = '\0';
 	if (ft_strchr(sub.flags, '0') && sub.p == -1)
@@ -110,7 +110,7 @@ char	*clean(char *s, t_sub sub, char **fmt, size_t *slen)
 		*slen = d;
 		return (ft_strncpy(ft_strnew(d), *fmt, d));
 	}
-	if (!ft_strequ(sub.s, "%") || *(*fmt + 1) != '%')
+	if ((!ft_strequ(sub.s, "%") || *(*fmt + 1) != '%') && sub.type)
 		sub.s = crop(sub, &(sub.len));
 	*fmt = to_type(*fmt) + 1;
 	d = ft_strlend(*fmt, '%');
