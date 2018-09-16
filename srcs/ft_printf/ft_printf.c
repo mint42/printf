@@ -27,9 +27,7 @@ int		ft_printf(const char *fmt, ...)
 		if (!(fmt = ft_strchr((char *)fmt, '%')))
 			break ;
 		sub = makesub((char *)fmt, ap, 0);
-		printf("sub: |%s|\n", sub.s);
 		s = clean(s, sub, (char **)&fmt, &slen);
-		printf("s: |%s|\n", s);
 	}
 	va_end(ap);
 	write(1, s, slen);

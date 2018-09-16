@@ -58,4 +58,8 @@ char			*addflags(t_sub sub);
 char			*addzeros(t_sub sub, int p);
 char			*precision(t_sub sub);
 
+int				get_utf8_bytes(wchar_t *str);
+void			utf8_inc(char **str);
+char			*conv_utf8(wchar_t *str);
+
 #endif
