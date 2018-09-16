@@ -104,6 +104,26 @@ void	utf8_inc(char **str)
 	}
 }
 
+char	*conv_utf8_c(wchar_t c)
+{
+	char	*nstr;
+	int		i;
+
+	nstr = ft_strnew(get_utf8_bytes(&c));
+	i = 32;
+	while (i > 0)
+	{
+		if (c & (1 << (i - 1)))
+			break ;
+		--i;
+	}
+	if (i > 7)
+		conv_utf8_char(&nstr, c, i);
+	else
+		*nstr = c;
+	return (nstr);
+}
+
 char	*conv_utf8(wchar_t *str)
 {
 	char	*nstr;

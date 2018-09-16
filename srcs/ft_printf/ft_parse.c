@@ -68,7 +68,9 @@ char	*parse2(char *fmt, char *s, va_list ap)
 		s = ft_uitoabase((t_ull)va_arg(ap, ssize_t), base(fmt));
 	else if (cmp(fmt, ",c"))
 		s = ft_ctoa(va_arg(ap, int));
-	else if (cmp(fmt, ",CS"))
+	else if (cmp(fmt, ",C"))
+		s = conv_utf8_c(va_arg(ap, wchar_t));
+	else if (cmp(fmt, ",S"))
 		s = conv_utf8(va_arg(ap, wchar_t *));
 	else if (cmp(fmt, ",s"))
 		s = vatostr(va_arg(ap, char *));
