@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_struct.c                                        :+:      :+:    :+:   */
+/*   ft_sub.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/13 12:16:05 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/14 17:59:41 by rreedy           ###   ########.fr       */
+/*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
+/*   Updated: 2018/09/23 08:29:12 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*to_type(char *fmt)
+void	fill_type(char *fmt, char *mod, char *type)
 {
+	*type = 0;
+	*mod = 0;
 	if (*fmt == '%' && *(fmt + 1))
 		++fmt;
 	while (fmt && !ft_isalpha(*fmt) && *fmt != '%')
 		++fmt;
-	if (*fmt == 'l' || *fmt == 'h' || *fmt == 'j' || *fmt == 'z')
+	if (fmt && (*fmt == 'l' || *fmt == 'h' || *fmt == 'j' || *fmt == 'z'))
+	{
+		*mod = *fmt;
 		++fmt;
-	if (*fmt == 'l' || *fmt == 'h')
-		++fmt;
-	return (ft_strchr("sSpdDioOuUxXcC%", *fmt) ? fmt : --fmt);
+		if (fmt && (*fmt == 'l' || *fmt == 'h'))
+		{
+			*mod = ((*fmt == 'l') ? 'L' : 'H');
+			++fmt;
+		}
+	}
+	*type = (fmt && ft_strchr("sSpdDioOuUxXcC%", *fmt)) ? *fmt : 0;
 }
 
 char	*fill_flags(char *sub, char *fmt, char type, int width)
@@ -71,7 +79,7 @@ void	fill_pw(char *fmt, va_list ap, int *precision, int *width)
 	if (*fmt == '.' && *(fmt + 1) == '*')
 		*precision = va_arg(ap, int);
 	else
-		*precision = (*fmt++ == '.') ? ft_atoi(fmt) : -1;
+		*precision = (*fmt == '.') ? ft_atoi(++fmt) : -1;
 }
 
 void	delsub(char **s, char **flags)
@@ -92,10 +100,8 @@ t_sub	makesub(char *fmt, va_list ap, int init)
 		return (sub);
 	}
 	fill_pw(fmt, ap, &(sub.p), &(sub.w));
-	sub.type = *to_type(fmt);
-	if (!ft_strchr("sSpdDioOuUxXcC%", sub.type))
-		sub.type = 0;
-	sub.s = (sub.type) ? parse(fmt, ap) : ft_strnew(0);
+	fill_type(fmt, &(sub.mod), &(sub.type));
+	sub.s = (sub.type) ? parse(sub, fmt, ap) : ft_strnew(0);
 	sub.flags = fill_flags(sub.s, fmt, sub.type, sub.w);
 	if (sub.w < 0)
 		sub.w = sub.w * -1;

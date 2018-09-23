@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_crop.c                                          :+:      :+:    :+:   */
+/*   ft_clean.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/16 15:55:00 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/14 17:43:25 by rreedy           ###   ########.fr       */
+/*   Created: 2018/09/20 17:22:01 by rreedy            #+#    #+#             */
+/*   Updated: 2018/09/23 08:36:47 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,16 +103,18 @@ char	*clean(char *s, t_sub sub, char **fmt, size_t *slen)
 {
 	size_t	d;
 
-	sub.len = (ft_strequ(sub.s, "%")) ? 1 : 0;
+	sub.len = ft_strequ(sub.s, "%") ? 1 : 0;
 	d = ft_strlend(*fmt, '%');
 	if (!s)
 	{
 		*slen = d;
 		return (ft_strncpy(ft_strnew(d), *fmt, d));
 	}
-	if ((!ft_strequ(sub.s, "%") || *(*fmt + 1) != '%') && sub.type)
+	if (sub.type)
 		sub.s = crop(sub, &(sub.len));
-	*fmt = to_type(*fmt) + 1;
+	if (sub.type == '%')
+		++(*fmt);
+	*fmt = ft_strchr(*fmt, sub.type) + 1;
 	d = ft_strlend(*fmt, '%');
 	s = ft_crop(&s, 0, *slen + sub.len + d);
 	s = (char *)ft_memcat(s, sub.s, *slen, sub.len);

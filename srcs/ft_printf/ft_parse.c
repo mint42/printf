@@ -6,103 +6,110 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/14 17:07:39 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/23 08:37:03 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		base(char *fmt)
+int		get_base(t_sub sub, char *fmt)
 {
-	fmt = to_type(fmt);
-	if (*fmt == 'o' || *fmt == 'O')
+	fmt = ft_strchr(fmt, sub.type);
+	if (ft_strchr("oO", *fmt))
 		return (8);
-	if (*fmt == 'u' || *fmt == 'U')
-		return (10);
-	if (*fmt == 'x' || *fmt == 'X')
+	if (ft_strchr("xX", *fmt))
 		return (!ft_isupper(*fmt) ? 16 : 36);
-	if (*fmt == 'D')
+	if (ft_strchr("idDuU", *fmt))
 		return (10);
 	return (0);
 }
 
-int		cmp(char *fmt, char *type)
+char	*parse_cCsS(t_sub sub, char *s, va_list ap)
 {
-	++fmt;
-	while (fmt && !ft_isalpha(*fmt) && *fmt != '%')
-		++fmt;
-	if (*fmt == '%' && *type == '%')
-		return (1);
-	while (type && *type != ',' && *type == *fmt)
-	{
-		++type;
-		++fmt;
-	}
-	if (*type != ',')
-		return (0);
-	while (*type++)
-		if (*fmt == *type)
-			return (1);
-	return (0);
-}
-
-char	*parse2(char *fmt, char *s, va_list ap)
-{
-	if (cmp(fmt, ",ouxX"))
-		s = ft_uitoabase((t_ull)va_arg(ap, unsigned int), base(fmt));
-	else if (cmp(fmt, "hh,ouxX"))
-		s = ft_itoa((uint8_t)va_arg(ap, int));
-	else if (cmp(fmt, "h,ouxX"))
-		s = ft_uitoabase((t_ull)va_arg(ap, int), base(fmt));
-	else if (cmp(fmt, "l,ouxX") || cmp(fmt, ",OU") || cmp(fmt, "h,U"))
-		s = ft_uitoabase((t_ull)va_arg(ap, unsigned long int), base(fmt));
-	else if (cmp(fmt, "ll,ouxX"))
-		s = ft_uitoabase(va_arg(ap, unsigned long long int), base(fmt));
-	else if (cmp(fmt, "j,ouxX"))
-		s = ft_uitoabase((t_ull)va_arg(ap, uintmax_t), base(fmt));
-	else if (cmp(fmt, "z,ouxX"))
-		s = ft_uitoabase((t_ull)va_arg(ap, size_t), base(fmt));
-	else if (cmp(fmt, "j,DOU"))
-		s = ft_uitoabase((t_ull)va_arg(ap, unsigned int), base(fmt));
-	else if (cmp(fmt, "z,DOU"))
-		s = ft_uitoabase((t_ull)va_arg(ap, ssize_t), base(fmt));
-	else if (cmp(fmt, ",c"))
+	if (sub.type == 'c')
 		s = ft_ctoa(va_arg(ap, int));
-	else if (cmp(fmt, ",C"))
+	else if (sub.type == 'C')
 		s = conv_utf8_c(va_arg(ap, wchar_t));
-	else if (cmp(fmt, ",S"))
-		s = conv_utf8(va_arg(ap, wchar_t *));
-	else if (cmp(fmt, ",s"))
+	else if (sub.type == 's')
 		s = vatostr(va_arg(ap, char *));
-	else
-		s = vatostr(0);
+	else if (sub.type == 'S')
+		s = conv_utf8(va_arg(ap, wchar_t *));
 	return (s);
 }
 
-char	*parse(char *fmt, va_list ap)
+char	*parse_di(t_sub sub, char *s, va_list ap, int base)
+{
+	if (!sub.mod)
+		s = ft_itoabase(va_arg(ap, int), base);
+	else if (sub.mod == 'H')
+		s = ft_itoabase((char)va_arg(ap, int), base);
+	else if (sub.mod == 'h')
+		s = ft_itoabase((short)va_arg(ap, int), base);
+	else if (sub.mod == 'L')
+		s = ft_itoabase(va_arg(ap, long long int), base);
+	else if (sub.mod == 'l')
+		s = ft_itoabase(va_arg(ap, long int), base);
+	else if (sub.mod == 'j')
+		s = ft_itoabase(va_arg(ap, intmax_t), base);
+	else if (sub.mod == 'z')
+		s = ft_itoabase(va_arg(ap, size_t), base);
+	return (s);
+}
+
+char	*parse_ouxX(t_sub sub, char *s, va_list ap, int base)
+{
+	if (!sub.mod)
+		s = ft_uitoabase((t_ull)va_arg(ap, unsigned int), base);
+	else if (sub.mod == 'H')
+		s = ft_itoa((uint8_t)va_arg(ap, int));
+	else if (sub.mod == 'h')
+		s = ft_uitoabase((t_ull)va_arg(ap, int), base);
+	else if (sub.mod == 'L')
+		s = ft_uitoabase(va_arg(ap, unsigned long long int), base);
+	else if (sub.mod == 'l')
+		s = ft_uitoabase((t_ull)va_arg(ap, unsigned long int), base);
+	else if (sub.mod == 'j')
+		s = ft_uitoabase((t_ull)va_arg(ap, uintmax_t), base);
+	else if (sub.mod == 'z')
+		s = ft_uitoabase((t_ull)va_arg(ap, size_t), base);
+	return (s);
+}
+
+char	*parse_DOU(t_sub sub, char *s, va_list ap, int base)
+{
+	if (!sub.mod && sub.type == 'D')
+		s = ft_itoabase(va_arg(ap, long int), 10);
+	else if (!sub.mod)
+		s = ft_uitoabase((t_ull)va_arg(ap, unsigned long int), base);
+	else if (sub.mod == 'h' && sub.type == 'U')
+		s = ft_uitoabase((t_ull)va_arg(ap, unsigned long int), base);	
+	else if (sub.mod == 'j')
+		s = ft_uitoabase((t_ull)va_arg(ap, unsigned int), base);
+	else if (sub.mod == 'z')
+		s = ft_uitoabase((t_ull)va_arg(ap, ssize_t), base);
+	return (s);
+}
+
+char	*parse(t_sub sub, char *fmt, va_list ap)
 {
 	char	*s;
+	int		base;
 
 	s = 0;
-	if (cmp(fmt, "%"))
+	base = get_base(sub, fmt);
+	if (sub.type == '%')
 		s = vatostr("%");
-	else if (cmp(fmt, ",di"))
-		s = ft_itoabase(va_arg(ap, int), 10);
-	else if (cmp(fmt, "hh,di"))
-		s = ft_itoabase((char)va_arg(ap, int), 10);
-	else if (cmp(fmt, "h,di"))
-		s = ft_itoabase((short)va_arg(ap, int), 10);
-	else if (cmp(fmt, "l,di") || cmp(fmt, ",D"))
-		s = ft_itoabase(va_arg(ap, long int), 10);
-	else if (cmp(fmt, "ll,di"))
-		s = ft_itoabase(va_arg(ap, long long int), 10);
-	else if (cmp(fmt, "j,di"))
-		s = ft_itoabase(va_arg(ap, intmax_t), 10);
-	else if (cmp(fmt, "z,di"))
-		s = ft_itoabase(va_arg(ap, size_t), 10);
-	else if (cmp(fmt, ",p") || cmp(fmt, "l,p"))
+	else if (sub.type == 'p')
 		s = ft_ptoa(va_arg(ap, uintptr_t));
-	if (!s)
-		s = parse2(fmt, s, ap);
+	else if (ft_strchr("cCsS", sub.type))
+		s = parse_cCsS(sub, s, ap);
+	else if (ft_strchr("di", sub.type))
+		s = parse_di(sub, s, ap, base);
+	else if (ft_strchr("ouxX", sub.type))
+		s = parse_ouxX(sub, s, ap, base);
+	else if (ft_strchr("DOU", sub.type))
+		s = parse_DOU(sub, s, ap, base);
+	else if (!s)
+		s = vatostr(0);
 	return (s);
 }

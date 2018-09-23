@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/14 12:38:50 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/09/20 17:11:40 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct	s_sub
 	char		*flags;
 	int			p;
 	int			w;
+	char 		mod;
 	char		type;
 }				t_sub;
 
@@ -40,12 +41,15 @@ t_sub			makesub(char *fmt, va_list ap, int init);
 void			delsub(char **s, char **flags);
 char			*fill_flags(char *sub, char *fmt, char type, int width);
 void			fill_pw(char *fmt, va_list ap, int *precision, int *width);
-char			*to_type(char *fmt);
+void			fill_type(char *fmt, char *mod, char *type);
 
-int				base(char *fmt);
-int				cmp(char *fmt, char *type);
-char			*parse(char *fmt, va_list ap);
-char			*parse2(char *fmt, char *s, va_list ap);
+int				get_base(t_sub sub, char *fmt);
+//int				cmp(char *fmt, char *type);
+char			*parse(t_sub sub, char *fmt, va_list ap);
+char			*parse_cCsS(t_sub sub, char *s, va_list ap);
+char			*parse_di(t_sub sub, char *s, va_list ap, int base);
+char			*parse_ouxX(t_sub sub, char *s, va_list ap, int base);
+char			*parse_DOU(t_sub sub, char *s, va_list ap, int base);
 
 char			*vatostr(const char *s);
 char			*ft_uitoabase(t_ull n, int base);
