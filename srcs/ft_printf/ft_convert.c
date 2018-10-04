@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:35:14 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/13 12:56:56 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/10/04 10:31:58 by abarnett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,18 @@ char	*vatostr(const char *s1)
 		return (ft_strdup("(null)"));
 	cpy = ft_strnew(ft_strlen(s1));
 	return (cpy ? ft_strcpy(cpy, s1) : 0);
+}
+
+int		get_base(t_sub sub, char *fmt)
+{
+	fmt = ft_strchr(fmt, sub.type);
+	if (ft_strchr("oO", *fmt))
+		return (8);
+	if (ft_strchr("xX", *fmt))
+		return (!ft_isupper(*fmt) ? 16 : 36);
+	if (ft_strchr("idDuU", *fmt))
+		return (10);
+	return (0);
 }
 
 char	*ft_uitoabase(t_ull n, int base)

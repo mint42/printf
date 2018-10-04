@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:52:10 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/20 17:52:14 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/10/04 10:44:47 by abarnett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 ** This function returns the amount of bytes that will be needed to hold a wide
 ** a wide character string when converted to utf_8
 */
-int		get_utf8_bytes(wchar_t *str)
+
+int			get_utf8_bytes(wchar_t *str)
 {
 	int	i;
 	int	bytes;
@@ -48,6 +49,7 @@ int		get_utf8_bytes(wchar_t *str)
 /*
 ** This function returns a character with i bytes turned on at the start
 */
+
 static char	utf8_dummy(int i)
 {
 	char	c;
@@ -72,6 +74,7 @@ static char	utf8_dummy(int i)
 **		you should call utf8_inc(&cur) outside the function
 **			to move to the next character
 */
+
 static void	conv_utf8_char(char **cur, wchar_t c, int i)
 {
 	int	x;
@@ -104,7 +107,8 @@ static void	conv_utf8_char(char **cur, wchar_t c, int i)
 ** This function increments a utf_8 string by one (or more) bytes to the next
 ** aligned character
 */
-void	utf8_inc(char **str)
+
+void		utf8_inc(char **str)
 {
 	if (str)
 	{
@@ -116,27 +120,29 @@ void	utf8_inc(char **str)
 	}
 }
 
-char	*conv_utf8_c(wchar_t c)
-{
-	char	*nstr;
-	int		i;
+/*
+**char	*conv_utf8_c(wchar_t c)
+**{
+**	char	*nstr;
+**	int		i;
+**
+**	nstr = ft_strnew(get_utf8_bytes(&c));
+**	i = 32;
+**	while (i > 0)
+**	{
+**		if (c & (1 << (i - 1)))
+**			break ;
+**		--i;
+**	}
+**	if (i > 7)
+**		conv_utf8_char(&nstr, c, i);
+**	else
+**		*nstr = c;
+**	return (nstr);
+**}
+*/
 
-	nstr = ft_strnew(get_utf8_bytes(&c));
-	i = 32;
-	while (i > 0)
-	{
-		if (c & (1 << (i - 1)))
-			break ;
-		--i;
-	}
-	if (i > 7)
-		conv_utf8_char(&nstr, c, i);
-	else
-		*nstr = c;
-	return (nstr);
-}
-
-char	*conv_utf8(wchar_t *str)
+char		*conv_utf8(wchar_t *str)
 {
 	char	*nstr;
 	char	*cur;
@@ -163,7 +169,3 @@ char	*conv_utf8(wchar_t *str)
 		}
 	return (nstr);
 }
-
-/*
-str = conv_utf8(L"t\u2135esti\U0001f47ding o\vne tw\u03c0o\n");
-*/
