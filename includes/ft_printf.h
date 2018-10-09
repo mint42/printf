@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/10/04 10:41:49 by abarnett         ###   ########.fr       */
+/*   Updated: 2018/10/04 12:44:24 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ typedef struct	s_sub
 typedef unsigned long long t_ull;
 
 int				ft_printf(const char *fmt, ...);
+int				ft_sprintf(char **s, const char *fmt, ...);
+int				ft_printfd(int fd, const char *fmt, ...);
 
 t_sub			makesub(char *fmt, va_list ap, int init);
 void			delsub(char **s, char **flags);

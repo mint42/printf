@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:52:10 by rreedy            #+#    #+#             */
-/*   Updated: 2018/10/04 10:44:47 by abarnett         ###   ########.fr       */
+/*   Updated: 2018/10/09 10:02:47 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int			get_utf8_bytes(wchar_t *str)
 	int	total;
 
 	total = 0;
-	while (*str)
+	while (str && *str)
 	{
 		i = 32;
 		while (i > 0)
@@ -119,27 +119,26 @@ void		utf8_inc(char **str)
 			++(*str);
 	}
 }
-
 /*
-**char	*conv_utf8_c(wchar_t c)
-**{
-**	char	*nstr;
-**	int		i;
-**
-**	nstr = ft_strnew(get_utf8_bytes(&c));
-**	i = 32;
-**	while (i > 0)
-**	{
-**		if (c & (1 << (i - 1)))
-**			break ;
-**		--i;
-**	}
-**	if (i > 7)
-**		conv_utf8_char(&nstr, c, i);
-**	else
-**		*nstr = c;
-**	return (nstr);
-**}
+char	*conv_utf8_c(wchar_t c)
+{
+	char	*nstr;
+	int		i;
+
+	nstr = ft_strnew(get_utf8_bytes(&c));
+	i = 32;
+	while (i > 0)
+	{
+		if (c & (1 << (i - 1)))
+			break ;
+		--i;
+	}
+	if (i > 7)
+		conv_utf8_char(&nstr, c, i);
+	else
+		*nstr = c;
+	return (nstr);
+}
 */
 
 char		*conv_utf8(wchar_t *str)
@@ -148,10 +147,12 @@ char		*conv_utf8(wchar_t *str)
 	char	*cur;
 	int		i;
 
+	if (str == NULL)
+		return (ft_strdup("(null)"));
 	nstr = ft_strnew(get_utf8_bytes(str));
 	cur = nstr;
 	if (nstr)
-		while (*str)
+		while (str && *str)
 		{
 			i = 32;
 			while (i > 0)
