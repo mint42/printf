@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/10/04 10:45:06 by abarnett         ###   ########.fr       */
+/*   Updated: 2018/10/14 19:35:30 by abarnett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,19 @@ char	*parse_di(t_sub sub, char *s, va_list ap, int base)
 char	*parse_ouxbigx(t_sub sub, char *s, va_list ap, int base)
 {
 	if (!sub.mod)
-		s = ft_uitoabase((t_ull)va_arg(ap, unsigned int), base);
+		s = ft_uitoabase(va_arg(ap, unsigned int), base);
 	else if (sub.mod == 'H')
-		s = ft_itoa((uint8_t)va_arg(ap, int));
+		s = ft_uitoabase((uint8_t)va_arg(ap, int), base);
 	else if (sub.mod == 'h')
-		s = ft_uitoabase((t_ull)va_arg(ap, int), base);
+		s = ft_uitoabase((unsigned short)va_arg(ap, int), base);
 	else if (sub.mod == 'L')
 		s = ft_uitoabase(va_arg(ap, unsigned long long int), base);
 	else if (sub.mod == 'l')
-		s = ft_uitoabase((t_ull)va_arg(ap, unsigned long int), base);
+		s = ft_uitoabase(va_arg(ap, unsigned long int), base);
 	else if (sub.mod == 'j')
-		s = ft_uitoabase((t_ull)va_arg(ap, uintmax_t), base);
+		s = ft_uitoabase(va_arg(ap, uintmax_t), base);
 	else if (sub.mod == 'z')
-		s = ft_uitoabase((t_ull)va_arg(ap, size_t), base);
+		s = ft_uitoabase(va_arg(ap, size_t), base);
 	return (s);
 }
 
@@ -68,13 +68,17 @@ char	*parse_ldlolu(t_sub sub, char *s, va_list ap, int base)
 	if (!sub.mod && sub.type == 'D')
 		s = ft_itoabase(va_arg(ap, long int), 10);
 	else if (!sub.mod)
-		s = ft_uitoabase((t_ull)va_arg(ap, unsigned long int), base);
+		s = ft_uitoabase(va_arg(ap, unsigned long int), base);
+	else if (sub.mod == 'H')
+		s = ft_uitoabase(va_arg(ap, unsigned long int), base);
 	else if (sub.mod == 'h' && sub.type == 'U')
-		s = ft_uitoabase((t_ull)va_arg(ap, unsigned long int), base);
+		s = ft_uitoabase(va_arg(ap, unsigned long int), base);
+	else if (sub.mod == 'h')
+		s = ft_uitoabase((unsigned short)va_arg(ap, unsigned long int), base);
 	else if (sub.mod == 'j')
-		s = ft_uitoabase((t_ull)va_arg(ap, unsigned int), base);
+		s = ft_uitoabase(va_arg(ap, unsigned int), base);
 	else if (sub.mod == 'z')
-		s = ft_uitoabase((t_ull)va_arg(ap, ssize_t), base);
+		s = ft_uitoabase(va_arg(ap, ssize_t), base);
 	return (s);
 }
 
@@ -94,7 +98,9 @@ char	*parse(t_sub sub, char *fmt, va_list ap)
 	else if (ft_strchr("di", sub.type))
 		s = parse_di(sub, s, ap, base);
 	else if (ft_strchr("ouxX", sub.type))
+	{
 		s = parse_ouxbigx(sub, s, ap, base);
+	}
 	else if (ft_strchr("DOU", sub.type))
 		s = parse_ldlolu(sub, s, ap, base);
 	else if (!s)

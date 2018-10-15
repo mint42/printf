@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/10/04 12:44:24 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/10/14 19:25:02 by abarnett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct	s_sub
 	char		type;
 }				t_sub;
 
-typedef unsigned long long t_ull;
+//typedef unsigned long long t_ull;
 
 int				ft_printf(const char *fmt, ...);
 int				ft_sprintf(char **s, const char *fmt, ...);
@@ -53,7 +53,7 @@ char			*parse_ldlolu(t_sub sub, char *s, va_list ap, int base);
 
 char			*vatostr(const char *s);
 int				get_base(t_sub sub, char *fmt);
-char			*ft_uitoabase(t_ull n, int base);
+char			*ft_uitoabase(unsigned long long int n, int base);
 char			*ft_itoabase(long long int n, int base);
 char			*ft_ptoa(uintptr_t p);
 

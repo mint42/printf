@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:35:14 by rreedy            #+#    #+#             */
-/*   Updated: 2018/10/04 10:31:58 by abarnett         ###   ########.fr       */
+/*   Updated: 2018/10/14 19:24:29 by abarnett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,19 @@ int		get_base(t_sub sub, char *fmt)
 	return (0);
 }
 
-char	*ft_uitoabase(t_ull n, int base)
+char	*ft_uitoabase(unsigned long long int n, int base)
 {
-	unsigned int	i;
-	t_ull			pow;
-	char			*str;
-	int				toupper;
+	unsigned int			i;
+	unsigned long long int	pow;
+	char					*str;
+	int						toupper;
 
 	i = 1;
 	pow = n;
 	toupper = (base > 20 && (base -= 20)) ? 1 : 0;
 	if (n == 0)
 		return (ft_strdup("0"));
-	while (pow >= (t_ull)base && ++i)
+	while (pow >= (unsigned long long int)base && ++i)
 		pow /= base;
 	str = ft_strnew(i);
 	while (i-- > 0)
