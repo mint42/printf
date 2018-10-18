@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:22:01 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/23 08:36:47 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/10/17 15:11:47 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,17 @@ char	*clean(char *s, t_sub sub, char **fmt, size_t *slen)
 {
 	size_t	d;
 
-	sub.len = ft_strequ(sub.s, "%") ? 1 : 0;
 	d = ft_strlend(*fmt, '%');
 	if (!s)
 	{
 		*slen = d;
 		return (ft_strncpy(ft_strnew(d), *fmt, d));
 	}
-	if (sub.type)
+	if (!ft_strchr(sub.flags, '.'))
+		sub.len = ft_strequ(sub.s, "%") ? 1 : 0;
+	else
+		sub.len = 13;
+	if (sub.type && !ft_strchr(sub.flags, '.'))
 		sub.s = crop(sub, &(sub.len));
 	if (sub.type == '%')
 		++(*fmt);

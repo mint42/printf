@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/23 08:29:12 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/10/17 17:34:24 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,41 +33,46 @@ void	fill_type(char *fmt, char *mod, char *type)
 	*type = (fmt && ft_strchr("sSpdDioOuUxXcC%", *fmt)) ? *fmt : 0;
 }
 
-char	*fill_flags(char *sub, char *fmt, char type, int width)
+char	*fill_flags(char *fmt, char **flg, t_sub sub)
 {
-	char	*flg;
 	int		i;
 
-	flg = ft_strnew(6);
+	++fmt;
+	*flg = ft_strnew(7);
 	i = 0;
-	if (width < 0)
-		flg[i++] = '-';
+	flg[i++] = '*';
 	if ((type == 'c' || type == 'C') && (*sub) == '\0')
-		flg[i++] = 'n';
-	while (++fmt && (!ft_isalnum(*fmt) || *fmt == '0') && *fmt != '%')
-		if (ft_strchr("-+ 0#", *fmt) && !ft_strchr(flg, *fmt))
-			flg[i++] = *fmt;
+		*flg[i++] = 'n';
+	while (fmt && ft_strchr("-+ 0#", *fmt))
+	{
+		if (!ft_strchr(flg, *fmt))
+			*flg[i++] = *fmt;
+		++fmt;
+	}
+	return (fmt);
+}
+
+/*
 	i = 0;
 	while (flg[i] != '\0')
 	{
 		if ((flg[i] == '+' && (sub[0] == '-' || !ft_strchr("dDi", type))) ||
 			(flg[i] == ' ' && (sub[0] == '-' || ft_strchr(flg, '+') ||
-			!ft_strchr("dDi", type))) || (flg[i] == '0' && (ft_strchr(flg, '-')
-			|| ft_strchr("sScCp", type))) || (flg[i] == '#' &&
-			(!ft_strchr("oOxX", type) || sub[0] == '-')) ||
+			!ft_strchr("dDi", type))) ||
+			(flg[i] == '0' && ft_strchr(flg, '-')) ||
+			(flg[i] == '#' && (!ft_strchr("oOxX", type) || sub[0] == '-')) ||
 			(flg[i] == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
 			flg[i] = '.';
 		++i;
 	}
-	return (flg);
-}
+*/
 
 void	fill_pw(char *fmt, va_list ap, int *precision, int *width)
 {
 	*width = 0;
 	*precision = -1;
-	if (*fmt == '%' && *(fmt + 1) == '%')
-		return ;
+//	if (*fmt == '%' && *(fmt + 1) == '%')
+//		return ;
 	while (fmt && (!ft_isalnum(*fmt) || *fmt == '0') && !ft_strchr(".*", *fmt))
 		++fmt;
 	if (*fmt == '*')
@@ -82,11 +87,69 @@ void	fill_pw(char *fmt, va_list ap, int *precision, int *width)
 		*precision = (*fmt == '.') ? ft_atoi(++fmt) : -1;
 }
 
-void	delsub(char **s, char **flags)
+/*
+**	void	delsub(char **s, char **flags)
+**	{
+**		(void)s;
+**		ft_strdel(s);
+**		ft_strdel(flags);
+**	}
+*/
+
+char	undefined(char *fmt, t_sub sub)
 {
-	(void)s;
-	ft_strdel(s);
-	ft_strdel(flags);
+	int		i;
+
+	i = 0;
+	while (flg[i] != '\0')
+	{
+		if ((flg[i] == '+' && (sub[0] == '-' || !ft_strchr("dDi", type))) ||
+			(flg[i] == ' ' && (sub[0] == '-' || ft_strchr(flg, '+') ||
+			!ft_strchr("dDi", type))) ||
+			(flg[i] == '0' && ft_strchr(flg, '-')) ||
+			(flg[i] == '#' && (!ft_strchr("oOxX", type) || sub[0] == '-')) ||
+			(flg[i] == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
+			flg[i] = '.';
+		++i;
+	}
+	while (fmt)
+	{
+		++fmt;
+		if (ft_strchr("+ -0#", *fmt))
+			continue ;
+		else if (ft_isnum(*fmt) || *fmt == '*')
+			continue ;
+		else if (*fmt == '.' && (*(++fmt) == '*' || ft_isnum(*(++fmt))))
+			continue ;
+		else if (sub.mod == *fmt || (tolower(sub.mod) == *fmt && tolower(sub.mod) == *(++fmt)))
+			continue ;
+		else if (sub.type == *fmt)
+			continue ;
+		else
+			break ;
+	}
+}
+
+t_sub	makesub(char *fmt, va_list ap, int init)
+{
+	t_sub	sub;
+
+	if (init)
+	{
+		sub.s = 0;
+		sub.flags = 0;
+		return (sub);
+	}
+	sub.flags = fill_flags(fmt, sub);
+	fill_pw(fmt, ap, &(sub.p), &(sub.w));
+	fill_type(fmt, &(sub.mod), &(sub.type));
+	sub.s = (sub.type) ? parse(sub, fmt, ap) : ft_strnew(0);
+	if (!sub.type || ft_strchr(sub.flags, '.'))
+		sub.s = conv_utf8(L"¯\\_(ツ)_/¯");
+	if (sub.w < 0)
+		sub.w = sub.w * -1;
+	sub.len = 0;
+	return (sub);
 }
 
 t_sub	makesub(char *fmt, va_list ap, int init)
@@ -103,6 +166,8 @@ t_sub	makesub(char *fmt, va_list ap, int init)
 	fill_type(fmt, &(sub.mod), &(sub.type));
 	sub.s = (sub.type) ? parse(sub, fmt, ap) : ft_strnew(0);
 	sub.flags = fill_flags(sub.s, fmt, sub.type, sub.w);
+	if (!sub.type || ft_strchr(sub.flags, '.'))
+		sub.s = conv_utf8(L"¯\\_(ツ)_/¯");
 	if (sub.w < 0)
 		sub.w = sub.w * -1;
 	sub.len = 0;
