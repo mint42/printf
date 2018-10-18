@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/23 08:29:12 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/10/17 16:16:12 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ char	*fill_flags(char *sub, char *fmt, char type, int width)
 	{
 		if ((flg[i] == '+' && (sub[0] == '-' || !ft_strchr("dDi", type))) ||
 			(flg[i] == ' ' && (sub[0] == '-' || ft_strchr(flg, '+') ||
-			!ft_strchr("dDi", type))) || (flg[i] == '0' && (ft_strchr(flg, '-')
-			|| ft_strchr("sScCp", type))) || (flg[i] == '#' &&
-			(!ft_strchr("oOxX", type) || sub[0] == '-')) ||
+			!ft_strchr("dDi", type))) ||
+			(flg[i] == '0' && ft_strchr(flg, '-')) ||
+			(flg[i] == '#' && (!ft_strchr("oOxX", type) || sub[0] == '-')) ||
 			(flg[i] == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
 			flg[i] = '.';
 		++i;
@@ -82,12 +82,13 @@ void	fill_pw(char *fmt, va_list ap, int *precision, int *width)
 		*precision = (*fmt == '.') ? ft_atoi(++fmt) : -1;
 }
 
+/*
 void	delsub(char **s, char **flags)
 {
-	(void)s;
 	ft_strdel(s);
 	ft_strdel(flags);
 }
+*/
 
 t_sub	makesub(char *fmt, va_list ap, int init)
 {

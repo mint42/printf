@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:22:01 by rreedy            #+#    #+#             */
-/*   Updated: 2018/09/23 08:36:47 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/10/17 16:15:55 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ char	*clean(char *s, t_sub sub, char **fmt, size_t *slen)
 	*slen = *slen + sub.len;
 	s = ft_memcat(s, *fmt, *slen, d);
 	*slen = *slen + d;
-	delsub(&sub.s, &sub.flags);
+	ft_strdel(&sub.s);
+	ft_strdel(&sub.flags);
 	return (s);
 }
