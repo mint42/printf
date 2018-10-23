@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:22:01 by rreedy            #+#    #+#             */
-/*   Updated: 2018/10/17 15:11:47 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/10/23 16:18:58 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,21 +109,21 @@ char	*clean(char *s, t_sub sub, char **fmt, size_t *slen)
 		*slen = d;
 		return (ft_strncpy(ft_strnew(d), *fmt, d));
 	}
-	if (!ft_strchr(sub.flags, '.'))
+	if (sub.type)
 		sub.len = ft_strequ(sub.s, "%") ? 1 : 0;
-	else
-		sub.len = 13;
+	sub.len = (sub.type) ? sub.len : 13;
 	if (sub.type && !ft_strchr(sub.flags, '.'))
 		sub.s = crop(sub, &(sub.len));
 	if (sub.type == '%')
 		++(*fmt);
-	*fmt = ft_strchr(*fmt, sub.type) + 1;
+	*fmt = ft_strchr(*fmt, sub.type) + (sub.type ? 1 : 0);
 	d = ft_strlend(*fmt, '%');
 	s = ft_crop(&s, 0, *slen + sub.len + d);
 	s = (char *)ft_memcat(s, sub.s, *slen, sub.len);
 	*slen = *slen + sub.len;
 	s = ft_memcat(s, *fmt, *slen, d);
 	*slen = *slen + d;
-	delsub(&sub.s, &sub.flags);
+	ft_strdel(&(sub.s));
+	ft_strdel(&(sub.flags));
 	return (s);
 }

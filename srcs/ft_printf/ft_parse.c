@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/10/14 19:35:30 by abarnett         ###   ########.fr       */
+/*   Updated: 2018/10/19 14:06:33 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ char	*parse_ldlolu(t_sub sub, char *s, va_list ap, int base)
 	return (s);
 }
 
-char	*parse(t_sub sub, char *fmt, va_list ap)
+char	*parse(t_sub sub, va_list ap)
 {
 	char	*s;
 	int		base;
 
 	s = 0;
-	base = get_base(sub, fmt);
+	base = get_base(sub.type);
 	if (sub.type == '%')
 		s = vatostr("%");
 	else if (sub.type == 'p')
@@ -98,9 +98,7 @@ char	*parse(t_sub sub, char *fmt, va_list ap)
 	else if (ft_strchr("di", sub.type))
 		s = parse_di(sub, s, ap, base);
 	else if (ft_strchr("ouxX", sub.type))
-	{
 		s = parse_ouxbigx(sub, s, ap, base);
-	}
 	else if (ft_strchr("DOU", sub.type))
 		s = parse_ldlolu(sub, s, ap, base);
 	else if (!s)
