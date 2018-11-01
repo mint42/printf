@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/10/17 16:16:12 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/01 15:59:43 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,29 +66,24 @@ void	fill_pw(char *fmt, va_list ap, int *precision, int *width)
 {
 	*width = 0;
 	*precision = -1;
-	if (*fmt == '%' && *(fmt + 1) == '%')
-		return ;
 	while (fmt && (!ft_isalnum(*fmt) || *fmt == '0') && !ft_strchr(".*", *fmt))
 		++fmt;
 	if (*fmt == '*')
+	{
 		*width = va_arg(ap, int);
-	else
-		*width = (ft_isdigit(*fmt)) ? ft_atoi(fmt) : 0;
-	while (fmt && !ft_isalpha(*fmt) && *fmt != '.')
 		++fmt;
-	if (*fmt == '.' && *(fmt + 1) == '*')
-		*precision = va_arg(ap, int);
+	}
 	else
-		*precision = (*fmt == '.') ? ft_atoi(++fmt) : -1;
+	{
+		*width = (ft_isdigit(*fmt)) ? ft_atoi(fmt) : 0;
+		while (ft_isdigit(*fmt))
+			++fmt;
+	}
+	if (*fmt == '*' || (*fmt == '.' && *(fmt + 1) == '*'))
+		*precision = va_arg(ap, int);
+	else if (*fmt == '.' || ft_isdigit(*fmt))
+		*precision = (*fmt == '.') ? ft_atoi(++fmt) : ft_atoi(fmt);
 }
-
-/*
-void	delsub(char **s, char **flags)
-{
-	ft_strdel(s);
-	ft_strdel(flags);
-}
-*/
 
 t_sub	makesub(char *fmt, va_list ap, int init)
 {
