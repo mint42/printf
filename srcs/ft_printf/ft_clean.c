@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:22:01 by rreedy            #+#    #+#             */
-/*   Updated: 2018/10/17 16:15:55 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/01 17:46:22 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*precision(t_sub sub)
 {
-	if (sub.p < 0 || ft_strchr("cCSp", sub.type))
+	if (sub.p < 0 || ft_strchr("cCSp%", sub.type))
 		return (sub.s);
 	if (sub.type == 's')
 	{
@@ -114,7 +114,7 @@ char	*clean(char *s, t_sub sub, char **fmt, size_t *slen)
 		sub.s = crop(sub, &(sub.len));
 	if (sub.type == '%')
 		++(*fmt);
-	*fmt = ft_strchr(*fmt, sub.type) + 1;
+	*fmt = ft_strchr(*fmt, sub.type) + (sub.type ? 1 : 0);
 	d = ft_strlend(*fmt, '%');
 	s = ft_crop(&s, 0, *slen + sub.len + d);
 	s = (char *)ft_memcat(s, sub.s, *slen, sub.len);

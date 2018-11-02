@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/01 15:59:43 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/01 18:50:35 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@ void	fill_type(char *fmt, char *mod, char *type)
 {
 	*type = 0;
 	*mod = 0;
-	if (*fmt == '%' && *(fmt + 1))
-		++fmt;
-	while (fmt && !ft_isalpha(*fmt) && *fmt != '%')
+	++fmt;
+	while (fmt && *fmt && !ft_isalpha(*fmt) && *fmt != '%')
 		++fmt;
 	if (fmt && (*fmt == 'l' || *fmt == 'h' || *fmt == 'j' || *fmt == 'z'))
 	{
@@ -30,7 +29,7 @@ void	fill_type(char *fmt, char *mod, char *type)
 			++fmt;
 		}
 	}
-	*type = (fmt && ft_strchr("sSpdDioOuUxXcC%", *fmt)) ? *fmt : 0;
+	*type = (fmt && *fmt && ft_strchr("sSpdDioOuUxXcC%", *fmt)) ? *fmt : 0;
 }
 
 char	*fill_flags(char *sub, char *fmt, char type, int width)
