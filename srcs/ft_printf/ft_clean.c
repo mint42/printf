@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:22:01 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/11 21:16:23 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/11 21:30:10 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,84 +103,18 @@ char	*clean(char *s, t_sub sub, char **fmt, size_t *slen)
 {
 	size_t	d;
 
-//	d = ft_strlend(*fmt, '%');
-
-// if s doesn't exist, means it's the beginning of fmt
 	if (!s)
 	{
 		d = ft_strlend(*fmt, '%');
 		*slen = d;
 		return (ft_strncpy(ft_strnew(d), *fmt, d));
 	}
-
-// if theres a type and it's a % then size is 1 else 0 and if no type it's a shruggie
-//	if (sub.type)
-//		sub.len = ft_strequ(sub.s, "%") ? 1 : 0;
 	if (!sub.type)
 		sub.len = 13;
-//	sub.len = (sub.type) ? sub.len : 13;
-
-/*	
-	if (sub.type)
-		sub.len = ft_strequ(sub.s, "%") ? 1 : 0;
-	sub.len = (sub.type) ? sub.len : 13;
-*/
-// if there is something valid then crop it and change sub.len
 	if (sub.type && !ft_strchr(sub.flags, '.'))
 		sub.s = crop(sub, &(sub.len));
-
-// if type is % then move fmt
-//	if (sub.type == '%')
-//		++(*fmt);
-
-// move fmt passed the type to the next thing
-//	*fmt = ft_strchr(*fmt, sub.type) + (sub.type ? 1 : 0);
-//	*fmt = *fmt + (sub.type ? 1 : 0);
 	if (sub.type || ft_isalpha(**fmt))
 		++(*fmt);
-// lenth until next type or end
-	d = ft_strlend(*fmt, '%');
-
-// crop s with new size
-	s = ft_crop(&s, 0, *slen + sub.len + d);
-
-// cat substring to end of string
-	s = (char *)ft_memcat(s, sub.s, *slen, sub.len);
-
-// add sub.len to s len
-	*slen = *slen + sub.len;
-
-// cat next part of fmt to s
-	s = ft_memcat(s, *fmt, *slen, d);
-
-// add that to s len
-	*slen = *slen + d;
-
-	ft_strdel(&(sub.s));
-	ft_strdel(&(sub.flags));
-
-	return (s);
-}
-
-/*
-char	*clean(char *s, t_sub sub, char **fmt, size_t *slen)
-{
-	size_t	d;
-
-	d = ft_strlend(*fmt, '%');
-	if (!s)
-	{
-		*slen = d;
-		return (ft_strncpy(ft_strnew(d), *fmt, d));
-	}
-	if (sub.type)
-		sub.len = ft_strequ(sub.s, "%") ? 1 : 0;
-	sub.len = (sub.type) ? sub.len : 13;
-	if (sub.type && !ft_strchr(sub.flags, '.'))
-		sub.s = crop(sub, &(sub.len));
-	if (sub.type == '%')
-		++(*fmt);
-	*fmt = ft_strchr(*fmt, sub.type) + (sub.type ? 1 : 0);
 	d = ft_strlend(*fmt, '%');
 	s = ft_crop(&s, 0, *slen + sub.len + d);
 	s = (char *)ft_memcat(s, sub.s, *slen, sub.len);
@@ -191,4 +125,3 @@ char	*clean(char *s, t_sub sub, char **fmt, size_t *slen)
 	ft_strdel(&(sub.flags));
 	return (s);
 }
-*/
