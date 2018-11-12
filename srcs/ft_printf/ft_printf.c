@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:30:34 by rreedy            #+#    #+#             */
-/*   Updated: 2018/10/04 11:19:58 by abarnett         ###   ########.fr       */
+/*   Updated: 2018/11/11 19:36:47 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ int		ft_printf(const char *fmt, ...)
 
 	va_start(ap, fmt);
 	slen = 0;
-	s = clean(0, makesub((char *)fmt, ap, 1), (char **)&fmt, &slen);
+	s = clean(0, makesub((char **)&fmt, ap, 1), (char **)&fmt, &slen);
 	while (fmt && *fmt)
 	{
 		if (!(fmt = ft_strchr((char *)fmt, '%')))
 			break ;
-		sub = makesub((char *)fmt, ap, 0);
+		sub = makesub((char **)&fmt, ap, 0);
 		s = clean(s, sub, (char **)&fmt, &slen);
 	}
 	va_end(ap);
@@ -34,7 +34,7 @@ int		ft_printf(const char *fmt, ...)
 	ft_strdel(&s);
 	return (slen);
 }
-
+/*
 int		ft_sprintf(char **s, const char *fmt, ...)
 {
 	va_list		ap;
@@ -77,3 +77,4 @@ int		ft_printfd(int fd, const char *fmt, ...)
 	ft_strdel(&s);
 	return (slen);
 }
+*/

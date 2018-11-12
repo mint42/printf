@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/05 18:55:50 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/11 19:32:20 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*fill_pw(char *fmt, va_list ap, int *precision, int *width)
 	return (fmt);
 }
 
-void	fill_type(char *fmt, char *mod, char *type)
+char 	*fill_type(char *fmt, char *mod, char *type)
 {
 	*type = 0;
 	*mod = 0;
@@ -72,6 +72,7 @@ void	fill_type(char *fmt, char *mod, char *type)
 		}
 	}
 	*type = (fmt && ft_strchr("sSpdDioOuUxXcC%", *fmt)) ? *fmt : 0;
+	return (fmt);
 }
 
 int		check_flags(char **flag, char *sub, char type, int width)
@@ -101,25 +102,25 @@ int		check_flags(char **flag, char *sub, char type, int width)
 	return (1);
 }
 
-t_sub	makesub(char *fmt, va_list ap, int init)
+t_sub	makesub(char **fmt, va_list ap, int init)
 {
 	t_sub	sub;
 
 	sub.s = 0;
 	sub.flags = 0;
+	sub.len = 0;
 	if (init)
 		return (sub);
-	fmt = fill_flags(fmt, &(sub.flags));
-	fmt = fill_pw(fmt, ap, &(sub.p), &(sub.w));
-	fill_type(fmt, &(sub.mod), &(sub.type));
+	*fmt = fill_flags(*fmt, &(sub.flags));
+	*fmt = fill_pw(*fmt, ap, &(sub.p), &(sub.w));
+	*fmt = fill_type(*fmt, &(sub.mod), &(sub.type));
 	sub.s = (sub.type) ? parse(sub, ap) : 0;
-	if (!fmt || !sub.type || !check_flags(&(sub.flags), sub.s, sub.type, sub.w))
+	if (!sub.type || !check_flags(&(sub.flags), sub.s, sub.type, sub.w))
 	{
 		sub.type = 0;
 		sub.s = conv_utf8(L"¯\\_(ツ)_/¯");
 	}
 	if (sub.w < 0)
 		sub.w = sub.w * -1;
-	sub.len = 0;
 	return (sub);
 }

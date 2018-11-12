@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/10/20 19:34:19 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/11 19:29:54 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ int				ft_printf(const char *fmt, ...);
 int				ft_sprintf(char **s, const char *fmt, ...);
 int				ft_printfd(int fd, const char *fmt, ...);
 
-t_sub			makesub(char *fmt, va_list ap, int init);
+t_sub			makesub(char **fmt, va_list ap, int init);
 int				check_flags(char **flag, char *sub, char type, int width);
 void			delsub(char **s, char **flags);
 char			*fill_flags(char *fmt, char **flag);
 char			*fill_pw(char *fmt, va_list ap, int *precision, int *width);
-void			fill_type(char *fmt, char *mod, char *type);
+char			*fill_type(char *fmt, char *mod, char *type);
 
 char			*parse(t_sub sub, va_list ap);
 char			*parse_clcsls(t_sub sub, char *s, va_list ap);
