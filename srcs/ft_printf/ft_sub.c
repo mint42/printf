@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/11 19:32:20 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/13 15:36:12 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ char 	*fill_type(char *fmt, char *mod, char *type)
 		}
 	}
 	*type = (fmt && ft_strchr("sSpdDioOuUxXcC%", *fmt)) ? *fmt : 0;
+	while (!(*type) && fmt && *fmt && (!ft_isalpha(*fmt) && *fmt != '%'))
+		++fmt;
 	return (fmt);
 }
 
