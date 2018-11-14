@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/13 15:36:12 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/13 17:25:51 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ char	*fill_flags(char *fmt, char **flag)
 	*cur++ = '*';
 	while (fmt && ft_strchr("-+ 0#", *fmt))
 	{
+		if (ft_strchr(*flag, *fmt))
+			break;
 		if (*fmt == '-')
 			*flag[0] = '-';
-		else if (!ft_strchr(*flag, *fmt))
+		if (!ft_strchr(*flag, *fmt))
 			*cur++ = *fmt;
 		++fmt;
 	}
@@ -72,7 +74,7 @@ char 	*fill_type(char *fmt, char *mod, char *type)
 		}
 	}
 	*type = (fmt && ft_strchr("sSpdDioOuUxXcC%", *fmt)) ? *fmt : 0;
-	while (!(*type) && fmt && *fmt && (!ft_isalpha(*fmt) && *fmt != '%'))
+	while (!(*type) && fmt && *fmt && ft_strchr("sSpdDioOuUxXcC%lhjz1234567890.+- #*", *fmt))
 		++fmt;
 	return (fmt);
 }
@@ -88,15 +90,13 @@ int		check_flags(char **flag, char *sub, char type, int width)
 		*cur++ = 'n';
 	while (cur && *cur)
 	{
-		if ((*cur == '+' && !ft_strchr("dDiu", type)) ||
-			(*cur == ' ' && !ft_strchr("dDicu%", type)) ||
+		if ((*cur == '+' && !ft_strchr("dDi", type)) ||
+			(*cur == ' ' && !ft_strchr("dDi", type)) ||
 			(*cur == '#' && !ft_strchr("oOxX", type)))
 			return (0);
-		if ((*cur == '+' && (sub[0] == '-' || type == 'u' || type == '%')) ||
+		if ((*cur == '+' && sub[0] == '-') ||
 			(*cur == ' ' && (sub[0] == '-' || ft_strchr(*flag, '+'))) ||
-			(*cur == ' ' && (ft_strchr("cu%", type))) ||
 			(*cur == '0' && ft_strchr(*flag, '-')) ||
-			(*cur == '#' && sub[0] == '-') ||
 			(*cur == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
 			*cur = ',';
 		++cur;

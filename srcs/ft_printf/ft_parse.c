@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/10/19 14:06:33 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/13 16:20:16 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ char	*parse_clcsls(t_sub sub, char *s, va_list ap)
 		s = ft_ctoa(va_arg(ap, int));
 	else if (sub.type == 'S' || (sub.mod == 'l' && sub.type == 's'))
 		s = conv_utf8(va_arg(ap, wchar_t *));
-	else if (sub.type == 'c')
+	else if (sub.type == 'c' && !sub.mod)
 		s = ft_ctoa(va_arg(ap, int));
-	else if (sub.type == 's')
+	else if (sub.type == 's' && !sub.mod)
 		s = vatostr(va_arg(ap, char *));
 	return (s);
 }
@@ -67,11 +67,7 @@ char	*parse_ldlolu(t_sub sub, char *s, va_list ap, int base)
 {
 	if (!sub.mod && sub.type == 'D')
 		s = ft_itoabase(va_arg(ap, long int), 10);
-	else if (!sub.mod)
-		s = ft_uitoabase(va_arg(ap, unsigned long int), base);
-	else if (sub.mod == 'H')
-		s = ft_uitoabase(va_arg(ap, unsigned long int), base);
-	else if (sub.mod == 'h' && sub.type == 'U')
+	else if (!sub.mod || sub.mod == 'H' || (sub.mod == 'h' && sub.type == 'U'))
 		s = ft_uitoabase(va_arg(ap, unsigned long int), base);
 	else if (sub.mod == 'h')
 		s = ft_uitoabase((unsigned short)va_arg(ap, unsigned long int), base);
