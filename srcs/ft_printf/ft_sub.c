@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/13 17:25:51 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/13 18:56:51 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ char 	*fill_type(char *fmt, char *mod, char *type)
 			++fmt;
 		}
 	}
-	*type = (fmt && ft_strchr("sSpdDioOuUxXcC%", *fmt)) ? *fmt : 0;
-	while (!(*type) && fmt && *fmt && ft_strchr("sSpdDioOuUxXcC%lhjz1234567890.+- #*", *fmt))
+	*type = (fmt && ft_strchr("sSpdDiboOuUxXcC%", *fmt)) ? *fmt : 0;
+	while (!(*type) && fmt && *fmt && ft_strchr("sSpdDiboOuUxXcC%lhjz1234567890.+- #*", *fmt))
 		++fmt;
 	return (fmt);
 }
@@ -124,5 +124,7 @@ t_sub	makesub(char **fmt, va_list ap, int init)
 	}
 	if (sub.w < 0)
 		sub.w = sub.w * -1;
+	if (sub.type == '%')
+		sub.p = -1;
 	return (sub);
 }

@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:52:10 by rreedy            #+#    #+#             */
-/*   Updated: 2018/10/09 10:02:47 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/13 19:23:35 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void		utf8_inc(char **str)
 			++(*str);
 	}
 }
-/*
+
 char	*conv_utf8_c(wchar_t c)
 {
 	char	*nstr;
@@ -139,7 +139,6 @@ char	*conv_utf8_c(wchar_t c)
 		*nstr = c;
 	return (nstr);
 }
-*/
 
 char		*conv_utf8(wchar_t *str)
 {
