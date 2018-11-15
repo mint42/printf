@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:22:01 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/13 17:27:26 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/14 18:25:28 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ char	*addzeros(t_sub sub, int p)
 
 char	*addflags(t_sub sub)
 {
-	if (!ft_strchr(sub.flags, '#') && !ft_strchr(sub.flags, '+') && \
-		!ft_strchr(sub.flags, ' '))
+	if (!ft_strchr(sub.flags, '#') && !ft_strchr(sub.flags, '+') &&
+		!ft_strchr(sub.flags, ' ') && sub.type != 'p')
 		return (sub.s);
 	if (ft_strequ(sub.s, "0") && sub.type == 'o')
 		return (sub.s);
@@ -111,7 +111,7 @@ char	*clean(char *s, t_sub sub, char **fmt, size_t *slen)
 	}
 	if (!sub.type)
 		sub.len = 13;
-	if (sub.type && !ft_strchr(sub.flags, '.'))
+	if (sub.type)
 		sub.s = crop(sub, &(sub.len));
 	if (sub.type)
 		++(*fmt);

@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:35:14 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/13 18:35:04 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/14 18:02:50 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,56 @@ int		get_base(char type)
 	return (0);
 }
 
+char	*ft_uitoabase(unsigned long long int n, int base)
+{
+	unsigned int			i;
+	unsigned long long int	pow;
+	char					*str;
+
+	i = 1;
+	pow = n;
+	if (n == 0)
+		return (ft_strdup("0"));
+	while (pow >= (unsigned long long int)base && ++i)
+		pow /= base;
+	str = ft_strnew(i);
+	while (i-- > 0)
+	{
+		str[i] = (n % base) + ((base > 10) && (n % base > 9) ? 'a' - 10 : '0');
+		n = n / base;
+	}
+	return (str);
+}
+
+char	*ft_itoabase(long long int n, int base)
+{
+	long long int	pow;
+	int				sign;
+	int				i;
+	char			*str;
+
+	i = 1;
+	sign = (base == 10 && n < 0) ? 1 : 0;
+	if (n == 0 || n < -9223372036854775807)
+		return (n ? ft_strdup("-9223372036854775808") : ft_strdup("0"));
+	if (sign)
+		++i;
+	n = (n < 0) ? n * -1 : n;
+	pow = n;
+	while (pow >= (long long)base && ++i)
+		pow /= base;
+	str = ft_strnew(i + sign);
+	while (i-- > 0)
+	{
+		str[i] = (n % base) + ((base > 10) && (n % base > 9) ? 'a' - 10 : '0');
+		n = n / base;
+	}
+	if (sign)
+		str[0] = '-';
+	return (str);
+}
+
+/*
 char	*ft_uitoabase(unsigned long long int n, int base)
 {
 	unsigned int			i;
@@ -85,32 +135,4 @@ char	*ft_itoabase(long long int n, int base)
 		str[0] = '-';
 	return (str);
 }
-
-char	*ft_ptoa(uintptr_t p)
-{
-	int		i;
-	char	*s;
-	char	*cur;
-
-	if (!p)
-		return (ft_strdup("0x0"));
-	i = (sizeof(p) << 3) - 4;
-	while (((p >> i) & 0xF) == 0)
-		i -= 4;
-	s = ft_strnew((i / 4) + 3);
-	cur = s;
-	if (cur)
-	{
-		*cur++ = '0';
-		*cur++ = 'x';
-		while (i >= 0)
-		{
-			if (((p >> i) & 0xF) >= 10)
-				*cur++ = (((p >> i) & 0xF) + 'a' - 10);
-			else
-				*cur++ = (((p >> i) & 0xF) + '0');
-			i -= 4;
-		}
-	}
-	return (s);
-}
+*/

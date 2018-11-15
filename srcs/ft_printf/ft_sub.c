@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/13 18:56:51 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/14 17:25:58 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*fill_flags(char *fmt, char **flag)
 		if (ft_strchr(*flag, *fmt))
 			break;
 		if (*fmt == '-')
-			*flag[0] = '-';
+			**flag = '-';
 		if (!ft_strchr(*flag, *fmt))
 			*cur++ = *fmt;
 		++fmt;

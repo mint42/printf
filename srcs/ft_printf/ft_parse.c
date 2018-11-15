@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/13 19:24:30 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/14 18:23:32 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	*parse(t_sub sub, va_list ap)
 	if (sub.type == '%')
 		s = vatostr("%");
 	else if (sub.type == 'p')
-		s = ft_ptoa(va_arg(ap, uintptr_t));
+		s = ft_uitoabase(va_arg(ap, uintptr_t), 16);
 	else if (ft_strchr("cCsS", sub.type))
 		s = parse_clcsls(sub, s, ap);
 	else if (ft_strchr("di", sub.type))
