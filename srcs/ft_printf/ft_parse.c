@@ -6,14 +6,17 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/14 18:23:32 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/19 20:02:32 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
+// c C s S
+
 char	*parse_clcsls(t_sub sub, char *s, va_list ap)
 {
+	if (
 	if (sub.type == 'C' || (sub.mod == 'l' && sub.type == 'c'))
 		s = conv_utf8_c(va_arg(ap, wchar_t));
 	else if (sub.type == 'S' || (sub.mod == 'l' && sub.type == 's'))
@@ -24,6 +27,8 @@ char	*parse_clcsls(t_sub sub, char *s, va_list ap)
 		s = vatostr(va_arg(ap, char *));
 	return (s);
 }
+
+// d D i I
 
 char	*parse_di(t_sub sub, char *s, va_list ap, int base)
 {
@@ -44,6 +49,8 @@ char	*parse_di(t_sub sub, char *s, va_list ap, int base)
 	return (s);
 }
 
+// b B o O u U x X
+
 char	*parse_ouxbigx(t_sub sub, char *s, va_list ap, int base)
 {
 	if (!sub.mod)
@@ -63,6 +70,7 @@ char	*parse_ouxbigx(t_sub sub, char *s, va_list ap, int base)
 	return (s);
 }
 
+/*
 char	*parse_ldlolu(t_sub sub, char *s, va_list ap, int base)
 {
 	if (!sub.mod && sub.type == 'D')
@@ -81,6 +89,7 @@ char	*parse_ldlolu(t_sub sub, char *s, va_list ap, int base)
 		s = ft_uitoabase(va_arg(ap, ssize_t), base);
 	return (s);
 }
+*/
 
 char	*parse(t_sub sub, va_list ap)
 {
@@ -91,7 +100,7 @@ char	*parse(t_sub sub, va_list ap)
 	base = get_base(sub.type);
 	if (sub.type == '%')
 		s = vatostr("%");
-	else if (sub.type == 'p')
+	else if (sub.type == 'p' || sub.type == 'P')
 		s = ft_uitoabase(va_arg(ap, uintptr_t), 16);
 	else if (ft_strchr("cCsS", sub.type))
 		s = parse_clcsls(sub, s, ap);

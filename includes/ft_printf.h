@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/11 19:29:54 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/19 20:49:10 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct	s_sub
 	char		*flags;
 	int			p;
 	int			w;
+	int			base;
 	char		mod;
 	char		type;
 }				t_sub;
