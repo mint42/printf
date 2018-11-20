@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:22:01 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/14 18:25:28 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/19 16:02:40 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*precision(t_sub sub)
 {
-	if (sub.p < 0 || ft_strchr("cCSp", sub.type))
+	if (sub.p < 0 || ft_strchr("cCSp%", sub.type))
 		return (sub.s);
 	if (sub.type == 's')
 	{
@@ -96,6 +96,8 @@ char	*crop(t_sub sub, size_t *sublen)
 		sub.s[(ft_strchr(sub.flags, '-')) ? 0 : sub.w - 1] = '\0';
 	if (ft_strchr(sub.flags, '0') && sub.p == -1)
 		sub.s = addzeros(sub, 0);
+	if (ft_isupper(sub.type))
+		sub.s = ft_strupper(sub.s);
 	return (sub.s);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:35:14 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/14 18:02:50 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/19 15:49:37 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		get_base(char type)
 	if (ft_strchr("oO", type))
 		return (8);
 	if (ft_strchr("xX", type))
-		return (!ft_isupper(type) ? 16 : 36);
+		return (16);
 	if (ft_strchr("idDuU", type))
 		return (10);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/14 17:25:58 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/19 16:43:05 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ char	*fill_flags(char *fmt, char **flag)
 	*cur++ = '*';
 	while (fmt && ft_strchr("-+ 0#", *fmt))
 	{
-		if (ft_strchr(*flag, *fmt))
-			break;
+//		if (ft_strchr(*flag, *fmt))
+//			break;
 		if (*fmt == '-')
 			**flag = '-';
 		if (!ft_strchr(*flag, *fmt))
@@ -90,6 +90,19 @@ int		check_flags(char **flag, char *sub, char type, int width)
 		*cur++ = 'n';
 	while (cur && *cur)
 	{
+		if ((*cur == '+' && !ft_strchr("dDiu", type)) ||
+			(*cur == ' ' && !ft_strchr("dDicu%", type)) ||
+			(*cur == '#' && !ft_strchr("oOxX", type)))
+			return (0);
+		if ((*cur == '+' && (sub[0] == '-' || type == 'u' || type == '%')) ||
+			(*cur == ' ' && (sub[0] == '-' || ft_strchr(*flag, '+'))) ||
+			(*cur == ' ' && (ft_strchr("cu%", type))) ||
+			(*cur == '0' && ft_strchr(*flag, '-')) ||
+			(*cur == '#' && sub[0] == '-') ||
+			(*cur == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
+			*cur = ',';
+		++cur;
+/*
 		if ((*cur == '+' && !ft_strchr("dDi", type)) ||
 			(*cur == ' ' && !ft_strchr("dDi", type)) ||
 			(*cur == '#' && !ft_strchr("oOxX", type)))
@@ -100,6 +113,7 @@ int		check_flags(char **flag, char *sub, char type, int width)
 			(*cur == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
 			*cur = ',';
 		++cur;
+*/
 	}
 	return (1);
 }
@@ -124,7 +138,5 @@ t_sub	makesub(char **fmt, va_list ap, int init)
 	}
 	if (sub.w < 0)
 		sub.w = sub.w * -1;
-	if (sub.type == '%')
-		sub.p = -1;
 	return (sub);
 }
