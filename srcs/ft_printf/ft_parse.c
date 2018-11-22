@@ -6,13 +6,11 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/21 23:45:19 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/22 00:12:29 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-// c C s S
 
 char	*parse_cs(t_sub sub, char *s, va_list ap)
 {
@@ -33,8 +31,6 @@ char	*parse_cs(t_sub sub, char *s, va_list ap)
 	return (s);
 }
 
-// d D i I
-
 char	*parse_di(t_sub sub, char *s, va_list ap, int base)
 {
 	if (sub.mod == 'h')
@@ -53,8 +49,6 @@ char	*parse_di(t_sub sub, char *s, va_list ap, int base)
 		s = ft_itoabase(va_arg(ap, int), base);
 	return (s);
 }
-
-// b B o O u U x X
 
 char	*parse_boux(t_sub sub, char *s, va_list ap, int base)
 {
@@ -75,27 +69,6 @@ char	*parse_boux(t_sub sub, char *s, va_list ap, int base)
 	return (s);
 }
 
-/*
-char	*parse_ldlolu(t_sub sub, char *s, va_list ap, int base)
-{
-	if (!sub.mod && sub.type == 'D')
-		s = ft_itoabase(va_arg(ap, long int), 10);
-	else if (!sub.mod || sub.mod == 'H' || (sub.mod == 'h' && sub.type == 'U'))
-		s = ft_uitoabase(va_arg(ap, unsigned long int), base);
-	else if (sub.mod == 'l')
-		s = ft_uitoabase(va_arg(ap, unsigned long int), base);
-	else if (sub.mod == 'h')
-		s = ft_uitoabase((unsigned short)va_arg(ap, unsigned long int), base);
-	else if (sub.mod == 'L')
-		s = ft_uitoabase(va_arg(ap, unsigned long long int), base);
-	else if (sub.mod == 'j')
-		s = ft_uitoabase(va_arg(ap, unsigned int), base);
-	else if (sub.mod == 'z')
-		s = ft_uitoabase(va_arg(ap, ssize_t), base);
-	return (s);
-}
-*/
-
 char	*parse(t_sub sub, va_list ap)
 {
 	char	*s;
@@ -115,9 +88,5 @@ char	*parse(t_sub sub, va_list ap)
 		s = parse_boux(sub, s, ap, sub.base);
 	if (ft_strchr("PBX", sub.type))
 		s = ft_strupper(s);
-//	else if (ft_strchr("DOU", sub.type))
-//		s = parse_ldlolu(sub, s, ap, sub.base);
-//	else if (!s)
-//		s = vatostr(0);
 	return (s);
 }

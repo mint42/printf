@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/21 22:55:03 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/22 00:19:06 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,6 @@ char			*parse(t_sub sub, va_list ap);
 char			*parse_cs(t_sub sub, char *s, va_list ap);
 char			*parse_di(t_sub sub, char *s, va_list ap, int base);
 char			*parse_boux(t_sub sub, char *s, va_list ap, int base);
-//char			*parse_ldlolu(t_sub sub, char *s, va_list ap, int base);
-
-//char			*vatostr(const char *s);
-char			*ft_uitoabase(unsigned long long int n, int base);
-char			*ft_itoabase(long long int n, int base);
-//char			*ft_ptoa(uintptr_t p);
 
 char			*clean(char *s, t_sub sub, char **fmt, size_t *slen);
 char			*crop(t_sub sub, size_t *sublen);
