@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:14:59 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/16 09:15:19 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/21 23:22:10 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ char	*ft_strupper(char *s)
 	cur = s;
 	while (cur && *cur)
 	{
-		if (ft_islower(*cur))
-			*cur = ft_toupper(*cur);
+		*cur = ft_toupper(*cur);
 		++cur;
 	}
 	return (s);

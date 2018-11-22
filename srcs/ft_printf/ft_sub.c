@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/19 20:52:49 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/21 23:56:39 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,32 +59,29 @@ char	*fill_pw(char *fmt, va_list ap, int *precision, int *width)
 	return (fmt);
 }
 
-char 	*fill_type(char *fmt, char *mod, char *type)
+char 	*fill_type(char *fmt, char *mod, char *type, int *base)
 {
-	if (fmt && ft_strchr("lLhHjz", *fmt))
+	if (fmt && ft_strchr(VALID_MODS, *fmt))
 	{
 		*mod = *fmt;
 		++fmt;
 		if (fmt && (*fmt == 'l' || *fmt == 'h'))
-		{
-			*mod = ((*fmt == 'l') ? 'L' : 'H');
-			++fmt;
-		}
+			*mod = ((*fmt++ == 'l') ? 'L' : 'H');
 	}
-	if (*fmt == ',' && (base = ft_atoi(fmt + 1)) > 0 && base <= 36 && ++fmt)
+	if (*fmt == ',' && (*base = ft_atoi(fmt + 1)) > 1 && *base <= 36 && ++fmt)
 		while (ft_isdigit(*fmt))
 			++fmt;
-	*type = (fmt && ft_strchr("sSpdDiIbBoOuUxXcC%", *fmt)) ? *fmt : 0;
-	if ((*type != 'b' || *type != 'B') && base)
+	*type = (fmt && ft_strchr(VALID_TYPE, *fmt)) ? *fmt : 0;
+	if ((*type != 'b' || *type != 'B') && *base)
 		*type = 0;
-	else if ((*type == 'b' || *type == 'B') && !base)
-		base = 2;
+	else if ((*type == 'b' || *type == 'B') && !(*base))
+		*base = 2;
 	else if (*type == 'o' || *type == 'O')
-		base = 8;
+		*base = 8;
 	else if (*type == 'x' || *type == 'X')
-		base = 16;
+		*base = 16;
 	else if (ft_strchr("dDiIuU", *type))
-		base = 10;
+		*base = 10;
 	return (fmt);
 }
 
@@ -93,12 +90,13 @@ int		check_flags(char **flag, char *sub, char type, int width)
 	char	*cur;
 
 	cur = *flag;
+
+	if (!sub)
+		return (0);
 	if (width < 0)
 		*cur++ = '-';
 	if ((type == 'c' || type == 'C') && *sub == '\0')
 		*cur++ = 'n';
-	while (!(*type) && fmt && *fmt && ft_strchr("sSpdDiboOuUxXcC%lhjz1234567890.+- #*", *fmt))
-		++fmt;
 	while (cur && *cur)
 	{
 		if ((*cur == '+' && !ft_strchr("dDiu", type)) ||
@@ -113,6 +111,9 @@ int		check_flags(char **flag, char *sub, char type, int width)
 			(*cur == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
 			*cur = ',';
 		++cur;
+	}
+//	while (!(*type) && fmt && *fmt && ft_strchr(VALID_FMTS, *fmt))
+//		++fmt;
 /*
 		if ((*cur == '+' && !ft_strchr("dDi", type)) ||
 			(*cur == ' ' && !ft_strchr("dDi", type)) ||
@@ -125,7 +126,6 @@ int		check_flags(char **flag, char *sub, char type, int width)
 			*cur = ',';
 		++cur;
 */
-	}
 	return (1);
 }
 
@@ -133,19 +133,19 @@ t_sub	makesub(char **fmt, va_list ap, int init)
 {
 	t_sub	sub;
 
-	sub.s = 0;
 	sub.flags = 0;
+	sub.p = 0;
+	sub.w = 0;
+	sub.mod = 0;
+	sub.type = 0;
+	sub.base = 0;
+	sub.s = 0;
 	sub.len = 0;
-//	sub.mod = 0;
-//	sub.type = 0;
-//	sub.base = 0;
-//	sub.p = 0;
-//	sub.w = 0;
 	if (init)
 		return (sub);
 	*fmt = fill_flags(*fmt, &(sub.flags));
 	*fmt = fill_pw(*fmt, ap, &(sub.p), &(sub.w));
-	*fmt = fill_type(*fmt, &(sub.mod), &(sub.type));
+	*fmt = fill_type(*fmt, &(sub.mod), &(sub.type), &(sub.base));
 	sub.s = (sub.type) ? parse(sub, ap) : 0;
 	if (!sub.type || !check_flags(&(sub.flags), sub.s, sub.type, sub.w))
 	{

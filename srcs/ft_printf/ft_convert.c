@@ -6,12 +6,12 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:35:14 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/19 20:49:30 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/21 22:53:16 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
+/*
 char	*vatostr(const char *s1)
 {
 	char	*cpy;
@@ -21,7 +21,7 @@ char	*vatostr(const char *s1)
 	cpy = ft_strnew(ft_strlen(s1));
 	return (cpy ? ft_strcpy(cpy, s1) : 0);
 }
-
+*/
 /*
 int		get_base(char type)
 {
