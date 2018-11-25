@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:22:01 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/19 16:02:40 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/24 21:47:36 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,6 @@ char	*crop(t_sub sub, size_t *sublen)
 		sub.s[(ft_strchr(sub.flags, '-')) ? 0 : sub.w - 1] = '\0';
 	if (ft_strchr(sub.flags, '0') && sub.p == -1)
 		sub.s = addzeros(sub, 0);
-	if (ft_isupper(sub.type))
-		sub.s = ft_strupper(sub.s);
 	return (sub.s);
 }
 

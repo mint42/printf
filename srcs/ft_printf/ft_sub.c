@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/22 00:11:36 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/24 21:34:08 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,27 +33,25 @@ char	*fill_flags(char *fmt, char **flag)
 
 char	*fill_pw(char *fmt, va_list ap, int *precision, int *width)
 {
-	*width = 0;
-	*precision = -1;
-	if (fmt && *fmt == '*')
-	{
+	if (fmt && *fmt == '*' && fmt++)
 		*width = va_arg(ap, int);
-		++fmt;
-	}
 	else if (fmt && ft_isdigit(*fmt))
 	{
 		*width = ft_atoi(fmt);
-		while (ft_isdigit(*fmt))
+		while (fmt && ft_isdigit(*fmt))
 			++fmt;
 	}
-	if (fmt && *fmt == '.')
-		++fmt;
-	if (fmt && *fmt == '*')
+	if (fmt && *fmt != '.')
+		return (fmt);
+	++fmt;
+	if (fmt && *fmt == '*' && fmt++)
 		*precision = va_arg(ap, int);
-	else if (fmt && *(fmt - 1) == '.')
+	else if (fmt)
+	{
 		*precision = ft_atoi(fmt);
-	while (fmt && (*fmt == '*' || ft_isdigit(*fmt)))
-		++fmt;
+		while (fmt && ft_isdigit(*fmt))
+			++fmt;
+	}
 	return (fmt);
 }
 
@@ -63,11 +61,11 @@ char 	*fill_type(char *fmt, char *mod, char *type, int *base)
 	{
 		*mod = *fmt;
 		++fmt;
-		if (fmt && (*fmt == 'l' || *fmt == 'h'))
+		if (fmt && (*mod == 'l' || *mod == 'h') && (*fmt == 'l' || *fmt == 'h'))
 			*mod = ((*fmt++ == 'l') ? 'L' : 'H');
 	}
-	if (*fmt == ',' && (*base = ft_atoi(fmt + 1)) > 1 && *base <= 36 && ++fmt)
-		while (ft_isdigit(*fmt))
+	if (*fmt == ',' && (*base = ft_atoi(fmt + 1)) > 1 && *base <= 36 && fmt++)
+		while (fmt && ft_isdigit(*fmt))
 			++fmt;
 	*type = (fmt && ft_strchr(VALID_TYPE, *fmt)) ? *fmt : 0;
 	if ((*type != 'b' || *type != 'B') && *base)
@@ -132,7 +130,7 @@ t_sub	makesub(char **fmt, va_list ap, int init)
 	t_sub	sub;
 
 	sub.flags = 0;
-	sub.p = 0;
+	sub.p = -1;
 	sub.w = 0;
 	sub.mod = 0;
 	sub.type = 0;
