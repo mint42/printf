@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/26 19:47:30 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/26 20:01:33 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,9 @@ char 	*fill_type(char *fmt, char *mod, char *type, int *base)
 	return (fmt);
 }
 
+//	while (!(*type) && fmt && *fmt && ft_strchr(VALID_FMTS, *fmt))	
+//		++fmt;
+
 int		check_flags(char **flag, char *sub, char type, int width)
 {
 	char	*cur;
@@ -95,27 +98,6 @@ int		check_flags(char **flag, char *sub, char type, int width)
 		*cur++ = 'n';
 	while (cur && *cur)
 	{
-/*
-		if ((*cur == '+' && !ft_strchr("dDiu", type)) ||
-			(*cur == ' ' && !ft_strchr("dDicu%", type)) ||
-			(*cur == '#' && !ft_strchr("oOxX", type)))
-			return (0);
-		if ((*cur == '+' && (sub[0] == '-' || type == 'u' || type == '%')) ||
-			(*cur == ' ' && (sub[0] == '-' || ft_strchr(*flag, '+'))) ||
-			(*cur == ' ' && (ft_strchr("cu%", type))) ||
-			(*cur == '0' && ft_strchr(*flag, '-')) ||
-			(*cur == '#' && sub[0] == '-') ||
-			(*cur == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
-			*cur = ',';
-		++cur;
-	}
-*/
-//	while (!(*type) && fmt && *fmt && ft_strchr(VALID_FMTS, *fmt))
-//		++fmt;
-
-
-//		if (
-
 		if ((*cur == '+' || *cur == ' ') && (!ft_strchr("dDiI", type) ||
 			(ft_strchr(*flag, '+') && ft_strchr(*flag, ' '))))
 			return (0);
@@ -123,12 +105,6 @@ int		check_flags(char **flag, char *sub, char type, int width)
 			return (0);
 		if (*cur == '0' && ft_strchr("cCsSpP%", type))
 			return (0);
-
-
-//		if (((*cur == '+' || *cur == ' ') && sub[0] == '-') ||
-//		(*cur == '0' && ft_strchr(*flag, '-')) ||
-//			(*cur == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
-//			*cur = ',';
 		++cur;
 	}
 	return (1);
