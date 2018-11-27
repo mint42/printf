@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:22:01 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/24 21:47:36 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/26 19:05:28 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 char	*precision(t_sub sub)
 {
-	if (sub.p < 0 || ft_strchr("cCSp%", sub.type))
-		return (sub.s);
+//	if (sub.p < 0 || ft_strchr("cCSp%", sub.type))
+//		return (sub.s);
 	if (sub.type == 's')
 	{
 		if (ft_strlen(sub.s) >= (size_t)sub.p)
 			sub.s[sub.p] = '\0';
 		return (sub.s);
 	}
-	if (sub.p == 0 && ft_strequ(sub.s, "0"))
-		return (ft_shift(&(sub.s), 0, 0));
+//	if (sub.p == 0 && ft_strequ(sub.s, "0"))
+//		return (ft_shift(&(sub.s), 0, 0));
 	if (sub.s[0] != '-' && (size_t)sub.p <= ft_strlen(sub.s))
 		return (sub.s);
 	if (sub.s[0] == '-' && (size_t)sub.p < ft_strlen(sub.s))
@@ -62,11 +62,11 @@ char	*addzeros(t_sub sub, int p)
 
 char	*addflags(t_sub sub)
 {
-	if (!ft_strchr(sub.flags, '#') && !ft_strchr(sub.flags, '+') &&
-		!ft_strchr(sub.flags, ' ') && sub.type != 'p')
-		return (sub.s);
-	if (ft_strequ(sub.s, "0") && sub.type == 'o')
-		return (sub.s);
+//	if (!ft_strchr(sub.flags, '#') && !ft_strchr(sub.flags, '+') &&
+//		!ft_strchr(sub.flags, ' ') && sub.type != 'p')
+//		return (sub.s);
+//	if (ft_strequ(sub.s, "0") && ft_strchr("oxX", sub.type))
+//		return (sub.s);
 	sub.s = ft_shift(&(sub.s), 1, ft_strlen(sub.s) + 1);
 	if (ft_strchr(sub.flags, '#') || sub.type == 'p')
 	{
@@ -85,8 +85,10 @@ char	*addflags(t_sub sub)
 
 char	*crop(t_sub sub, size_t *sublen)
 {
-	sub.s = precision(sub);
-	sub.s = addflags(sub);
+	if (sub.p >= 0 && !ft_strchr("cCSp%", sub.type))
+		sub.s = precision(sub);
+	if ((ft_strchrs(sub.flags, "+ #") || sub.type == 'p') && sub.s[0] != '-')
+		sub.s = addflags(sub);
 	if (ft_strchr(sub.flags, '-') && (size_t)sub.w > ft_strlen(sub.s))
 		sub.s = ft_shift(&(sub.s), 0, sub.w);
 	else if ((size_t)sub.w > ft_strlen(sub.s))
@@ -94,7 +96,7 @@ char	*crop(t_sub sub, size_t *sublen)
 	*sublen = (!*(sub.s) && ft_strchr("cC", sub.type)) ? 1 : ft_strlen(sub.s);
 	if (ft_strchr(sub.flags, 'n') && sub.w)
 		sub.s[(ft_strchr(sub.flags, '-')) ? 0 : sub.w - 1] = '\0';
-	if (ft_strchr(sub.flags, '0') && sub.p == -1)
+	if (ft_strchr(sub.flags, '0') && sub.p == -1 && !ft_strchr(sub.flags, '-'))
 		sub.s = addzeros(sub, 0);
 	return (sub.s);
 }
@@ -109,12 +111,19 @@ char	*clean(char *s, t_sub sub, char **fmt, size_t *slen)
 		*slen = d;
 		return (ft_strncpy(ft_strnew(d), *fmt, d));
 	}
-	if (!sub.type)
-		sub.len = 13;
+//	if (!sub.type)
+//		sub.len = 13;
 	if (sub.type)
+	{
 		sub.s = crop(sub, &(sub.len));
-	if (sub.type)
 		++(*fmt);
+	}
+	else
+		sub.len = 13;
+//	if (sub.type)
+//		sub.s = crop(sub, &(sub.len));
+//	if (sub.type)
+//		++(*fmt);
 	d = ft_strlend(*fmt, '%');
 	s = ft_crop(&s, 0, *slen + sub.len + d);
 	s = (char *)ft_memcat(s, sub.s, *slen, sub.len);

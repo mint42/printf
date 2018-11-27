@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/24 21:34:08 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/26 19:47:30 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int		check_flags(char **flag, char *sub, char type, int width)
 		*cur++ = 'n';
 	while (cur && *cur)
 	{
+/*
 		if ((*cur == '+' && !ft_strchr("dDiu", type)) ||
 			(*cur == ' ' && !ft_strchr("dDicu%", type)) ||
 			(*cur == '#' && !ft_strchr("oOxX", type)))
@@ -108,20 +109,28 @@ int		check_flags(char **flag, char *sub, char type, int width)
 			*cur = ',';
 		++cur;
 	}
+*/
 //	while (!(*type) && fmt && *fmt && ft_strchr(VALID_FMTS, *fmt))
 //		++fmt;
-/*
-		if ((*cur == '+' && !ft_strchr("dDi", type)) ||
-			(*cur == ' ' && !ft_strchr("dDi", type)) ||
-			(*cur == '#' && !ft_strchr("oOxX", type)))
+
+
+//		if (
+
+		if ((*cur == '+' || *cur == ' ') && (!ft_strchr("dDiI", type) ||
+			(ft_strchr(*flag, '+') && ft_strchr(*flag, ' '))))
 			return (0);
-		if ((*cur == '+' && sub[0] == '-') ||
-			(*cur == ' ' && (sub[0] == '-' || ft_strchr(*flag, '+'))) ||
-			(*cur == '0' && ft_strchr(*flag, '-')) ||
-			(*cur == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
-			*cur = ',';
+		if (*cur == '#' && !ft_strchr("oOxX", type))
+			return (0);
+		if (*cur == '0' && ft_strchr("cCsSpP%", type))
+			return (0);
+
+
+//		if (((*cur == '+' || *cur == ' ') && sub[0] == '-') ||
+//		(*cur == '0' && ft_strchr(*flag, '-')) ||
+//			(*cur == '#' && ft_strequ(sub, "0") && ft_strchr("xX", type)))
+//			*cur = ',';
 		++cur;
-*/
+	}
 	return (1);
 }
 
