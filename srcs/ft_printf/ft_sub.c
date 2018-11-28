@@ -110,6 +110,11 @@ int		check_flags(char **flag, char *sub, char type, int width)
 	return (1);
 }
 
+/* 
+** make flags with bits that will save memory and mallocing and access time
+** give each flag a spot to go to 
+*/
+
 t_sub	makesub(char **fmt, va_list ap, int init)
 {
 	t_sub	sub;

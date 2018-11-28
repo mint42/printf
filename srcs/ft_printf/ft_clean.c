@@ -44,6 +44,10 @@ char	*addzeros(t_sub sub, int p)
 		sub.s[1] = sub.s[i];
 		sub.s[i] = '0';
 	}
+/*
+**  TODO:
+**	heyo why i > 0 and not i
+*/
 	else if ((sub.s[i] == '-' || sub.s[i] == '+') && i > 0)
 	{
 		sub.s[0] = sub.s[i];
@@ -54,6 +58,11 @@ char	*addzeros(t_sub sub, int p)
 
 char	*addflags(t_sub sub)
 {
+/*
+** TODO:
+** why not make two sepatate shift options instead of doing it twice?
+** also consider new type 'P'
+*/
 	sub.s = ft_shift(&(sub.s), 1, ft_strlen(sub.s) + 1);
 	if (ft_strchr(sub.flags, '#') || sub.type == 'p')
 	{
