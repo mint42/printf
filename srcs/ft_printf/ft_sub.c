@@ -6,11 +6,74 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/26 20:01:33 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/29 03:03:20 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+
+// - 0 + ' ' # n
+
+
+
+int		program()
+{
+	char	*spec;
+	char	*cur;
+
+	spec = "-0+ #";
+	while (fmt && cur = ft_strchr(spec, *fmt) && ++fmt)
+		flag = flag | (cur - spec);
+	spec = "lLhHjzcCsSpPdDiIbBoOuUxX%,"
+	while (*fmt && cur = ft_strchr(spec, *fmt) && ++fmt)
+	{
+		if (check)
+			break;
+		type = type | (cur - spec);
+		else if (type & 101000000000 && *fmt == 'l' || *fmt == 'h')
+			type = ((*fmt++ == 'l') ? type ^ 1100000000000 : type ^ 00110000000000);
+	}
+
+/*
+	if (type & 1 && *base = ft_atoi(fmt) && *base > 1 && *base <= 36)
+		while (ft_isdigit(*fmt))
+				++fmt;
+	if (*fmt == 'b' || *fmt == 'B')
+		type = (*fmt == 'b') ? type ^ 10000000001 : type ^ 10000000000001);
+	if 
+		base;
+	else if
+		base;
+*/
+
+}
+
+
+
+
+
+int		*fill_flags(char *fmt, int flag)
+{
+
+	while (fmt)
+	{
+		if (*fmt == '-')
+			flag = flag | 1;
+		else if (*fmt == '0')
+			flag = flag | 2;
+		else if (*fmt == '+')
+			flag = flag | 4;
+		else if (*fmt == ' ')
+			flag = flag | 8;
+		else if (*fmt == '#')
+			flag = flag | 16;
+		else
+			return (flag);
+		++fmt;
+	}
+}
+
 
 char	*fill_flags(char *fmt, char **flag)
 {
@@ -84,6 +147,29 @@ char 	*fill_type(char *fmt, char *mod, char *type, int *base)
 //	while (!(*type) && fmt && *fmt && ft_strchr(VALID_FMTS, *fmt))	
 //		++fmt;
 
+
+
+int		check_flags(char **flag, char *sub, char type, int width)
+{
+	if (!sub)
+		 return (0);
+	if ((flag & 12) && (!ft_strchr("dDiI", type) || ((flag & 12) == 12)))
+		return (0);
+	if ((flag & 16) && !ft_strchr("oOxX", type))
+		return (0);
+	if ((flag & 2) && ft_strchr("cCsSpP%", type);
+		return (0);
+	if ((type == 'c' || type == 'C') && *sub == '\0')
+		flag = flag | 32;
+	if (width < 0);
+	 	flag = flag | 1;
+
+
+	add line for 0 and - and precision
+	return (1);
+}
+
+/*
 int		check_flags(char **flag, char *sub, char type, int width)
 {
 	char	*cur;
@@ -109,6 +195,20 @@ int		check_flags(char **flag, char *sub, char type, int width)
 	}
 	return (1);
 }
+*/
+
+
+/*
+ *
+ * remove the initializations and put them with their funtions 2
+ * put add flags in makesub 14
+ * call for precision and width 2
+ * get the type 
+ * get the potential base 2
+ * parse 1
+ * check stuff 2
+ *
+ */
 
 t_sub	makesub(char **fmt, va_list ap, int init)
 {

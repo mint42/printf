@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:22:01 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/26 19:58:23 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/28 23:02:07 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*addzeros(t_sub sub, int p)
 		sub.s[1] = sub.s[i];
 		sub.s[i] = '0';
 	}
-	else if ((sub.s[i] == '-' || sub.s[i] == '+') && i > 0)
+	else if ((sub.s[i] == '-' || sub.s[i] == '+') && i)
 	{
 		sub.s[0] = sub.s[i];
 		sub.s[i] = '0';
