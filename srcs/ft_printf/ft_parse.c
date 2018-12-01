@@ -14,13 +14,13 @@
 
 char	*parse_cs(t_sub sub, char *s, va_list ap)
 {
-	if (sub.type == 'C' || (sub.mod == 'l' && sub.type == 'c'))
+	if ((sub.type & 0x40000) || ((sub.type & 0x2080000) == 0x2080000))
 		s = conv_utf8_c(va_arg(ap, wchar_t));
-	else if (sub.type == 'S' || (sub.mod == 'l' && sub.type == 's'))
+	else if ((sub.type & 0x10000) || ((sub.type & 0x2020000) == 0x2020000))
 		s = conv_utf8(va_arg(ap, wchar_t *));
-	else if (sub.type == 'c' && !sub.mod)
+	else if ((sub.type & 0x3F80000) == 0x0080000)
 		s = ft_ctoa(va_arg(ap, int));
-	else if (sub.type == 's' && !sub.mod)
+	else if ((sub.type & 0x3F20000) == 0x0020000)
 	{
 		s = va_arg(ap, char *);
 		if (!s)
@@ -33,38 +33,38 @@ char	*parse_cs(t_sub sub, char *s, va_list ap)
 
 char	*parse_di(t_sub sub, char *s, va_list ap, int base)
 {
-	if (sub.mod == 'h')
+	if (sub.type & 0x800000)
 		s = ft_itoabase((short)va_arg(ap, int), base);
-	else if (sub.mod == 'H')
+	else if (sub.type & 0x400000)
 		s = ft_itoabase((char)va_arg(ap, int), base);
-	else if (sub.mod == 'l')
+	else if (sub.type & 0x2005000)
 		s = ft_itoabase(va_arg(ap, long int), base);
-	else if (sub.mod == 'L' || sub.type == 'D' || sub.type == 'I')
+	else if (sub.type & 0x1000000)
 		s = ft_itoabase(va_arg(ap, long long int), base);
-	else if (sub.mod == 'j')
+	else if (sub.type & 0x200000)
 		s = ft_itoabase(va_arg(ap, intmax_t), base);
-	else if (sub.mod == 'z')
+	else if (sub.type & 0x100000)
 		s = ft_itoabase(va_arg(ap, size_t), base);
-	else if (!sub.mod)
+	else if (!(sub.type & 0x3F00000))
 		s = ft_itoabase(va_arg(ap, int), base);
 	return (s);
 }
 
 char	*parse_boux(t_sub sub, char *s, va_list ap, int base)
 {
-	if (sub.mod == 'h')
+	if (sub.type & 0x800000)
 		s = ft_uitoabase((unsigned short)va_arg(ap, int), base);
-	else if (sub.mod == 'H')
+	else if (sub.type & 0x400000)
 		s = ft_uitoabase((uint8_t)va_arg(ap, int), base);
-	else if (sub.mod == 'l' || sub.type == 'O' || sub.type == 'U')
+	else if (sub.type & 0x2000140)
 		s = ft_uitoabase(va_arg(ap, unsigned long int), base);
-	else if (sub.mod == 'L')
+	else if (sub.type & 0x1000000)
 		s = ft_uitoabase(va_arg(ap, unsigned long long int), base);
-	else if (sub.mod == 'j')
+	else if (sub.type & 0x200000)
 		s = ft_uitoabase(va_arg(ap, uintmax_t), base);
-	else if (sub.mod == 'z')
+	else if (sub.type & 0x100000)
 		s = ft_uitoabase(va_arg(ap, size_t), base);
-	else if (!sub.mod)
+	else if (!(sub.type & 0x3F00000))
 		s = ft_uitoabase(va_arg(ap, unsigned int), base);
 	return (s);
 }
@@ -74,19 +74,17 @@ char	*parse(t_sub sub, va_list ap)
 	char	*s;
 
 	s = 0;
-	if (ft_strchr("pPCSDIOU%", sub.type) && sub.mod)
-		return (s);
-	else if (sub.type == '%')
+	if (sub.type & 0x2)
 		s = ft_strdup("%");
-	else if (sub.type == 'p' || sub.type == 'P')
+	else if (sub.type & 0xC)
 		s = ft_uitoabase(va_arg(ap, uintptr_t), 16);
-	else if (ft_strchr("cCsS", sub.type))
+	else if (sub.type & 0xF0000)
 		s = parse_cs(sub, s, ap);
-	else if (ft_strchr("dDiI", sub.type))
+	else if (sub.type & 0xF000)
 		s = parse_di(sub, s, ap, sub.base);
-	else if (ft_strchr("bBoOuUxX", sub.type))
+	else if (sub.type & 0xFF0)
 		s = parse_boux(sub, s, ap, sub.base);
-	if (ft_strchr("PBX", sub.type))
+	if (sub.type & 0x414)
 		s = ft_strupper(s);
 	return (s);
 }
