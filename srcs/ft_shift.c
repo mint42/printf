@@ -26,6 +26,7 @@ char	*ft_shift(char **s, int in, size_t size)
 		str[in] = *cur;
 		++cur;
 		++in;
+		--size;
 	}
 	ft_strdel(s);
 	return (str);

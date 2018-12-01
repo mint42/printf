@@ -76,16 +76,22 @@ char	*crop(t_sub sub, size_t *sublen)
 		sub.s = precision(sub);
 	if ((sub.flags & 0x7) || (sub.type & 0xC))
 		sub.s = addflags(sub);
-	if ((sub.type & 0xC0000) && *(sub.s) == '\0' && ++(*sublen) && sub.w > 1)
+	*sublen = ((sub.type & 0xC0000) && *(sub.s) == '\0') ? 1 : ft_strlen(sub.s);
+	if ((size_t)sub.w > *sublen)
 	{
-		sub.s = ft_shift((&sub.s), 0, sub.w);
-		sub.s[(sub.flags & 0x10) ? 0 : sub.w - 1] = '\0';
+		if ((size_t)sub.j > (size_t)sub.w - *sublen)
+			sub.j = sub.w - *sublen;
+		if (!(sub.flags & 0x10))
+			sub.j = sub.w - sub.j - *sublen;
+		if ((sub.type & 0xC0000) && *(sub.s) == '\0')
+		{
+			sub.s = ft_shift((&sub.s), sub.j, sub.w);
+			sub.s[sub.j] = '\0';
+		}
+		else
+			sub.s = ft_shift(&(sub.s), sub.j, sub.w);
+		*sublen = sub.w;
 	}
-	else if ((sub.flags & 0x10) && (size_t)sub.w > ft_strlen(sub.s))
-		sub.s = ft_shift(&(sub.s), 0, sub.w);
-	else if ((size_t)sub.w > ft_strlen(sub.s))
-		sub.s = ft_shift(&(sub.s), sub.w - ft_strlen(sub.s), sub.w);
-	*sublen = *sublen + ft_strlen(sub.s);
 	if (sub.flags & 0x8)
 		sub.s = addzeros(sub, 0);
 	return (sub.s);

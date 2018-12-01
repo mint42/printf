@@ -22,7 +22,7 @@
 # include <limits.h>
 # include "libft.h"
 
-# define VALID_FMTS "cCsSpPdDiIbBoOuUxX%lLhHjz1234567890.+- #*"
+# define VALID_FMTS "cCsSpPdDiIbBoOuUxX%lLhHjz1234567890.+- #*()"
 # define VALID_TYPE "cCsSpPdDiIbBoOuUxX%"
 # define VALID_MODS "lLhHjz"
 
@@ -31,7 +31,8 @@
 # define TYPE sub->type
 # define BASE sub->base
 # define PRECISION sub->p
-# define WIDTH sub->w
+# define WIDTH sub->w	
+# define JUSTIFICATION sub->j
 # define LENGTH sub->len
 
 
@@ -43,6 +44,7 @@ typedef struct	s_sub
 	int			base;
 	int			p;
 	int			w;
+	int			j;
 	size_t		len;
 }				t_sub;
 
