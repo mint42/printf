@@ -90,7 +90,7 @@ int		checks(char **fmt, t_sub *sub)
 		((FLAG & 0x8) && (TYPE & 0xF000E)) ||
 		((TYPE & 0x3F00000) && (TYPE & 0x5514E)))
 		TYPE = 0;
-	if (!TYPE)
+	if (!TYPE || !S)
 	{
 		while (*fmt && **fmt && ft_strchr(VALID_FMTS, **fmt))
 			++(*fmt);
@@ -103,6 +103,12 @@ int		checks(char **fmt, t_sub *sub)
 	}
 	if ((FLAG & 0x8) && ((FLAG & 0x10) || PRECISION > -1))
 		FLAG = FLAG ^ 0x8;
+	if ((PRECISION > -1) && (TYPE & 0xD000E))
+		PRECISION = -1;
+	if (S[0] == '-' && (FLAG & 0x7))
+		FLAG = FLAG & 0x18;
+	if (ft_strequ(S, "0"))
+		FLAG = (FLAG & 0x4) ? (FLAG ^ 0x6) : (FLAG & 0x18);
 	return (1);
 }
 
@@ -119,134 +125,8 @@ t_sub	makesub(char **fmt, va_list ap, int init)
 	*fmt = get_flags(*fmt, &sub);
 	*fmt = get_pw(*fmt,&sub, ap);
 	*fmt = get_type(*fmt, &sub);
-	sub.s = (checks(fmt, &sub)) ? parse(sub, ap) : conv_utf8(L"¯\\_(ツ)_/¯");	
-	if (!sub.s)
-		sub.s = conv_utf8(L"¯\\_(ツ)_/¯");
-	return (sub);
-}
-
-
-
-
-/*
-int		*fill_flags(char *fmt, int flag)
-{
-
-	while (fmt)
-	{
-		if (*fmt == '-')
-			flag = flag | 1;
-		else if (*fmt == '0')
-			flag = flag | 2;
-		else if (*fmt == '+')
-			flag = flag | 4;
-		else if (*fmt == ' ')
-			flag = flag | 8;
-		else if (*fmt == '#')
-			flag = flag | 16;
-		else
-			return (flag);
-		++fmt;
-	}
-}
-
-char	*fill_flags(char *fmt, char **flag)
-{
-	char	*cur;
-
-	++fmt;
-	*flag = ft_strnew(6);
-	cur = *flag;
-	*cur++ = '*';
-	while (fmt && ft_strchr("-+ 0#", *fmt))
-	{
-		if (*fmt == '-')
-			**flag = '-';
-		if (!ft_strchr(*flag, *fmt))
-			*cur++ = *fmt;
-		++fmt;
-	}
-	return (fmt);
-}
-
-char 	*fill_type(char *fmt, char *mod, char *type, int *base)
-{
-	if (fmt && ft_strchr(VALID_MODS, *fmt))
-	{
-		*mod = *fmt;
-		++fmt;
-		if (fmt && (*mod == 'l' || *mod == 'h') && (*fmt == 'l' || *fmt == 'h'))
-			*mod = ((*fmt++ == 'l') ? 'L' : 'H');
-	}
-	if (*fmt == ',' && (*base = ft_atoi(fmt + 1)) > 1 && *base <= 36 && fmt++)
-		while (fmt && ft_isdigit(*fmt))
-			++fmt;
-	*type = (fmt && ft_strchr(VALID_TYPE, *fmt)) ? *fmt : 0;
-	if ((*type != 'b' || *type != 'B') && *base)
-		*type = 0;
-	else if ((*type == 'b' || *type == 'B') && !(*base))
-		*base = 2;
-	else if (*type == 'o' || *type == 'O')
-		*base = 8;
-	else if (*type == 'x' || *type == 'X')
-		*base = 16;
-	else if (ft_strchr("dDiIuU", *type))
-		*base = 10;
-	return (fmt);
-}
-
-int		check_flags(char **flag, char *sub, char type, int width)
-{
-	char	*cur;
-
-	cur = *flag;
-
-	if (!sub)
-		return (0);
-	if (width < 0)
-		*cur++ = '-';
-	if ((type == 'c' || type == 'C') && *sub == '\0')
-		*cur++ = 'n';
-	while (cur && *cur)
-	{
-		if ((*cur == '+' || *cur == ' ') && (!ft_strchr("dDiI", type) ||
-			(ft_strchr(*flag, '+') && ft_strchr(*flag, ' '))))
-			return (0);
-		if (*cur == '#' && !ft_strchr("oOxX", type))
-			return (0);
-		if (*cur == '0' && ft_strchr("cCsSpP%", type))
-			return (0);
-		++cur;
-	}
-	return (1);
-}
-
-t_sub	makesub(char **fmt, va_list ap, int init)
-{
-	t_sub	sub;
-
-	sub.flags = 0;
-	sub.p = -1;
-	sub.w = 0;
-	sub.mod = 0;
-	sub.type = 0;
-	sub.base = 0;
-	sub.s = 0;
-	sub.len = 0;
-	if (init)
-		return (sub);
-	*fmt = fill_flags(*fmt, &(sub.flags));
-	*fmt = fill_pw(*fmt, ap, &(sub.p), &(sub.w));
-	*fmt = fill_type(*fmt, &(sub.mod), &(sub.type), &(sub.base));
 	sub.s = (sub.type) ? parse(sub, ap) : 0;
-	if (!sub.type || !check_flags(&(sub.flags), sub.s, sub.type, sub.w))
-	{
-		sub.type = 0;
+	if (!checks(fmt, &sub))
 		sub.s = conv_utf8(L"¯\\_(ツ)_/¯");
-	}
-	if (sub.w < 0)
-		sub.w = sub.w * -1;
 	return (sub);
 }
-
-*/

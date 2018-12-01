@@ -15,7 +15,7 @@ NAME := libftprintf.a
 POBJS := $(patsubst %.c,%.o,$(wildcard ./srcs/ft_printf/*.c))
 LOBJS := $(patsubst %.c,%.o,$(wildcard ./srcs/*.c))
 
-CFLAGS += -g -Wall -Wextra -Werror -I./includes
+CFLAGS += -Wall -Wextra -Werror -I./includes
 
 .PHONY: all clean fclean re
 

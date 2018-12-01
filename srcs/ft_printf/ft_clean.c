@@ -65,16 +65,16 @@ char	*addflags(t_sub sub)
 		sub.s[0] = '0';
 		return (sub.s);
 	}
-	if ((sub.flags & 0x4) && !ft_strequ(sub.s, "0"))
+	if (sub.flags & 0x4)
 		sub.s[0] = '+';
 	return (sub.s);
 }
 
 char	*crop(t_sub sub, size_t *sublen)
 {
-	if (sub.p >= 0 && !(sub.type & 0xD000E))
+	if (sub.p >= 0)
 		sub.s = precision(sub);
-	if (((sub.flags & 0x7) || (sub.type & 0xC)) && sub.s[0] != '-')
+	if ((sub.flags & 0x7) || (sub.type & 0xC))
 		sub.s = addflags(sub);
 	if ((sub.type & 0xC0000) && *(sub.s) == '\0' && ++(*sublen) && sub.w > 1)
 	{
