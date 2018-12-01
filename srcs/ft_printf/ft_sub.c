@@ -32,9 +32,9 @@ char	*get_pw(char *fmt, t_sub *sub, va_list ap)
 	PRECISION = -1;
 	WIDTH = 0;
 	JUSTIFICATION = 0;
-	num = (*fmt == '.') ? &PRECISION : &WIDTH;
+	num = (*fmt == '.' && ++fmt) ? &PRECISION : &WIDTH;
 	
-	if (!ft_isdigit(*fmt) && *fmt != '.')
+	if (!ft_isdigit(*fmt) && *fmt != '.' && *fmt != '*')
 		return (fmt);
 	while (num)
 	{
@@ -42,14 +42,14 @@ char	*get_pw(char *fmt, t_sub *sub, va_list ap)
 			*num  = va_arg(ap, int);
 		else
 		{
-			*num = (ft_isdigit(*fmt)) ? ft_atoi(fmt) : ft_atoi(++fmt);
+			*num = ft_atoi(fmt);
 			while (fmt && ft_isdigit(*fmt))
 				++fmt;
 		}
-		if (num == &WIDTH && *fmt == ':')
+		if (num == &WIDTH && *fmt == ':' && ++fmt)
 			num = &JUSTIFICATION;
 		else
-			num = (*fmt == '.' && !(num == &PRECISION)) ? &PRECISION: 0;
+			num = (*fmt == '.' && num != &PRECISION && ++fmt) ? &PRECISION: 0;
 	}
 	return (fmt);
 }
