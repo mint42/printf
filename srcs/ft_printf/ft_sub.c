@@ -6,11 +6,149 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/26 20:01:33 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/11/29 03:03:20 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+char	*get_flags(char *fmt, t_sub *sub)
+{
+	char	*spec;
+	char	*cur;
+
+	FLAG = 0;
+	spec = "-0+ #";
+
+	while (*fmt && (cur = ft_strchr(spec, *fmt)) && ++fmt)
+		FLAG = FLAG | (1 << (4 - (cur - spec)));
+	return (fmt);
+}
+
+char	*get_pw(char *fmt, t_sub *sub, va_list ap)
+{
+	PRECISION = -1;
+	WIDTH = 0;
+
+	if (fmt && *fmt == '*' && fmt++)
+		WIDTH = va_arg(ap, int);
+	else if (fmt && ft_isdigit(*fmt))
+	{
+		WIDTH = ft_atoi(fmt);
+		while (fmt && ft_isdigit(*fmt))
+			++fmt;
+	}
+	if (fmt && *fmt != '.')
+		return (fmt);
+	++fmt;
+	if (fmt && *fmt == '*' && fmt++)
+		PRECISION = va_arg(ap, int);
+	else if (fmt)
+	{
+		PRECISION = ft_atoi(fmt);
+		while (fmt && ft_isdigit(*fmt))
+			++fmt;
+	}
+	return (fmt);
+}
+
+char	*get_type(char *fmt, t_sub *sub)
+{
+	char	*spec;
+	char	*cur;
+
+	TYPE = 0;
+	spec = "lLhHjzcCsSdDiIbBoOuUxXpP%,";
+
+	if (*fmt && (cur = ft_strchr(spec, *fmt)) && (cur - spec) <= 6 && ++fmt)
+		TYPE = TYPE | (1 << (25 - (cur - spec)));
+	if ((TYPE & 0x2800000) && (*fmt == 'l' || *fmt == 'h'))
+			TYPE = (*fmt++ == 'l') ? TYPE ^ 0x3000000 : TYPE ^ 0xC00000;
+	if (*fmt && (cur = ft_strchr(spec, *fmt)) && (cur - spec) > 6 && ++fmt)
+		TYPE = TYPE | (1 << (25 - (cur - spec)));
+	if (TYPE & 0xFCC0)
+		BASE = (TYPE & 0xC00) ? 2 : 10;
+	else if  (TYPE & 0x330)
+		BASE = (TYPE & 0x300) ? 8 : 16;
+	else if ((TYPE & 0x1) && (BASE = ft_atoi(fmt)) && BASE > 1 && BASE <= 36)
+		while (ft_isdigit(*fmt))
+				++fmt;
+	if ((TYPE & 0x1) && (*fmt == 'b' || *fmt == 'B'))
+		TYPE = (*fmt++ == 'b') ? TYPE ^ 0x801 : TYPE ^ 0x401;
+	if (!(TYPE & 0xFFFFE))
+		TYPE = 0;
+	return (fmt);
+}
+
+//  - 0+ #
+//  lL hHjz cCsS dDiI bBoO uUxX pP%,
+
+int		checks(char **fmt, t_sub *sub)
+{
+	if (((FLAG & 0x6) && (!(TYPE & 0xF000) || ((FLAG & 0x6) == 0x6))) ||
+		((FLAG & 0x1) && (!(TYPE & 0x330))) ||
+		((FLAG & 0x8) && (TYPE & 0xF000E)) ||
+		((TYPE & 0x3F00000) && (TYPE & 0x5514E)))
+		TYPE = 0;
+	if (!TYPE)
+	{
+		while (*fmt && **fmt && ft_strchr(VALID_FMTS, **fmt))
+			++(*fmt);
+		return (0);
+	}
+	if (WIDTH < 0)
+	{
+		FLAG = FLAG | 0x10;
+		WIDTH = WIDTH * -1;
+	}
+	if ((FLAG & 0x8) && ((FLAG & 0x10) || PRECISION > -1))
+		FLAG = FLAG ^ 0x8;
+	return (1);
+}
+
+t_sub	makesub(char **fmt, va_list ap, int init)
+{
+	t_sub	sub;
+	
+	sub.s = 0;
+	sub.len = 0;
+
+	if (init)
+		return (sub);
+	++(*fmt);
+	*fmt = get_flags(*fmt, &sub);
+	*fmt = get_pw(*fmt,&sub, ap);
+	*fmt = get_type(*fmt, &sub);
+	sub.s = (checks(fmt, &sub)) ? parse(sub, ap) : conv_utf8(L"¯\\_(ツ)_/¯");	
+	if (!sub.s)
+		sub.s = conv_utf8(L"¯\\_(ツ)_/¯");
+	return (sub);
+}
+
+
+
+
+/*
+int		*fill_flags(char *fmt, int flag)
+{
+
+	while (fmt)
+	{
+		if (*fmt == '-')
+			flag = flag | 1;
+		else if (*fmt == '0')
+			flag = flag | 2;
+		else if (*fmt == '+')
+			flag = flag | 4;
+		else if (*fmt == ' ')
+			flag = flag | 8;
+		else if (*fmt == '#')
+			flag = flag | 16;
+		else
+			return (flag);
+		++fmt;
+	}
+}
 
 char	*fill_flags(char *fmt, char **flag)
 {
@@ -27,30 +165,6 @@ char	*fill_flags(char *fmt, char **flag)
 		if (!ft_strchr(*flag, *fmt))
 			*cur++ = *fmt;
 		++fmt;
-	}
-	return (fmt);
-}
-
-char	*fill_pw(char *fmt, va_list ap, int *precision, int *width)
-{
-	if (fmt && *fmt == '*' && fmt++)
-		*width = va_arg(ap, int);
-	else if (fmt && ft_isdigit(*fmt))
-	{
-		*width = ft_atoi(fmt);
-		while (fmt && ft_isdigit(*fmt))
-			++fmt;
-	}
-	if (fmt && *fmt != '.')
-		return (fmt);
-	++fmt;
-	if (fmt && *fmt == '*' && fmt++)
-		*precision = va_arg(ap, int);
-	else if (fmt)
-	{
-		*precision = ft_atoi(fmt);
-		while (fmt && ft_isdigit(*fmt))
-			++fmt;
 	}
 	return (fmt);
 }
@@ -80,9 +194,6 @@ char 	*fill_type(char *fmt, char *mod, char *type, int *base)
 		*base = 10;
 	return (fmt);
 }
-
-//	while (!(*type) && fmt && *fmt && ft_strchr(VALID_FMTS, *fmt))	
-//		++fmt;
 
 int		check_flags(char **flag, char *sub, char type, int width)
 {
@@ -142,3 +253,5 @@ t_sub	makesub(char **fmt, va_list ap, int init)
 		sub.w = sub.w * -1;
 	return (sub);
 }
+
+*/

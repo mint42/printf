@@ -26,28 +26,37 @@
 # define VALID_TYPE "cCsSpPdDiIbBoOuUxX%"
 # define VALID_MODS "lLhHjz"
 
+# define S sub->s
+# define FLAG sub->flags
+# define TYPE sub->type
+# define BASE sub->base
+# define PRECISION sub->p
+# define WIDTH sub->w
+# define LENGTH sub->len
+
 
 typedef struct	s_sub
 {
 	char		*s;
-	char		*flags;
-	char		mod;
-	char		type;
+	int			flags;
+	int			type;
 	int			base;
 	int			p;
 	int			w;
 	size_t		len;
 }				t_sub;
 
+
+
 int				ft_printf(const char *fmt, ...);
 int				ft_sprintf(char **s, const char *fmt, ...);
 int				ft_printfd(int fd, const char *fmt, ...);
 
 t_sub			makesub(char **fmt, va_list ap, int init);
-char			*fill_flags(char *fmt, char **flag);
-char			*fill_pw(char *fmt, va_list ap, int *precision, int *width);
-char			*fill_type(char *fmt, char *mod, char *type, int *base);
-int				check_flags(char **flag, char *sub, char type, int width);
+int				check_flags(char **fmt, t_sub *sub);
+char			*get_flags(char *fmt, t_sub *sub);
+char			*get_pw(char *fmt, t_sub *sub, va_list ap);
+char			*get_type(char *fmt, t_sub *sub);
 
 char			*parse(t_sub sub, va_list ap);
 char			*parse_cs(t_sub sub, char *s, va_list ap);
