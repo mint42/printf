@@ -57,10 +57,10 @@ char	*addflags(t_sub sub)
 	sub.s = ft_shift(&(sub.s), 1, ft_strlen(sub.s) + 1);
 	if ((sub.flags & 0x1) || (sub.type & 0xC))
 	{
-		if (sub.type & 0x3C)
+		if (sub.type & 0xC3C)
 		{
 			sub.s = ft_shift(&(sub.s), 1, ft_strlen(sub.s) + 1);
-			sub.s[1] = (sub.type & 0x14) ? 'X' : 'x';
+			sub.s[1] = (sub.type & 0x3C) ? 'x' : 'b';
 		}
 		sub.s[0] = '0';
 		return (sub.s);
@@ -94,6 +94,8 @@ char	*crop(t_sub sub, size_t *sublen)
 	}
 	if (sub.flags & 0x8)
 		sub.s = addzeros(sub, 0);
+	if (sub.type & 0x414)
+		ft_strupper(sub.s);
 	return (sub.s);
 }
 

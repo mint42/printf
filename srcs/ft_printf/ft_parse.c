@@ -84,7 +84,5 @@ char	*parse(t_sub sub, va_list ap)
 		s = parse_di(sub, s, ap, sub.base);
 	else if (sub.type & 0xFF0)
 		s = parse_boux(sub, s, ap, sub.base);
-	if (sub.type & 0x414)
-		s = ft_strupper(s);
 	return (s);
 }

@@ -88,7 +88,7 @@ char	*get_type(char *fmt, t_sub *sub)
 int		checks(char **fmt, t_sub *sub)
 {
 	if (((FLAG & 0x6) && (!(TYPE & 0xF000) || ((FLAG & 0x6) == 0x6))) ||
-		((FLAG & 0x1) && !(TYPE & 0x330)) || 
+		((FLAG & 0x1) && (BASE != 8 && BASE != 16 && BASE != 2)) ||
 		((FLAG & 0x8) && (TYPE & 0xF000E)) ||
 		((TYPE & 0x3F00000) && (TYPE & 0x5514E)))
 		TYPE = 0;
