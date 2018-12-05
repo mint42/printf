@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/22 00:12:29 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/03 18:55:49 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 char	*parse_cs(t_sub sub, char *s, va_list ap)
 {
-	if ((sub.type & 0x40000) || ((sub.type & 0x2080000) == 0x2080000))
+	if ((sub.type & 0x40000) || (sub.type == 0x2080000))
 		s = conv_utf8_c(va_arg(ap, wchar_t));
-	else if ((sub.type & 0x10000) || ((sub.type & 0x2020000) == 0x2020000))
+	else if ((sub.type & 0x10000) || (sub.type == 0x2020000))
 		s = conv_utf8(va_arg(ap, wchar_t *));
 	else if ((sub.type & 0x3F80000) == 0x0080000)
 		s = ft_ctoa(va_arg(ap, int));

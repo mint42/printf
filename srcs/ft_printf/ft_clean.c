@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:22:01 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/28 23:02:07 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/03 21:01:09 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ char	*addflags(t_sub sub)
 	sub.s = ft_shift(&(sub.s), 1, ft_strlen(sub.s) + 1);
 	if ((sub.flags & 0x1) || (sub.type & 0xC))
 	{
-		if (sub.type & 0xC3C)
+		if (sub.base == 2 || sub.base == 16 || (sub.type & 0xC))
 		{
 			sub.s = ft_shift(&(sub.s), 1, ft_strlen(sub.s) + 1);
-			sub.s[1] = (sub.type & 0x3C) ? 'x' : 'b';
+			sub.s[1] = (sub.base == 2) ? 'b' : 'x';
 		}
 		sub.s[0] = '0';
 		return (sub.s);

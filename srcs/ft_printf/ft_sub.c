@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/29 03:03:20 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/03 20:43:32 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ char	*get_type(char *fmt, t_sub *sub)
 	TYPE = 0;
 	spec = "lLhHjzcCsSdDiIbBoOuUxXpP%(";
 
-	if (*fmt && (cur = ft_strchr(spec, *fmt)) && (cur - spec) <= 6 && ++fmt)
+	if (*fmt && (cur = ft_strchr(spec, *fmt)) && (cur - spec) < 6 && ++fmt)
 		TYPE = TYPE | (1 << (25 - (cur - spec)));
 	if ((TYPE & 0x2800000) && (*fmt == 'l' || *fmt == 'h'))
 			TYPE = (*fmt++ == 'l') ? TYPE ^ 0x3000000 : TYPE ^ 0xC00000;
-	if (*fmt && (cur = ft_strchr(spec, *fmt)) && (cur - spec) > 6 && ++fmt)
+	if (*fmt && (cur = ft_strchr(spec, *fmt)) && (cur - spec) >= 6 && ++fmt)
 		TYPE = TYPE | (1 << (25 - (cur - spec)));
 	if (TYPE & 0xFCC0)
 		BASE = (TYPE & 0xC00) ? 2 : 10;
@@ -109,7 +109,7 @@ int		checks(char **fmt, t_sub *sub)
 		PRECISION = -1;
 	if (S[0] == '-' && (FLAG & 0x7))
 		FLAG = FLAG & 0x18;
-	if (ft_strequ(S, "0"))
+	if (ft_strequ(S, "0") && (FLAG & 0x5))
 		FLAG = (FLAG & 0x4) ? (FLAG ^ 0x6) : (FLAG & 0x18);
 	return (1);
 }
