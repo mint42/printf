@@ -36,18 +36,12 @@ char	*ft_ftoa(double n, int precision)
 	int		intpart;
 	int		decimalpart;
 	long	significand;
-	int		b;
 
-	b = 2;
 	sign = (n >> 63) ? -1 : 1;
-	exponent = (n >> 52) & (0 << 53);
-	exponent = (exponent) - DOUBLE_EXPONENT_BIAS (1023) (+ 1);
-	significand = n & (0x000 << 64);
-//	significand = n & (0x1 << 53);
-	intpart = (exponent >= 0) ? n << (52 - exponent) : 0;
+	exponent = (n >> 52) & (0x7FF);
+	exponent = (exponent) - DOUBLE_EXPONENT_BIAS (1023);
+	significand = n & (0x000FFFFFFFFFFFFF);
+	significand = n | (0x1 << 53);
+	intpart = (exponent >= 0) ? significand >> (52 - exponent) : 0;
 	decimalpart = 
-	
-
-	
-
 }
