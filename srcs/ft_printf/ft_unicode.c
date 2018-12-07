@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:52:10 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/13 19:23:35 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/06 23:09:51 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,39 +17,68 @@
 ** a wide character string when converted to utf_8
 */
 
-int			get_utf8_bytes(wchar_t *str)
-{
-	int	i;
-	int	bytes;
-	int	leftover;
-	int	total;
 
-	total = 0;
-	while (str && *str)
-	{
-		i = 32;
-		while (i > 0)
-		{
-			if (*str & (1 << (i - 1)))
-				break ;
-			--i;
-		}
-		bytes = ((i > 7) ? (i / 6) : 1);
-		leftover = (i > 7) ? (i % 6) : 0;
-		if (leftover)
-			++bytes;
-		if (leftover + (bytes + 1) > 8)
-			++bytes;
-		total += bytes;
-		++str;
-	}
-	return (total);
-}
+/*
+	11011111 10111111
+
+	1111 1111  1111 1111  1111 1111  1111 1111
+	0000 0000  0000 0000  0000 1111  1111 1111
+
+	2;
+
+	11 bits
+
+	11 / 6 = 1 R 5
+
+	13 / 6 = 2 R 1
+
+
+bits / 5 = 
+
+	00000011 11000000
+	11001111 10000000
+
+08	11011111 10111000
+09	11011111 10111100
+10	11011111 10111110
+11	11011111 10111111
+
+12  11101111 10111111 10110000
+13	11101111 10111111 10111000
+14	11101111 10111111 10111100
+15	11101111 10111111 10111110
+16	11101111 10111111 10111111
+
+17	11110111 10111111 10111111 10110000
+18	11110111 10111111 10111111 10111000
+19	11110111 10111111 10111111 10111100
+20	11110111 10111111 10111111 10111110
+21	11110111 10111111 10111111 10111111
+
+22	11111011 10111111 10111111 10111111 10110000
+23
+24
+25
+26	11111011 10111111 10111111 10111111 10111111
+
+27	11111101 10111111 10111111 10111111 10111111 10110000
+28
+29
+30
+31	11111101 10111111 10111111 10111111 10111111 10111111
+
+32	11111110 10111111 10111111 10111111 10111111 10111111 10110000
+
+
+(bits + 3) / 5
+*/
 
 /*
 ** This function returns a character with i bytes turned on at the start
 */
 
+
+/*
 static char	utf8_dummy(int i)
 {
 	char	c;
@@ -62,6 +91,7 @@ static char	utf8_dummy(int i)
 	}
 	return (c);
 }
+*/
 
 /*
 ** THIS IS A HELPER FUNCITON FOR conv_utf8
@@ -75,6 +105,7 @@ static char	utf8_dummy(int i)
 **			to move to the next character
 */
 
+/*
 static void	conv_utf8_char(char **cur, wchar_t c, int i)
 {
 	int	x;
@@ -102,12 +133,14 @@ static void	conv_utf8_char(char **cur, wchar_t c, int i)
 		}
 	}
 }
+*/
 
 /*
 ** This function increments a utf_8 string by one (or more) bytes to the next
 ** aligned character
 */
 
+/*
 void		utf8_inc(char **str)
 {
 	if (str)
@@ -139,33 +172,70 @@ char	*conv_utf8_c(wchar_t c)
 		*nstr = c;
 	return (nstr);
 }
+*/
 
-char		*conv_utf8(wchar_t *str)
+inline int		get_bytes(wchar_t c)
 {
-	char	*nstr;
-	char	*cur;
 	int		i;
 
-	if (str == NULL)
-		return (ft_strdup("(null)"));
-	nstr = ft_strnew(get_utf8_bytes(str));
-	cur = nstr;
-	if (nstr)
-		while (str && *str)
-		{
-			i = 32;
-			while (i > 0)
-			{
-				if (*str & (1 << (i - 1)))
-					break ;
-				--i;
-			}
-			if (i > 7)
-				conv_utf8_char(&cur, *str, i);
-			else
-				*cur = (char)*str;
-			utf8_inc(&cur);
-			++str;
-		}
-	return (nstr);
+	i = 32;
+	while (i > 0 && (1 ^ (*s >> (i - 1)))) //or !(1 & shift)
+		--i;
+	return ((i > 7) ? 1 : ((i + 3) / 5));
+}
+
+char		*conv_utf8_char(wchar_t wc)
+{
+	char	*str;
+	int		i;
+
+	i = 0;
+	if (!s)
+		s = (char *)ft_strnew(get_bytes(*s));
+	if (!wc || !s)
+		return (s = ((!wc) ? ft_ctoa(0) : 0));
+	while (s && *s)
+		
+}
+
+
+
+char		*conv_utf8_str(wchar_t *ws)
+{
+	wchar_t	*wscur;
+	char	*s;
+	char	*scur;
+	int		bytes;
+	int		i;
+
+	wscur = ws;
+	bytes = 0;
+	while (wscur && *wscur)
+		bytes = bytes + get_bytes(*wscur++);
+	s = (ws) ? ft_strnew(bytes) : 0;
+	if (!s || !ws)
+		return ((!ws) ? ft_strdup("(null)") : 0);
+	wscur = ws;
+	scur = s;
+	while (scur && *scur)
+	{
+		scur++ = get_byte(*ws, bytes--);
+		if (!bytes)
+			bytes = get_bytes(++wscur);
+	}
+
+	while (i < bytes)
+		scur = 1 << (8 - (i++));
+	while()
+	{
+		s[i] = s[i] & (*wscur << );
+	}
+
+
+
+
+
+
+
+	return (str);
 }
