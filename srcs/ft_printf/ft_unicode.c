@@ -18,11 +18,7 @@
 */
 
 
-int			get_bytes(wchar_t c)
-{
-	int		bytes;
-	int		i;
-
+/*
 	11011111 10111111
 
 	1111 1111  1111 1111  1111 1111  1111 1111
@@ -36,6 +32,8 @@ int			get_bytes(wchar_t c)
 
 	13 / 6 = 2 R 1
 
+
+bits / 5 = 
 
 	00000011 11000000
 	11001111 10000000
@@ -73,63 +71,14 @@ int			get_bytes(wchar_t c)
 
 
 (bits + 3) / 5
-
-bits / 6 + 1 = 
-
-
-	 7 / 6 = 1 R 1
-
-	bytes = 1;
-	
-	10111111 1011000
-
-	
-	
-	
-	i = 32;
-	while (i > 0 && (*str ^ (1 << (i - 1))))
-		--i;
-	bytes = (i > 7) ? (i / 6) : 1;
-	if (i > 7)
-		bytes = bytes + ((bytes + (i % 6) > 7) ? 2 : 1);
-	return (bytes);
-}
-
-
-
-int			get_utf8_bytes(wchar_t *str)
-{
-	int	i;
-	int	bytes;
-	int	leftover;
-	int	total;
-
-	total = 0;
-	while (str && *str)
-	{
-		i = 32;
-		while (i > 0)
-		{
-			if (*str & (1 << (i - 1)))
-				break ;
-			--i;
-		}
-		bytes = ((i > 7) ? (i / 6) : 1);
-		leftover = (i > 7) ? (i % 6) : 0;
-		if (leftover)
-			++bytes;
-		if (leftover + (bytes + 1) > 8)
-			++bytes;
-		total += bytes;
-		++str;
-	}
-	return (total);
-}
+*/
 
 /*
 ** This function returns a character with i bytes turned on at the start
 */
 
+
+/*
 static char	utf8_dummy(int i)
 {
 	char	c;
@@ -142,6 +91,7 @@ static char	utf8_dummy(int i)
 	}
 	return (c);
 }
+*/
 
 /*
 ** THIS IS A HELPER FUNCITON FOR conv_utf8
@@ -155,6 +105,7 @@ static char	utf8_dummy(int i)
 **			to move to the next character
 */
 
+/*
 static void	conv_utf8_char(char **cur, wchar_t c, int i)
 {
 	int	x;
@@ -182,12 +133,14 @@ static void	conv_utf8_char(char **cur, wchar_t c, int i)
 		}
 	}
 }
+*/
 
 /*
 ** This function increments a utf_8 string by one (or more) bytes to the next
 ** aligned character
 */
 
+/*
 void		utf8_inc(char **str)
 {
 	if (str)
@@ -219,22 +172,70 @@ char	*conv_utf8_c(wchar_t c)
 		*nstr = c;
 	return (nstr);
 }
+*/
 
-char		*conv_utf8(wchar_t *s)
+inline int		get_bytes(wchar_t c)
+{
+	int		i;
+
+	i = 32;
+	while (i > 0 && (1 ^ (*s >> (i - 1)))) //or !(1 & shift)
+		--i;
+	return ((i > 7) ? 1 : ((i + 3) / 5));
+}
+
+char		*conv_utf8_char(wchar_t wc)
 {
 	char	*str;
 	int		i;
 
-	str = (s) ? ft_strnew(get_utf8_bytes(s)) : 0;
-	if (!s || !str)
-		return ((!s) ? ft_strdup("(null)") : 0);
+	i = 0;
+	if (!s)
+		s = (char *)ft_strnew(get_bytes(*s));
+	if (!wc || !s)
+		return (s = ((!wc) ? ft_ctoa(0) : 0));
 	while (s && *s)
+		
+}
+
+
+
+char		*conv_utf8_str(wchar_t *ws)
+{
+	wchar_t	*wscur;
+	char	*s;
+	char	*scur;
+	int		bytes;
+	int		i;
+
+	wscur = ws;
+	bytes = 0;
+	while (wscur && *wscur)
+		bytes = bytes + get_bytes(*wscur++);
+	s = (ws) ? ft_strnew(bytes) : 0;
+	if (!s || !ws)
+		return ((!ws) ? ft_strdup("(null)") : 0);
+	wscur = ws;
+	scur = s;
+	while (scur && *scur)
 	{
-		i = 32;
-		while (i > 0 && (*str ^ (1 << i - 1)))	
-			--i;
-		ft_strcat(str, ((i > 7) ? conv_utf8_char(*s) : s));
-		++s;
+		scur++ = get_byte(*ws, bytes--);
+		if (!bytes)
+			bytes = get_bytes(++wscur);
 	}
+
+	while (i < bytes)
+		scur = 1 << (8 - (i++));
+	while()
+	{
+		s[i] = s[i] & (*wscur << );
+	}
+
+
+
+
+
+
+
 	return (str);
 }
