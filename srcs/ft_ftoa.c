@@ -3,7 +3,6 @@
 #include "libft.h"
 #include "ft_printf.h"
 
-/*
 char	*ft_ftoa(float n, int precision)
 {
 	char	*s;
@@ -28,7 +27,7 @@ char	*ft_ftoa(float n, int precision)
 	}
 	return (s);
 }
-*/
+/*
 char	*ft_ftoa(double n, int precision)
 {
 	int		sign;
@@ -45,3 +44,4 @@ char	*ft_ftoa(double n, int precision)
 	intpart = (exponent >= 0) ? significand >> (52 - exponent) : 0;
 	decimalpart = 
 }
+*/
