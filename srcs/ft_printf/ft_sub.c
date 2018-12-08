@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/03 20:43:32 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/07 21:30:46 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,6 @@ t_sub	makesub(char **fmt, va_list ap, int init)
 	*fmt = get_type(*fmt, &sub);
 	sub.s = (sub.type) ? parse(sub, ap) : 0;
 	if (!checks(fmt, &sub))
-		sub.s = conv_utf8(L"¯\\_(ツ)_/¯");
+		sub.s = conv_utf8_str(L"¯\\_(ツ)_/¯", sub.s);
 	return (sub);
 }

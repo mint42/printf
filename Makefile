@@ -6,7 +6,7 @@
 #    By: rreedy <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/18 14:31:20 by rreedy            #+#    #+#              #
-#    Updated: 2018/12/04 19:33:48 by rreedy           ###   ########.fr        #
+#    Updated: 2018/12/07 22:18:52 by rreedy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ NAME := libftprintf.a
 POBJS := $(patsubst %.c,%.o,$(wildcard ./srcs/ft_printf/*.c))
 LOBJS := $(patsubst %.c,%.o,$(wildcard ./srcs/*.c))
 
-CFLAGS += -Wall -Wextra -Werror -I./includes
+CFLAGS += -g -Wall -Wextra -Werror -I./includes
+LFLAGS += -L./ -lftprintf
 
 .PHONY: all clean fclean re
 
@@ -25,8 +26,11 @@ $(NAME): $(POBJS) $(LOBJS)
 	ar rc $(NAME) $(POBJS) $(LOBJS)
 	ranlib $(NAME)
 
+test: all main.o
+	$(CC) $(CFLAGS) main.o $(LFLAGS)
+
 clean:
-	@- $(RM) $(LOBJS) $(POBJS)
+	@- $(RM) $(LOBJS) $(POBJS) a.out main.o
 
 fclean: clean
 	@- $(RM) $(NAME)

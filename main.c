@@ -6,14 +6,14 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 17:07:03 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/04 17:16:05 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/07 22:12:14 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "libft.h"
 
-# define TESTS 9
+# define TESTS 10
 static void		jump(int index);
 void			display_menu();
 
@@ -57,6 +57,13 @@ void		fF()
 	ft_putstr(ft_ftoa(5.0505000F, 5));
 	ft_putchar('\n');
 	ft_putchar('\n');
+}
+
+void		CS()
+{
+	ft_printf("%%C		|%C|\n", L'\u03c0');
+	ft_printf("%%C		|%C|\n", L'\U0001F47D');
+	ft_printf("%%S		|%S|\n", L"pi: \u03c0 alien: \U0001F47D");
 }
 
 void		bB()
@@ -252,12 +259,13 @@ void		display_menu()
 	ft_printf("1 ->		Check All\n");
 	ft_printf("2 ->		Type %%f %%F\n");
 	ft_printf("3 ->		Type %%b %%B\n");
-	ft_printf("4 ->		Type %%c\n");
-	ft_printf("5 ->		Type %%p %%P\n");
-	ft_printf("6 ->		Justify\n");
-	ft_printf("7 ->		Plus and Space flags\n");
-	ft_printf("8 ->		Leaks\n");
-	ft_printf("9 ->		Undefined Behavior\n");
+	ft_printf("4 ->		Type %%C %%S\n");
+	ft_printf("5 ->		Type %%c\n");
+	ft_printf("6 ->		Type %%p %%P\n");
+	ft_printf("7 ->		Justify\n");
+	ft_printf("8 ->		Plus and Space flags\n");
+	ft_printf("9 ->		Leaks\n");
+	ft_printf("10 ->		Undefined Behavior\n");
 }
 
 static void		jump(int index)
@@ -268,6 +276,7 @@ static void		jump(int index)
 		display_all,
 		fF,
 		bB,
+		CS,
 		c,
 		pP,
 		justify,

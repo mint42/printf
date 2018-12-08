@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:52:10 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/06 23:09:51 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/07 22:16:03 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,68 +174,59 @@ char	*conv_utf8_c(wchar_t c)
 }
 */
 
-inline int		get_bytes(wchar_t c)
+int		get_bytes(wchar_t wc)
 {
 	int		i;
 
 	i = 32;
-	while (i > 0 && (1 ^ (*s >> (i - 1)))) //or !(1 & shift)
+	while (i > 0 && (1 ^ (wc >> (i - 1)))) 
 		--i;
-	return ((i > 7) ? 1 : ((i + 3) / 5));
+	return ((i > 7) ? ((i + 3) / 5) : 1);
 }
 
-char		*conv_utf8_char(wchar_t wc)
+char		*conv_utf8_char(wchar_t wc, char *s)
 {
-	char	*str;
-	int		i;
+	char	*cur;
+	int		bytes;
 
-	i = 0;
-	if (!s)
-		s = (char *)ft_strnew(get_bytes(*s));
+	bytes = get_bytes(wc);
+	if (!s && wc)
+		s = ft_strnew(bytes);
 	if (!wc || !s)
 		return (s = ((!wc) ? ft_ctoa(0) : 0));
-	while (s && *s)
-		
+	cur = s + bytes - 1;
+	if (bytes > 1)
+		while (cur >= s)
+		{
+			*cur = *cur | (!(cur - s) ? (0xFF << (8 - bytes)) : 0x80);
+			*cur = *cur | (wc & 0x3F);
+			wc = wc >> 6;
+			cur = (cur - s) ? (cur - 1) : 0;
+		}
+	else
+		*cur = (char)wc;
+	return (s);
 }
 
-
-
-char		*conv_utf8_str(wchar_t *ws)
+char		*conv_utf8_str(wchar_t *ws, char *s)
 {
-	wchar_t	*wscur;
-	char	*s;
-	char	*scur;
 	int		bytes;
-	int		i;
+	int		totalbytes;
 
-	wscur = ws;
-	bytes = 0;
-	while (wscur && *wscur)
-		bytes = bytes + get_bytes(*wscur++);
-	s = (ws) ? ft_strnew(bytes) : 0;
-	if (!s || !ws)
-		return ((!ws) ? ft_strdup("(null)") : 0);
-	wscur = ws;
-	scur = s;
-	while (scur && *scur)
+	totalbytes = 0;
+	if (!ws)
+		return (ft_strdup("(null)"));
+	while (ws && *ws)
+		totalbytes = totalbytes + get_bytes(*ws++);
+	s = ft_strnew(totalbytes);
+	s = s + totalbytes;
+	while (totalbytes)
 	{
-		scur++ = get_byte(*ws, bytes--);
-		if (!bytes)
-			bytes = get_bytes(++wscur);
+		--ws;
+		bytes = get_bytes(*ws);
+		totalbytes = totalbytes - bytes;
+		s = s - bytes;
+		s = conv_utf8_char(*ws, s);
 	}
-
-	while (i < bytes)
-		scur = 1 << (8 - (i++));
-	while()
-	{
-		s[i] = s[i] & (*wscur << );
-	}
-
-
-
-
-
-
-
-	return (str);
+	return (s);
 }
