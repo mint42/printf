@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/07 21:27:07 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/07 22:28:27 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,9 @@
 # define TYPE sub->type
 # define BASE sub->base
 # define PRECISION sub->p
-# define WIDTH sub->w	
+# define WIDTH sub->w
 # define JUSTIFICATION sub->j
 # define LENGTH sub->len
-
 
 typedef struct	s_sub
 {
@@ -47,8 +46,6 @@ typedef struct	s_sub
 	int			j;
 	size_t		len;
 }				t_sub;
-
-
 
 int				ft_printf(const char *fmt, ...);
 int				ft_sprintf(char **s, const char *fmt, ...);

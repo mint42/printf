@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:30:34 by rreedy            #+#    #+#             */
-/*   Updated: 2018/11/11 19:36:47 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/07 22:30:33 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		ft_printf(const char *fmt, ...)
 	ft_strdel(&s);
 	return (slen);
 }
-/*
+
 int		ft_sprintf(char **s, const char *fmt, ...)
 {
 	va_list		ap;
@@ -77,4 +77,3 @@ int		ft_printfd(int fd, const char *fmt, ...)
 	ft_strdel(&s);
 	return (slen);
 }
-*/
