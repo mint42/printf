@@ -1,0 +1,49 @@
+.TH ft_printf 1 "december 2018" "libftprintf 1.0" 
+.ss 12 0
+.SH NAME
+.BR ft_printf ", " ft_printfd ", " ft_sprintf " \- my implementation of system printfs"
+.SH LIBRARY
+libftprintf
+.SH SYNOPSIS
+.B #include ft_printf 
+.PP
+.I int
+.br
+.B ft_printf
+.RI ( "const char * format" ", " ... );
+.PP
+.I int
+.br
+.B ft_printfd
+.RI ( "int fd" ", " "const char * format" ", " ... );
+.PP
+.I int
+.br
+.B ft_sprintf
+.RI ( "char * s" ", " "const char * format" ", " ... );
+.PP
+.SH DESCRIPTION
+The
+.BR ft_printf ()
+functions as prototyped above produce a formatted output based on the
+.I format
+string provided by the user.
+The syntax for which is described below. The function
+.BR ft_printf ()
+writes its output to the standard output stream, stdout;
+.BR ft_printfd ()
+writes to a given file descriptor
+.IR fd ;
+and
+.BR ft_sprintf ()
+writes to the character string
+.IR s .
+.PP
+The user created format string is made up of "normal" characters and what are called "conversion" characters.
+Normal characters will be printf to their respective output streams unaffected, while conversion charaters will be formatted based on user defined specifiers.
+Conversion charater types are prepended by a '%' and should end with a valid conversion type. 
+.br
+
+
+.SH RETURN VALUES
+All of these funtions return the number of bytes written, not inclduing the terminating '\0'.
