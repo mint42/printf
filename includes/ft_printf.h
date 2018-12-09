@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/07 22:28:27 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/09 00:15:30 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,5 @@ char			*crop(t_sub sub, size_t *sublen);
 char			*addflags(t_sub sub);
 char			*addzeros(t_sub sub, int p);
 char			*precision(t_sub sub);
-
-int				get_bytes(wchar_t wc);
-char			*conv_utf8_char(wchar_t wc, char *s);
-char			*conv_utf8_str(wchar_t *ws, char *s);
 
 #endif

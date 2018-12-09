@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:16:02 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/06 13:56:23 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/09 00:18:08 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,12 @@ char				*ft_strupper(char *s);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
 char				*ft_uitoabase(unsigned long long int n, int base);
+
+/*
+** unicode.c
+*/
+
+char				*conv_utf8_char(wchar_t wc, char *s);
+char				*conv_utf8_str(wchar_t *ws, char *s);
 
 #endif
