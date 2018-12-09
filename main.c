@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 17:07:03 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/07 22:12:14 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/09 01:02:04 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void		c()
 
 	ft_printf("%%c%%c		|%c%c|\n", '4', '2');
 	ft_printf("%%c %%c		|%c %c|\n", '4', '2');
+	ft_printf("%%5c			|%5c|\n", 0);
+	ft_printf("%%10:5c		|%10:5c|\n", 0);
 }
 
 void		pP()
@@ -76,9 +78,9 @@ void		bB()
 	ft_printf("%%(6)b		|%(6)b|\n", 42);
 	ft_printf("%%(10)b		|%(10)b|\n", 42);
 	ft_printf("%%(12)b		|%(12)b|\n", 42);
-	ft_printf("%%(20)b		|%(20)b|\n", 42);
-	ft_printf("%%(36)b		|%(36)b|\n", 42);
-	ft_printf("%%(36)b		|%(36)b|\n", 59467740);
+	ft_printf("%%(25)b		|%(25)b|\n", 443);
+	ft_printf("%%(30)b		|%(30)b|\n", 637574);
+	ft_printf("%%(36)b		|%(36)b|\n", 624769209);
 
 	ft_printf("\n%%B tests\n\n");
 
@@ -88,9 +90,9 @@ void		bB()
 	ft_printf("%%(6)B		|%(6)B|\n", 42);
 	ft_printf("%%(10)B		|%(10)B|\n", 42);
 	ft_printf("%%(12)B		|%(12)B|\n", 42);
-	ft_printf("%%(20)B		|%(20)B|\n", 42);
-	ft_printf("%%(36)B		|%(36)B|\n", 42);	
-	ft_printf("%%(36)B		|%(36)B|\n", 59467740);
+	ft_printf("%%(25)B		|%(25)B|\n", 443);
+	ft_printf("%%(30)B		|%(30)B|\n", 637574);
+	ft_printf("%%(36)B		|%(36)B|\n", 624769209);
 
 	ft_printf("\n%%bB precision and width tests\n\n");
 
