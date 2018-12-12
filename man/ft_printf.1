@@ -39,10 +39,13 @@ and
 writes to the character string
 .IR s .
 .PP
-The user created format string is made up of "normal" characters and what are called "conversion" characters.
-Normal characters will be printf to their respective output streams unaffected, while conversion charaters will be formatted based on user defined specifiers.
-Conversion charater types are prepended by a '%' and should end with a valid conversion type. 
-.br
+The user created
+.I format
+string is made up of plain characters, escape characters, and format characters.
+Plain characters will be printed to their respective output stream unaffected, Escape characters are converted and then printed. Format charaters will be formatted based on user defined specifiers.
+Conversion character types are prepended by a '%' and should end with a valid conversion type.
+.PP
+
 
 
 .SH RETURN VALUES

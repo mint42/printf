@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/07 22:41:25 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/11 16:30:31 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ char	*get_flags(char *fmt, t_sub *sub)
 	char	*cur;
 
 	FLAG = 0;
-	spec = "-0+ #";
+	spec = "^-0+ #";
 	while (*fmt && (cur = ft_strchr(spec, *fmt)) && ++fmt)
-		FLAG = FLAG | (1 << (4 - (cur - spec)));
+		FLAG = FLAG | (1 << (5 - (cur - spec)));
 	return (fmt);
 }
 
@@ -79,11 +79,6 @@ char	*get_type(char *fmt, t_sub *sub)
 	return (fmt);
 }
 
-/*
-** - 0+ #
-** lL hHjz cCsS dDiI bBoO uUxX pP%(
-*/
-
 int		checks(char **fmt, t_sub *sub)
 {
 	if (((FLAG & 0x6) && (!(TYPE & 0xF000) || ((FLAG & 0x6) == 0x6))) ||
@@ -104,7 +99,7 @@ int		checks(char **fmt, t_sub *sub)
 	}
 	if ((FLAG & 0x8) && ((FLAG & 0x10) || PRECISION > -1))
 		FLAG = FLAG ^ 0x8;
-	if ((PRECISION > -1) && (TYPE & 0xD000E))
+	if ((PRECISION > -1) && (TYPE & 0xC0002))
 		PRECISION = -1;
 	if (S[0] == '-' && (FLAG & 0x7))
 		FLAG = FLAG & 0x18;

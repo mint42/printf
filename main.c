@@ -6,14 +6,15 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 17:07:03 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/09 01:02:04 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/11 16:50:21 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "libft.h"
 
-# define TESTS 10
+# define TESTS 11
+
 static void		jump(int index);
 void			display_menu();
 
@@ -66,6 +67,10 @@ void		CS()
 	ft_printf("%%C		|%C|\n", L'\u03c0');
 	ft_printf("%%C		|%C|\n", L'\U0001F47D');
 	ft_printf("%%S		|%S|\n", L"pi: \u03c0 alien: \U0001F47D");
+	ft_printf("%%.9S	|%.9S|\n", L"\U0001F47D\u03c0 extra padding");
+	ft_printf("%%.4S	|%.4S|\n", L"我是一只猫。");
+	ft_printf("%%15.4S	|%15.4S|\n", L"我是一只猫。");
+	ft_printf("%%4.15S	|%4.15S|\n", L"我是一只猫。");
 }
 
 void		bB()
@@ -142,6 +147,8 @@ void		justify()
 	ft_printf("\njustified tests\n\n");
 	
 	ft_printf("%%#15:5x		|%#15:5x|\n", 42);
+	ft_printf("%%-15:5S		|%-15:5S|\n", L"\U0001F989");
+	ft_printf("%%^15:5S		|%^15:5S|\n", L"\U0001F989");
 	ft_printf("%%15:20.3s	|%15:20.3s|\n", "string");
 	ft_printf("%%-15:20.3s	|%-15:20.3s|\n", "string");
 	ft_printf("%%-15:(6)b	|%-15:(6)b|\n", 42);
@@ -150,6 +157,24 @@ void		justify()
 	ft_printf("%%+15:5d		|%+15:5d|\n", 42);
 	ft_printf("%%+*:*d		|%+*:*d|\n", 15, 5, 42);
 	ft_printf("%%#15:*o		|%#15:*o|\n", 5, 42);
+}
+
+void		midflag()
+{
+	ft_printf("\n mid justified tests\n\n");
+
+	ft_printf("%%^16s		|%^16s|\n", "string");
+	ft_printf("%%^16.5s		|%^16.5s|\n", "string");
+	ft_printf("%%^-16.5s	|%^-16.5s|\n", "string");
+	ft_printf("%%^17s		|%^17s|\n", "string");
+	ft_printf("%%-^17s		|%-^17s|\n", "string");
+	ft_printf("%%^17.5s		|%^17.5s|\n", "string");
+	ft_printf("%%-^17.5		|%-^17.5s|\n", "string");
+	ft_printf("%%^16s		|%^16s|\n", "string");
+	ft_printf("%%^16.4s		|%^16.4s|\n", "string");
+	ft_printf("%%^15S		|%^15S|\n", L"\U0001F989");
+	ft_printf("%%-^15S		|%-^15S|\n", L"\U0001F989");
+	ft_printf("%%^15S		|%^15S|\n", L"\U0001F989");
 }
 
 void		plus_and_space()
@@ -265,9 +290,10 @@ void		display_menu()
 	ft_printf("5 ->		Type %%c\n");
 	ft_printf("6 ->		Type %%p %%P\n");
 	ft_printf("7 ->		Justify\n");
-	ft_printf("8 ->		Plus and Space flags\n");
-	ft_printf("9 ->		Leaks\n");
-	ft_printf("10 ->		Undefined Behavior\n");
+	ft_printf("8 ->		Middle Justify\n");
+	ft_printf("9 ->		Plus and Space flags\n");
+	ft_printf("10 ->	Leaks\n");
+	ft_printf("11 ->	Undefined Behavior\n");
 }
 
 static void		jump(int index)
@@ -282,6 +308,7 @@ static void		jump(int index)
 		c,
 		pP,
 		justify,
+		midflag,
 		plus_and_space,
 		leaks,
 		undefined_behavior,

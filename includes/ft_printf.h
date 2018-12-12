@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/09 00:15:30 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/11 15:15:44 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,14 @@
 # include <limits.h>
 # include "libft.h"
 
+
+
+/*
+** flag bits:							^- 0+ #
+** type bits:  lL hHjz cCsS dDiI bBoO uUxX pP%(
+*/
+
 # define VALID_FMTS "cCsSpPdDiIbBoOuUxX%lLhHjz1234567890.+- #*()"
-# define VALID_TYPE "cCsSpPdDiIbBoOuUxX%"
-# define VALID_MODS "lLhHjz"
 
 # define S sub->s
 # define FLAG sub->flags
@@ -47,6 +52,7 @@ typedef struct	s_sub
 	size_t		len;
 }				t_sub;
 
+char			*clean(char *s, t_sub sub, char **fmt, size_t *slen);
 int				ft_printf(const char *fmt, ...);
 int				ft_sprintf(char **s, const char *fmt, ...);
 int				ft_printfd(int fd, const char *fmt, ...);
@@ -62,10 +68,10 @@ char			*parse_cs(t_sub sub, char *s, va_list ap);
 char			*parse_di(t_sub sub, char *s, va_list ap, int base);
 char			*parse_boux(t_sub sub, char *s, va_list ap, int base);
 
-char			*clean(char *s, t_sub sub, char **fmt, size_t *slen);
 char			*crop(t_sub sub, size_t *sublen);
-char			*addflags(t_sub sub);
-char			*addzeros(t_sub sub, int p);
+char			*flags(t_sub sub);
+char			*zeros(t_sub sub, int p);
 char			*precision(t_sub sub);
+char			*width(t_sub sub, size_t *sublen);
 
 #endif
