@@ -29,6 +29,8 @@ void			display_all()
 
 void		random_tests()
 {
+	ft_printf("%%s		|%s|\n", 0);
+	ft_printf("%%.4s	|%.4s|\n", 0);
 	ft_printf("%%u		|%u|\n", 42);
 }
 
@@ -76,6 +78,7 @@ void		CS()
 	ft_printf("%%C			|%C|\n", L'\U0001F989');
 	ft_printf("%%C			|%C|\n", L'\U0001F47D');
 	ft_printf("%%C			|%C|\n", L'我');
+	ft_printf("%%C			|%C|\n", 0);
 
 	ft_printf("\n%%S tests\n\n");
 
@@ -84,14 +87,17 @@ void		CS()
 	ft_printf("%%S			|%S|\n", L"我是一只猫。");
 	ft_printf("%%S			|%S|\n", L"我是一只猫。");
 	ft_printf("%%S			|%S|\n", L"我是一只猫。");
+	ft_printf("%%S			|%S|\n", 0);
 
 	ft_printf("\n%%CS precision and width tests\n\n");
 
+	ft_printf("%%-15.5C		|%-15.5C|\n", 0);
 	ft_printf("%%-15.10C	|%-15.10C|\n", L'\u03c0');
 	ft_printf("%%15.10C		|%15.10C|\n", L'\u03c0');
 	ft_printf("%%15C		|%15C|\n", L'\u03c0');
 	ft_printf("%%.10C		|%.10C|\n", L'\u03c0');
 	ft_printf("\n");
+	ft_printf("%%-15.5S		|%-15.5S|\n", 0);
 	ft_printf("%%-15.5S		|%-15.5S|\n", L"\u03c0\u03c0\u03c0\u03c0\u03c0\u03c0");
 	ft_printf("%%15.5S		|%15.5S|\n", L"\u03c0\u03c0\u03c0\u03c0\u03c0\u03c0");
 	ft_printf("%%15S		|%15S|\n", L"\u03c0\u03c0\u03c0\u03c0\u03c0\u03c0");

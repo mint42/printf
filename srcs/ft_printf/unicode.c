@@ -9,6 +9,8 @@ static void		precision_unicode(t_sub *sub)
 	int		i;
 
 	i = 0;
+	if ((TYPE & 0x10000) && (FLAGS & 0x40))
+		S[0] = '\0';
 	while(S[i] != '\0' && PREC)
 	{
 		++i;
