@@ -17,6 +17,6 @@ char	*ft_ctoa(int c)
 	char	*s;
 
 	s = ft_strnew(1);
-	s[0] = (char)c;
+	s[0] = (unsigned char)c;
 	return (s);
 }

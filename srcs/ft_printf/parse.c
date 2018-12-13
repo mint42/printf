@@ -12,77 +12,87 @@
 
 #include "ft_printf.h"
 
-char	*parse_cs(t_sub sub, char *s, va_list ap)
+// look for types with mods in checks
+
+
+char	*parse_unicode(t_sub *sub, va_list ap)
 {
-	if ((sub.type & 0x40000) || (sub.type == 0x2080000))
-		s = conv_utf8_char(va_arg(ap, wchar_t), s);
-	else if ((sub.type & 0x10000) || (sub.type == 0x2020000))
-		s = conv_utf8_str(va_arg(ap, wchar_t *), s);
-	else if ((sub.type & 0x3F80000) == 0x0080000)
-		s = ft_ctoa(va_arg(ap, int));
-	else if ((sub.type & 0x3F20000) == 0x0020000)
+	if ((TYPE == 0x40000) || (TYPE == 0x2080000))
 	{
-		s = va_arg(ap, char *);
-		if (!s)
-			s = ft_strdup("(null)");
-		else
-			s = ft_strdup(s);
+		S = conv_utf8_char(va_arg(ap, wchar_t), S);
+		if (*S == '\0')
+			FLAGS = FLAGS | 0x40;
 	}
-	return (s);
+	else if ((TYPE == 0x10000) || (TYPE == 0x2020000))
+	{
+		S = conv_utf8_str(va_arg(ap, wchar_t *), S);
+		if (!S)
+		{
+			S = ft_strdup("(null)");
+			FLAGS = FLAGS | 0x40;
+		}
+	}
+	return ((S) ? crop_unicode(sub) : S);
 }
 
-char	*parse_di(t_sub sub, char *s, va_list ap, int base)
+char	*parse_csp(t_sub *sub, va_list ap)
 {
-	if (sub.type & 0x800000)
-		s = ft_itoabase((short)va_arg(ap, int), base);
-	else if (sub.type & 0x400000)
-		s = ft_itoabase((char)va_arg(ap, int), base);
-	else if (sub.type & 0x2005000)
-		s = ft_itoabase(va_arg(ap, long int), base);
-	else if (sub.type & 0x1000000)
-		s = ft_itoabase(va_arg(ap, long long int), base);
-	else if (sub.type & 0x200000)
-		s = ft_itoabase(va_arg(ap, intmax_t), base);
-	else if (sub.type & 0x100000)
-		s = ft_itoabase(va_arg(ap, size_t), base);
-	else if (!(sub.type & 0x3F00000))
-		s = ft_itoabase(va_arg(ap, int), base);
-	return (s);
+	if (TYPE == 0x2)
+		S = ft_strdup("%");
+	else if (TYPE == 0x80000)
+	{
+		S = ft_ctoa(va_arg(ap, int));
+		if (*S == '\0')
+			FLAGS = FLAGS | 0x40;
+	}
+	else if (TYPE == 0x20000)
+	{
+		S = va_arg(ap, char *);
+		if (S)
+			S = ft_strdup(S);
+		else
+		{
+			S = ft_strdup("(null)");
+			FLAGS = FLAGS | 0x40;
+		}
+	}
+	return ((S) ? crop_csp(sub) : S);
 }
 
-char	*parse_boux(t_sub sub, char *s, va_list ap, int base)
+char	*parse_di(t_sub *sub, va_list ap)
 {
-	if (sub.type & 0x800000)
-		s = ft_uitoabase((unsigned short)va_arg(ap, int), base);
-	else if (sub.type & 0x400000)
-		s = ft_uitoabase((uint8_t)va_arg(ap, int), base);
-	else if (sub.type & 0x2000140)
-		s = ft_uitoabase(va_arg(ap, unsigned long int), base);
-	else if (sub.type & 0x1000000)
-		s = ft_uitoabase(va_arg(ap, unsigned long long int), base);
-	else if (sub.type & 0x200000)
-		s = ft_uitoabase(va_arg(ap, uintmax_t), base);
-	else if (sub.type & 0x100000)
-		s = ft_uitoabase(va_arg(ap, size_t), base);
-	else if (!(sub.type & 0x3F00000))
-		s = ft_uitoabase(va_arg(ap, unsigned int), base);
-	return (s);
+	if (TYPE & 0x800000)
+		S = ft_itoabase((short)va_arg(ap, int), BASE);
+	else if (TYPE & 0x400000)
+		S = ft_itoabase((char)va_arg(ap, int), BASE);
+	else if (TYPE & 0x2005000)
+		S = ft_itoabase(va_arg(ap, long int), BASE);
+	else if (TYPE & 0x1000000)
+		S = ft_itoabase(va_arg(ap, long long int), BASE);
+	else if (TYPE & 0x200000)
+		S = ft_itoabase(va_arg(ap, intmax_t), BASE);
+	else if (TYPE & 0x100000)
+		S = ft_itoabase(va_arg(ap, size_t), BASE);
+	else if (!(TYPE & 0x3F00000))
+		S = ft_itoabase(va_arg(ap, int), BASE);
+	return ((S) ? crop_di(sub) : S);
 }
 
-char	*parse(t_sub sub, va_list ap)
+char	*parse_bouxp(t_sub *sub, va_list ap)
 {
-	char	*s;
-
-	s = 0;
-	if (sub.type & 0x2)
-		s = ft_strdup("%");
-	else if (sub.type & 0xC)
-		s = ft_uitoabase(va_arg(ap, uintptr_t), 16);
-	else if (sub.type & 0xF0000)
-		s = parse_cs(sub, s, ap);
-	else if (sub.type & 0xF000)
-		s = parse_di(sub, s, ap, sub.base);
-	else if (sub.type & 0xFF0)
-		s = parse_boux(sub, s, ap, sub.base);
-	return (s);
+	if (TYPE & 0x800000)
+		S = ft_uitoabase((unsigned short)va_arg(ap, int), BASE);
+	else if (TYPE & 0x400000)
+		S = ft_uitoabase((uint8_t)va_arg(ap, int), BASE);
+	else if (TYPE & 0x2000140)
+		S = ft_uitoabase(va_arg(ap, unsigned long int), BASE);
+	else if (TYPE & 0x1000000)
+		S = ft_uitoabase(va_arg(ap, unsigned long long int), BASE);
+	else if (TYPE & 0x200000)
+		S = ft_uitoabase(va_arg(ap, uintmax_t), BASE);
+	else if (TYPE & 0x100000)
+		S = ft_uitoabase(va_arg(ap, size_t), BASE);
+	else if (!(TYPE & 0x3F00000))
+		S = ft_uitoabase(va_arg(ap, unsigned int), BASE);
+	return ((S) ? crop_bouxp(sub) : S);
 }

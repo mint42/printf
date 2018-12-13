@@ -22,10 +22,6 @@ char	*clean(char *s, t_sub sub, char **fmt, size_t *slen)
 		*slen = d;
 		return (ft_strncpy(ft_strnew(d), *fmt, d));
 	}
-	if (sub.type)
-		sub.s = crop(sub, &(sub.len));
-	else
-		sub.len = 13;
 	d = ft_strlend(*fmt, '%');
 	s = ft_crop(&s, 0, *slen + sub.len + d);
 	s = (char *)ft_memcat(s, sub.s, *slen, sub.len);

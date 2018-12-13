@@ -32,13 +32,13 @@
 # define VALID_FMTS "cCsSpPdDiIbBoOuUxX%lLhHjz1234567890.+- #*()"
 
 # define S sub->s
-# define FLAG sub->flags
+# define FLAGS sub->flags
 # define TYPE sub->type
 # define BASE sub->base
-# define PRECISION sub->p
+# define PREC sub->p
 # define WIDTH sub->w
-# define JUSTIFICATION sub->j
-# define LENGTH sub->len
+# define JUST sub->j
+# define LEN sub->len
 
 typedef struct	s_sub
 {
@@ -63,15 +63,14 @@ char			*get_flags(char *fmt, t_sub *sub);
 char			*get_pw(char *fmt, t_sub *sub, va_list ap);
 char			*get_type(char *fmt, t_sub *sub);
 
-char			*parse(t_sub sub, va_list ap);
-char			*parse_cs(t_sub sub, char *s, va_list ap);
-char			*parse_di(t_sub sub, char *s, va_list ap, int base);
-char			*parse_boux(t_sub sub, char *s, va_list ap, int base);
+char			*parse_csp(t_sub *sub, va_list ap);
+char			*parse_di(t_sub *sub, va_list ap);
+char			*parse_bouxp(t_sub *sub, va_list ap);
+char			*parse_unicode(t_sub *sub, va_list ap);
 
-char			*crop(t_sub sub, size_t *sublen);
-char			*flags(t_sub sub);
-char			*zeros(t_sub sub, int p);
-char			*precision(t_sub sub);
-char			*width(t_sub sub, size_t *sublen);
+char			*crop_di(t_sub *sub);
+char			*crop_bouxp(t_sub *sub);
+char			*crop_csp(t_sub *sub);
+char			*crop_unicode(t_sub *sub);
 
 #endif

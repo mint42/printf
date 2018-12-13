@@ -52,7 +52,7 @@ char		*conv_utf8_char(wchar_t wc, char *s)
 	if (!s && wc)
 		s = ft_strnew(bytes);
 	if (!wc || !s)
-		return (s = ((!wc) ? ft_ctoa(0) : 0));
+		return ((!wc) ? ft_strnew(1) : 0);
 	cur = s + bytes - 1;
 	if (bytes > 1)
 		while (cur >= s)
@@ -74,7 +74,7 @@ char		*conv_utf8_str(wchar_t *ws, char *s)
 
 	totalbytes = 0;
 	if (!ws)
-		return (ft_strdup("(null)"));
+		return (0);
 	while (ws && *ws)
 		totalbytes = totalbytes + get_bytes(*ws++);
 	s = ft_strnew(totalbytes);

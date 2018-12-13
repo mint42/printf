@@ -17,10 +17,10 @@ char	*get_flags(char *fmt, t_sub *sub)
 	char	*spec;
 	char	*cur;
 
-	FLAG = 0;
+	FLAGS = 0;
 	spec = "^-0+ #";
 	while (*fmt && (cur = ft_strchr(spec, *fmt)) && ++fmt)
-		FLAG = FLAG | (1 << (5 - (cur - spec)));
+		FLAGS = FLAGS | (1 << (5 - (cur - spec)));
 	return (fmt);
 }
 
@@ -28,10 +28,10 @@ char	*get_pw(char *fmt, t_sub *sub, va_list ap)
 {
 	int		*num;
 
-	PRECISION = -1;
+	PREC = -1;
 	WIDTH = 0;
-	JUSTIFICATION = 0;
-	num = (*fmt == '.' && ++fmt) ? &PRECISION : &WIDTH;
+	JUST= 0;
+	num = (*fmt == '.' && ++fmt) ? &PREC : &WIDTH;
 	if (!ft_isdigit(*fmt) && *fmt != '.' && *fmt != '*')
 		return (fmt);
 	while (num)
@@ -45,9 +45,9 @@ char	*get_pw(char *fmt, t_sub *sub, va_list ap)
 				++fmt;
 		}
 		if (num == &WIDTH && *fmt == ':' && ++fmt)
-			num = &JUSTIFICATION;
+			num = &JUST;
 		else
-			num = (*fmt == '.' && num != &PRECISION && ++fmt) ? &PRECISION : 0;
+			num = (*fmt == '.' && num != &PREC && ++fmt) ? &PREC : 0;
 	}
 	return (fmt);
 }
@@ -67,7 +67,7 @@ char	*get_type(char *fmt, t_sub *sub)
 		TYPE = TYPE | (1 << (25 - (cur - spec)));
 	if (TYPE & 0xFCC0)
 		BASE = (TYPE & 0xC00) ? 2 : 10;
-	else if (TYPE & 0x330)
+	else if (TYPE & 0x33C)
 		BASE = (TYPE & 0x300) ? 8 : 16;
 	else if ((TYPE & 0x1) && (BASE = ft_atoi(fmt)) && BASE > 1 && BASE <= 36)
 		while (ft_isdigit(*fmt))
@@ -81,12 +81,12 @@ char	*get_type(char *fmt, t_sub *sub)
 
 int		checks(char **fmt, t_sub *sub)
 {
-	if (((FLAG & 0x6) && (!(TYPE & 0xF000) || ((FLAG & 0x6) == 0x6))) ||
-		((FLAG & 0x1) && (BASE != 8 && BASE != 16 && BASE != 2)) ||
-		((FLAG & 0x8) && (TYPE & 0xF000E)) ||
+	if (((FLAGS & 0x6) && (!(TYPE & 0xF000) || ((FLAGS & 0x6) == 0x6))) ||
+		((FLAGS & 0x1) && (BASE != 8 && BASE != 16 && BASE != 2)) ||
+		((FLAGS & 0x8) && (TYPE & 0xF000E)) ||
 		((TYPE & 0x3F00000) && (TYPE & 0x5514E)))
 		TYPE = 0;
-	if (!TYPE || !S)
+	if (!TYPE)
 	{
 		while (*fmt && **fmt && ft_strchr(VALID_FMTS, **fmt))
 			++(*fmt);
@@ -94,17 +94,11 @@ int		checks(char **fmt, t_sub *sub)
 	}
 	if (WIDTH < 0)
 	{
-		FLAG = FLAG | 0x10;
+		FLAGS = FLAGS | 0x10;
 		WIDTH = WIDTH * -1;
 	}
-	if ((FLAG & 0x8) && ((FLAG & 0x10) || PRECISION > -1))
-		FLAG = FLAG ^ 0x8;
-	if ((PRECISION > -1) && (TYPE & 0xC0002))
-		PRECISION = -1;
-	if (S[0] == '-' && (FLAG & 0x7))
-		FLAG = FLAG & 0x18;
-	if (ft_strequ(S, "0") && (FLAG & 0x5))
-		FLAG = (FLAG & 0x4) ? (FLAG ^ 0x6) : (FLAG & 0x18);
+	if ((FLAGS & 0x8) && ((FLAGS & 0x10) || PREC > -1))
+		FLAGS = FLAGS ^ 0x8;
 	return (1);
 }
 
@@ -120,8 +114,18 @@ t_sub	makesub(char **fmt, va_list ap, int init)
 	*fmt = get_flags(*fmt, &sub);
 	*fmt = get_pw(*fmt, &sub, ap);
 	*fmt = get_type(*fmt, &sub);
-	sub.s = (sub.type) ? parse(sub, ap) : 0;
 	if (!checks(fmt, &sub))
 		sub.s = conv_utf8_str(L"¯\\_(ツ)_/¯", sub.s);
+	else if ((sub.type & 0xF000) || ((sub.type & 0xC00) && (sub.base == 10)))
+		sub.s = parse_di(&sub, ap);
+	else if (sub.type & 0xFFC)
+		sub.s = parse_bouxp(&sub, ap);
+	else if ((sub.type & 0xA0002) && !(sub.type & 0x3F00000))
+		sub.s = parse_csp(&sub, ap);
+	else if (sub.type & 0xF0000)
+		sub.s = parse_unicode(&sub, ap);
+	if (!sub.s)
+		sub.s = conv_utf8_str(L"¯\\_(ツ)_/¯", sub.s);
+	sub.len = (!sub.type) ? 13 : sub.len;
 	return (sub);
 }

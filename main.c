@@ -13,7 +13,7 @@
 #include "ft_printf.h"
 #include "libft.h"
 
-# define TESTS 11
+# define TESTS 12
 
 static void		jump(int index);
 void			display_menu();
@@ -25,6 +25,11 @@ void			display_all()
 	i = 2;
 	while (i <= TESTS)
 		jump(i++);
+}
+
+void		random_tests()
+{
+	ft_printf("%%u		|%u|\n", 42);
 }
 
 void		c()
@@ -294,6 +299,7 @@ void		display_menu()
 	ft_printf("9 ->		Plus and Space flags\n");
 	ft_printf("10 ->	Leaks\n");
 	ft_printf("11 ->	Undefined Behavior\n");
+	ft_printf("12 ->	random\n");
 }
 
 static void		jump(int index)
@@ -312,6 +318,7 @@ static void		jump(int index)
 		plus_and_space,
 		leaks,
 		undefined_behavior,
+		random_tests,
 	};
 
 	j[index - 1]();
