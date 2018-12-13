@@ -69,13 +69,34 @@ void		fF()
 
 void		CS()
 {
-	ft_printf("%%C		|%C|\n", L'\u03c0');
-	ft_printf("%%C		|%C|\n", L'\U0001F47D');
-	ft_printf("%%S		|%S|\n", L"pi: \u03c0 alien: \U0001F47D");
-	ft_printf("%%.9S	|%.9S|\n", L"\U0001F47D\u03c0 extra padding");
-	ft_printf("%%.4S	|%.4S|\n", L"我是一只猫。");
-	ft_printf("%%15.4S	|%15.4S|\n", L"我是一只猫。");
-	ft_printf("%%4.15S	|%4.15S|\n", L"我是一只猫。");
+	ft_printf("\n%%C tests\n\n");
+
+	ft_printf("%%C			|%C|\n", L'\u03c0');
+	ft_printf("%%C			|%C|\n", L'\U0001F47D');
+	ft_printf("%%C			|%C|\n", L'\U0001F989');
+	ft_printf("%%C			|%C|\n", L'\U0001F47D');
+	ft_printf("%%C			|%C|\n", L'我');
+
+	ft_printf("\n%%S tests\n\n");
+
+	ft_printf("%%S			|%S|\n", L"pi: \u03c0 alien: \U0001F47D owl: \U0001F989");
+	ft_printf("%%S			|%S|\n", L"\U0001F47D\u03c0\U0001F989");
+	ft_printf("%%S			|%S|\n", L"我是一只猫。");
+	ft_printf("%%S			|%S|\n", L"我是一只猫。");
+	ft_printf("%%S			|%S|\n", L"我是一只猫。");
+
+	ft_printf("\n%%CS precision and width tests\n\n");
+
+	ft_printf("%%-15.10C	|%-15.10C|\n", L'\u03c0');
+	ft_printf("%%15.10C		|%15.10C|\n", L'\u03c0');
+	ft_printf("%%15C		|%15C|\n", L'\u03c0');
+	ft_printf("%%.10C		|%.10C|\n", L'\u03c0');
+	ft_printf("\n");
+	ft_printf("%%-15.5S		|%-15.5S|\n", L"\u03c0\u03c0\u03c0\u03c0\u03c0\u03c0");
+	ft_printf("%%15.5S		|%15.5S|\n", L"\u03c0\u03c0\u03c0\u03c0\u03c0\u03c0");
+	ft_printf("%%15S		|%15S|\n", L"\u03c0\u03c0\u03c0\u03c0\u03c0\u03c0");
+	ft_printf("%%.5S		|%.5S|\n", L"\u03c0\u03c0\u03c0\u03c0\u03c0\u03c0");
+
 }
 
 void		bB()
@@ -131,6 +152,18 @@ void		bB()
 	ft_printf("%%#(16)B		|%#(16)B|\n", 0);
 	ft_printf("%%#(16)b		|%#(16)b|\n", 42);
 	ft_printf("%%#(16)B		|%#(16)B|\n", 42);
+	ft_printf("%%+(10)b		|%+(10)b|\n", 0);
+	ft_printf("%%+(10)B		|%+(10)B|\n", 0);
+	ft_printf("%%+(10)b		|%+(10)b|\n", 42);
+	ft_printf("%%+(10)B		|%+(10)B|\n", 42);
+	ft_printf("%%+(10)b		|%+(10)b|\n", -42);
+	ft_printf("%%+(10)B		|%+(10)B|\n", -42);
+	ft_printf("%% (10)b		|% (10)b|\n", 0);
+	ft_printf("%% (10)B		|% (10)B|\n", 0);
+	ft_printf("%% (10)b		|% (10)b|\n", 42);
+	ft_printf("%% (10)B		|% (10)B|\n", 42);
+	ft_printf("%% (10)b		|% (10)b|\n", -42);
+	ft_printf("%% (10)B		|% (10)B|\n", -42);
 
 	ft_printf("\n%%bB invalid tests\n\n");
 

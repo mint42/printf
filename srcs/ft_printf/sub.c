@@ -24,7 +24,7 @@ char	*get_flags(char *fmt, t_sub *sub)
 	return (fmt);
 }
 
-char	*get_pw(char *fmt, t_sub *sub, va_list ap)
+char	*get_wjp(char *fmt, t_sub *sub, va_list ap)
 {
 	int		*num;
 
@@ -81,7 +81,7 @@ char	*get_type(char *fmt, t_sub *sub)
 
 int		checks(char **fmt, t_sub *sub)
 {
-	if (((FLAGS & 0x6) && (!(TYPE & 0xF000) || ((FLAGS & 0x6) == 0x6))) ||
+	if (((FLAGS & 0x6) && ((BASE != 10) || ((FLAGS & 0x6) == 0x6))) ||
 		((FLAGS & 0x1) && (BASE != 8 && BASE != 16 && BASE != 2)) ||
 		((FLAGS & 0x8) && (TYPE & 0xF000E)) ||
 		((TYPE & 0x3F00000) && (TYPE & 0x5514E)))
@@ -97,8 +97,6 @@ int		checks(char **fmt, t_sub *sub)
 		FLAGS = FLAGS | 0x10;
 		WIDTH = WIDTH * -1;
 	}
-	if ((FLAGS & 0x8) && ((FLAGS & 0x10) || PREC > -1))
-		FLAGS = FLAGS ^ 0x8;
 	return (1);
 }
 
@@ -112,7 +110,7 @@ t_sub	makesub(char **fmt, va_list ap, int init)
 		return (sub);
 	++(*fmt);
 	*fmt = get_flags(*fmt, &sub);
-	*fmt = get_pw(*fmt, &sub, ap);
+	*fmt = get_wjp(*fmt, &sub, ap);
 	*fmt = get_type(*fmt, &sub);
 	if (!checks(fmt, &sub))
 		sub.s = conv_utf8_str(L"¯\\_(ツ)_/¯", sub.s);

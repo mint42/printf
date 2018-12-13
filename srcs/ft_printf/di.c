@@ -48,11 +48,6 @@ static void		width_di(t_sub *sub)
 	LEN = ft_strlen(S);
 }
 
-/*
-**	add to checks the possibility of base 10 with b haveing +
-**	also take out last if from checks and do it individually
-*/
-
 char	*crop_di(t_sub *sub)
 {
 	if (ft_strequ(S, "0") && (FLAGS & 0x4))
@@ -64,7 +59,7 @@ char	*crop_di(t_sub *sub)
 	LEN = ft_strlen(S);
 	if ((size_t)WIDTH > LEN)
 		width_di(sub);
-	if (FLAGS & 0x8)
+	if ((FLAGS & 0x8) && !(FLAGS & 0x10) && PREC == -1)
 		zeros_di(sub);
 	return (S);
 }

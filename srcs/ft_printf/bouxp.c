@@ -63,7 +63,7 @@ char	*crop_bouxp(t_sub *sub)
 	LEN = ft_strlen(S);
 	if ((size_t)WIDTH > LEN)
 		width_bouxp(sub);
-	if (FLAGS & 0x8)
+	if ((FLAGS & 0x8) && !(FLAGS & 0x10) && PREC == -1)
 		zeros_bouxp(sub);
 	if (TYPE & 0x414)
 		S = ft_strupper(S);
