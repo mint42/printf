@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 17:07:03 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/11 16:50:21 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/13 23:20:25 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void		random_tests()
 	ft_printf("%%s		|%s|\n", 0);
 	ft_printf("%%.4s	|%.4s|\n", 0);
 	ft_printf("%%u		|%u|\n", 42);
+	ft_printf("%.0%\n");
 }
 
 void		c()
@@ -53,6 +54,8 @@ void		pP()
 	
 	ft_printf("%%p		|%p|\n", &e);
 	ft_printf("%%p		|%p|\n", 0);
+	ft_printf("%%-13p	|%-13p|\n", &e);
+	printf("%%-13p	|%-13p|\n", &e);
 }
 
 void		fF()

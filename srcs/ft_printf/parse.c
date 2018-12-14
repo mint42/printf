@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/07 21:27:48 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/13 23:21:19 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 
 char	*parse_unicode(t_sub *sub, va_list ap)
 {
-	if ((TYPE == 0x40000) || (TYPE == 0x2080000))
+	if (TYPE == 0x40000 || TYPE == 0x2080000)
 	{
 		S = conv_utf8_char(va_arg(ap, wchar_t), S);
 		if (*S == '\0')
 			FLAGS = FLAGS | 0x40;
 	}
-	else if ((TYPE == 0x10000) || (TYPE == 0x2020000))
+	else if (TYPE == 0x10000 || TYPE == 0x2020000)
 	{
 		S = conv_utf8_str(va_arg(ap, wchar_t *), S);
 		if (!S)
@@ -86,7 +86,7 @@ char	*parse_bouxp(t_sub *sub, va_list ap)
 		S = ft_uitoabase((uint8_t)va_arg(ap, int), BASE);
 	else if (TYPE & 0x2000140)
 		S = ft_uitoabase(va_arg(ap, unsigned long int), BASE);
-	else if (TYPE & 0x1000000)
+	else if (TYPE & 0x1000008)
 		S = ft_uitoabase(va_arg(ap, unsigned long long int), BASE);
 	else if (TYPE & 0x200000)
 		S = ft_uitoabase(va_arg(ap, uintmax_t), BASE);

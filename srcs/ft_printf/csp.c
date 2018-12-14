@@ -6,9 +6,9 @@
 
 char	*crop_csp(t_sub *sub)
 {
-	if (((size_t)PREC < ft_strlen(S)) && (TYPE != 0x40000))
+	if (((size_t)PREC < ft_strlen(S)) && !(TYPE & 0x40002))
 		S[((FLAGS & 0x40) ? 0 : PREC)] = '\0';
-	LEN = ((TYPE & 0x80000) && FLAGS & 0x40) ? 1 : ft_strlen(S);
+	LEN = (TYPE & 0x80000 && FLAGS & 0x40) ? 1 : ft_strlen(S);
 	if ((size_t)WIDTH > LEN)
 	{
 		if ((size_t)JUST > (size_t)WIDTH - LEN)
@@ -19,13 +19,13 @@ char	*crop_csp(t_sub *sub)
 			JUST = (WIDTH - LEN) / 2;
 		else if (FLAGS & 0x20)
 			JUST = ((WIDTH - LEN) / 2) + (((WIDTH - LEN) % 2) ? 1 : 0);
-		if ((TYPE & 0xC0000) && (FLAGS & 0x40))
+		if (TYPE & 0xC0000 && FLAGS & 0x40)
 		{
-			S = ft_shift((&S), JUST, WIDTH);
+			S = ft_shift(&S, JUST, WIDTH);
 			S[JUST] = '\0';
 		}
 		else
-			S = ft_shift(&(S), JUST, WIDTH);
+			S = ft_shift(&S, JUST, WIDTH);
 		LEN = WIDTH;
 	}
 	return (S);

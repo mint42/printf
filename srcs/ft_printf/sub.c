@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/11 16:30:31 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/13 23:00:24 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,11 @@ char	*get_type(char *fmt, t_sub *sub)
 	char	*cur;
 
 	TYPE = 0;
+	BASE = 0;
 	spec = "lLhHjzcCsSdDiIbBoOuUxXpP%(";
 	if (*fmt && (cur = ft_strchr(spec, *fmt)) && (cur - spec) < 6 && ++fmt)
 		TYPE = TYPE | (1 << (25 - (cur - spec)));
-	if ((TYPE & 0x2800000) && (*fmt == 'l' || *fmt == 'h'))
+	if (TYPE & 0x2800000 && (*fmt == 'l' || *fmt == 'h'))
 		TYPE = (*fmt++ == 'l') ? TYPE ^ 0x3000000 : TYPE ^ 0xC00000;
 	if (*fmt && (cur = ft_strchr(spec, *fmt)) && (cur - spec) >= 6 && ++fmt)
 		TYPE = TYPE | (1 << (25 - (cur - spec)));
@@ -69,10 +70,10 @@ char	*get_type(char *fmt, t_sub *sub)
 		BASE = (TYPE & 0xC00) ? 2 : 10;
 	else if (TYPE & 0x33C)
 		BASE = (TYPE & 0x300) ? 8 : 16;
-	else if ((TYPE & 0x1) && (BASE = ft_atoi(fmt)) && BASE > 1 && BASE <= 36)
+	else if (TYPE & 0x1 && (BASE = ft_atoi(fmt)) && BASE > 1 && BASE <= 36)
 		while (ft_isdigit(*fmt))
 			++fmt;
-	if ((TYPE & 0x1) && *fmt == ')' && ++fmt && (*fmt == 'b' || *fmt == 'B'))
+	if (TYPE & 0x1 && *fmt == ')' && ++fmt && (*fmt == 'b' || *fmt == 'B'))
 		TYPE = (*fmt++ == 'b') ? TYPE ^ 0x801 : TYPE ^ 0x401;
 	if (!(TYPE & 0xFFFFE))
 		TYPE = 0;
@@ -81,10 +82,10 @@ char	*get_type(char *fmt, t_sub *sub)
 
 int		checks(char **fmt, t_sub *sub)
 {
-	if (((FLAGS & 0x6) && ((BASE != 10) || ((FLAGS & 0x6) == 0x6))) ||
-		((FLAGS & 0x1) && (BASE != 8 && BASE != 16 && BASE != 2)) ||
-		((FLAGS & 0x8) && (TYPE & 0xF000E)) ||
-		((TYPE & 0x3F00000) && (TYPE & 0x5514E)))
+	if ((FLAGS & 0x6 && (BASE != 10 || TYPE & 0xC0 || (FLAGS & 0x6) == 0x6)) ||
+		(FLAGS & 0x1 && (BASE != 8 && BASE != 16 && BASE != 2)) ||
+		(FLAGS & 0x8 && TYPE & 0xF000E) ||
+		(TYPE & 0x3F00000 && TYPE & 0x5514E))
 		TYPE = 0;
 	if (!TYPE)
 	{
@@ -114,11 +115,11 @@ t_sub	makesub(char **fmt, va_list ap, int init)
 	*fmt = get_type(*fmt, &sub);
 	if (!checks(fmt, &sub))
 		sub.s = conv_utf8_str(L"¯\\_(ツ)_/¯", sub.s);
-	else if ((sub.type & 0xF000) || ((sub.type & 0xC00) && (sub.base == 10)))
+	else if (sub.type & 0xF000 || (sub.type & 0xC00 && sub.base == 10))
 		sub.s = parse_di(&sub, ap);
-	else if (sub.type & 0xFFC)
+	else if (sub.type & 0x0FFC)
 		sub.s = parse_bouxp(&sub, ap);
-	else if ((sub.type & 0xA0002) && !(sub.type & 0x3F00000))
+	else if (sub.type & 0xA0002 && !(sub.type & 0x3F00000))
 		sub.s = parse_csp(&sub, ap);
 	else if (sub.type & 0xF0000)
 		sub.s = parse_unicode(&sub, ap);

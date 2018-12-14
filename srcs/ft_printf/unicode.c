@@ -9,7 +9,7 @@ static void		precision_unicode(t_sub *sub)
 	int		i;
 
 	i = 0;
-	if ((TYPE & 0x10000) && (FLAGS & 0x40))
+	if (TYPE & 0x10000 && FLAGS & 0x40)
 		S[0] = '\0';
 	while(S[i] != '\0' && PREC)
 	{
@@ -38,13 +38,13 @@ static void		width_unicode(t_sub *sub)
 		JUST = (WIDTH - LEN) / 2;
 	else if (FLAGS & 0x20)
 		JUST = ((WIDTH - LEN) / 2) + (((WIDTH - LEN) % 2) ? 1 : 0);
-	if ((TYPE & 0xC0000) && (FLAGS & 0x40))
+	if (TYPE & 0xC0000 && FLAGS & 0x40)
 	{
-		S = ft_shift((&S), JUST, WIDTH);
+		S = ft_shift(&S, JUST, WIDTH);
 		S[JUST] = '\0';
 	}
 	else
-		S = ft_shift(&(S), JUST, WIDTH);
+		S = ft_shift(&S, JUST, WIDTH);
 	LEN = WIDTH;
 }
 
@@ -52,7 +52,7 @@ char	*crop_unicode(t_sub *sub)
 {
 	if (PREC >= 0 && !(TYPE & 0x40000))
 		precision_unicode(sub);
-	LEN = ((TYPE & 0x40000) && (FLAGS & 0x40)) ? 1 : ft_strlen(S);
+	LEN = (TYPE & 0x40000 && FLAGS & 0x40) ? 1 : ft_strlen(S);
 	if ((size_t)WIDTH > LEN)
 		width_unicode(sub);
 	return (S);
