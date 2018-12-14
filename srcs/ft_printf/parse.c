@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/14 00:56:44 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/14 01:09:06 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,6 @@ char	*parse_csp(t_sub *sub, va_list ap)
 	}
 	return ((S) ? crop_csp(sub) : S);
 }
-
-/*
-**	char	*parse_fae(t_sub *sub, va_list ap)
-**	{
-**		if (TYPE & float);
-**			S = ft_ftoa((float)va_arg(ap, double));
-**		else if (TYPE & double);
-**			S = ft_ftoa(va_arg(ap, double));
-**		else if (TYPE & long double);
-**			S = ft_ftoa((float)va_arg(ap, long double));
-**		return ((S) ? crop_fae(sub) : S);
-**	}
-*/
 
 char	*parse_di(t_sub *sub, va_list ap)
 {
