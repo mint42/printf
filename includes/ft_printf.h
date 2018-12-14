@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/11 15:15:44 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/14 01:05:21 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@
 
 
 /*
-** flag bits:							^- 0+ #
-** type bits:  lL hHjz cCsS dDiI bBoO uUxX pP%(
+** flag bits:                                  ^- 0+ #
+** type bits:         lL hHjz cCsS dDiI bBoO uUxX pP%(
+** type bits:  lLhH jzaA eEfF cCsS dDiI bBoO uUxX pP%(
 */
 
 # define VALID_FMTS "cCsSpPdDiIbBoOuUxX%lLhHjz1234567890.+- #*()"
@@ -60,7 +61,7 @@ int				ft_printfd(int fd, const char *fmt, ...);
 t_sub			makesub(char **fmt, va_list ap, int init);
 int				check_flags(char **fmt, t_sub *sub);
 char			*get_flags(char *fmt, t_sub *sub);
-char			*get_pw(char *fmt, t_sub *sub, va_list ap);
+char			*get_wjp(char *fmt, t_sub *sub, va_list ap);
 char			*get_type(char *fmt, t_sub *sub);
 
 char			*parse_csp(t_sub *sub, va_list ap);
