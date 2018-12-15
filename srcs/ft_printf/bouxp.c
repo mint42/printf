@@ -1,8 +1,14 @@
-/*
-**	HEADER bouxp
-**	
-**	add base 10 to di handling
-*/
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bouxp.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/12/14 21:30:08 by rreedy            #+#    #+#             */
+/*   Updated: 2018/12/14 21:40:17 by rreedy           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_printf.h"
 
@@ -52,7 +58,7 @@ static void		width_bouxp(t_sub *sub)
 	LEN = ft_strlen(S);
 }
 
-char	*crop_bouxp(t_sub *sub)
+char			*crop_bouxp(t_sub *sub)
 {
 	if (ft_strequ(S, "0") && FLAGS & 0x1)
 		FLAGS = FLAGS & 0x28;

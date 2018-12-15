@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/14 01:09:14 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/14 21:37:08 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*get_wjp(char *fmt, t_sub *sub, va_list ap)
 
 	PREC = -1;
 	WIDTH = 0;
-	JUST= 0;
+	JUST = 0;
 	num = (*fmt == '.' && ++fmt) ? &PREC : &WIDTH;
 	if (!ft_isdigit(*fmt) && *fmt != '.' && *fmt != '*')
 		return (fmt);
