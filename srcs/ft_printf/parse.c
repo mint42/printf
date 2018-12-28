@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/27 23:50:51 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/28 00:37:25 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	*parse_bouxp(t_sub *sub, va_list ap)
 		S = ft_uitoabase((uint8_t)va_arg(ap, int), BASE);
 	else if (TYPE & 0x2000140)
 		S = ft_uitoabase(va_arg(ap, unsigned long int), BASE);
-	else if (TYPE & 0x1000008)
+	else if (TYPE & 0x100000C)
 		S = ft_uitoabase(va_arg(ap, unsigned long long int), BASE);
 	else if (TYPE & 0x200000)
 		S = ft_uitoabase(va_arg(ap, uintmax_t), BASE);

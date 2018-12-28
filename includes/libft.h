@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:16:02 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/09 00:18:08 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/28 00:18:50 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define EXPONENT_BIAS 1023
+typedef	union		s_double
+{
+	double			d;
+	long int		l;
+}					t_double;
 
 typedef struct		s_list
 {
@@ -27,10 +31,12 @@ typedef struct		s_list
 
 int					ft_atoi(const char *str);
 void				ft_bzero(void *s, size_t len);
+int					ft_ceiling(double n);
 char				*ft_crop(char **s, int in, size_t len);
 char				*ft_ctoa(int c);
 int					ft_cw(const char *s, int c);
-char				*ft_ftoa(float n, int precision);
+int					ft_floor(double n);
+char				*ft_ftoa(double n, int precision);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);
@@ -58,6 +64,7 @@ void				*ft_memmove(void *dst, const void *src, size_t len);
 void				*ft_memset(void *ptr, int c, size_t len);
 void				*ft_memsec(void *ptr, int c, size_t len);
 size_t				ft_numlen(long long int n);
+size_t				ft_numlen_sign(long long int n);
 void				ft_putchar(char c);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putendl(const char *s);
@@ -66,6 +73,7 @@ void				ft_putnbr(int n);
 void				ft_putnbr_fd(int n, int fd);
 void				ft_putstr(const char *s);
 void				ft_putstr_fd(const char *s, int fd);
+long				ft_round(double n);
 char				*ft_shift(char **s, int i, size_t size);
 char				*ft_strcat(char *s1, const char *s2);
 char				*ft_strchr(const char *s, int c);
@@ -101,10 +109,7 @@ char				*ft_strupper(char *s);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
 char				*ft_uitoabase(unsigned long long int n, int base);
-
-/*
-** unicode.c
-*/
+size_t				ft_unumlen(unsigned long long int n);
 
 char				*conv_utf8_char(wchar_t wc, char *s);
 char				*conv_utf8_str(wchar_t *ws, char *s);

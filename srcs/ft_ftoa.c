@@ -6,53 +6,107 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 22:28:49 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/07 22:42:23 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/28 00:20:48 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "ft_printf.h"
+#define SIGFIGS_I (f.len_i + f.trail_zeros)
+#define SIGFIGS_F (f.len_f + f.lead_zeros)
 
-char	*ft_ftoa(float n, int precision)
+typedef	struct	s_fp
 {
-	char	*s;
-	char	*cur;
-	int		len;
+	long		integer;
+	long		fraction;
+	int			len_i;
+	int			len_f;
+	int			lead_zeros;
+	int			trail_zeros;
+}				t_fp;
 
-	len = ft_numlen((long long int)n);
-	s = ft_strinit(' ', len + precision + 1);
-	cur = s;
-	cur[len] = '.';
-	ft_strncpy(s, ft_itoabase((long long int)n, 10), len);
-	if (n < 0)
-		n = n * -1;
-	n = n - (long long int)n;
-	cur = cur + len + 1;
-	while (precision--)
+static void		ft_nbrcpy_p(long n, int precision, char *s)
+{
+	if (precision > 1)
+	{
+		if (n >= 10 || n <= -10)
+			ft_nbrcpy_p(n / 10, precision - 1, s - 1);
+		else
+			ft_nbrcpy_p(0, precision - 1, s - 1);
+	}
+	*s = ((n % 10) * (n < 0 ? -1 : 1)) + '0';
+}
+
+static t_fp		get_parts(double n, int sign, int precision)
+{
+	t_fp	f;
+
+	f.len_f = 0;
+	f.lead_zeros = 0;
+	f.trail_zeros = 0;
+	while (n >= (1UL << 63))
+	{
+		n = n / 10;
+		++(f.trail_zeros);
+	}
+	f.integer = (f.trail_zeros) ? ft_round(n) : (long)n;
+	f.len_i = ft_numlen(f.integer);
+	while (SIGFIGS_F < precision && (f.len_f + SIGFIGS_I) < 17)
 	{
 		n = n * 10;
-		*cur = (int)n + 48;
-		n = n - (int)n;
-		++cur;
+		if ((long)n || (SIGFIGS_F == precision - 1 && ft_round(n)))
+			++(f.len_f);
+		else
+			++(f.lead_zeros);
 	}
+	f.fraction = ft_round(n);
+	f.len_i = f.len_i + sign;
+	return (f);
+}
+
+static char		*make_string(t_fp f, int sign, int precision)
+{
+	char	*s;
+
+	s = ft_strnew(SIGFIGS_I + 1 + precision);
+	if (sign)
+	{
+		*s = '-';
+		ft_nbrcpy_p(f.integer, f.len_i - 1, s + f.len_i - 1);
+	}
+	else
+		ft_nbrcpy_p(f.integer, f.len_i, s + f.len_i - 1);
+	if (f.trail_zeros)
+		ft_nbrcpy_p(0, f.trail_zeros, s + SIGFIGS_I - 1);
+	if (precision)
+		s[SIGFIGS_I] = '.';
+	if (f.lead_zeros)
+		ft_nbrcpy_p(0, f.lead_zeros, s + SIGFIGS_I + f.lead_zeros);
+	if (f.len_f)
+		ft_nbrcpy_p(f.fraction, f.len_f, s + SIGFIGS_I + SIGFIGS_F);
+	if (precision > SIGFIGS_F)
+		ft_nbrcpy_p(0, precision - SIGFIGS_F, s + SIGFIGS_I + precision);
 	return (s);
 }
 
-/*
-**	char	*ft_ftoa(double n, int precision)
-**	{
-**		int		sign;
-**		int		exponent;
-**		int		intpart;
-**		int		decimalpart;
-**		long	significand;
-**
-**		sign = (n >> 63) ? -1 : 1;
-**		exponent = (n >> 52) & (0x7FF);
-**		exponent = (exponent) - EXPONENT_BIAS;
-**		significand = n & (0x000FFFFFFFFFFFFF);
-**		significand = n | (0x1 << 53);
-**		intpart = (exponent >= 0) ? significand >> (52 - exponent) : 0;
-**		printf("int: |%d|\n", intpart);
-**	}
-*/
+char			*ft_ftoa(double n, int precision)
+{
+	t_double	doub;
+	t_fp		f;
+	int			sign;
+	int			exponent;
+	long		significand;
+
+	doub.d = n;
+	sign = (doub.l >> 63) & 1;
+	exponent = ((doub.l >> 52) & 0x7ff);
+	significand = (doub.l & 0x000fffffffffffff);
+	if (exponent == 0x7ff)
+	{
+		if (significand)
+			return (ft_strdup("nan"));
+		else
+			return (ft_strdup((sign) ? "-inf" : "inf"));
+	}
+	f = get_parts(n, sign, precision);
+	return (make_string(f, sign, precision));
+}

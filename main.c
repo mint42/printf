@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 17:07:03 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/14 23:11:23 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/28 00:25:49 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,17 @@ void		pP()
 	ft_printf("%%p		|%p|\n", &e);
 	ft_printf("%%p		|%p|\n", 0);
 	ft_printf("%%-13p	|%-13p|\n", &e);
+
+	ft_printf("%%P		|%P|\n", &e);
+	ft_printf("%%P		|%P|\n", 0);
+	ft_printf("%%-13P	|%-13P|\n", &e);
 }
 
 void		fF()
 {
 	ft_printf("\n%%f tests\n\n");
 
-	float	n;
+	double	n;
 
 	n = -123.4567;
 	ft_putstr(ft_ftoa(n, 8));

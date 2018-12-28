@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_numlen.c                                        :+:      :+:    :+:   */
+/*   ft_pow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/06 14:36:37 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/28 00:24:10 by rreedy           ###   ########.fr       */
+/*   Created: 2018/12/18 17:17:04 by rreedy            #+#    #+#             */
+/*   Updated: 2018/12/18 17:26:08 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t		ft_numlen(long long int n)
+long	ft_pow(int n, int exponent)
 {
-	size_t	len;
+	long	power;
 
-	len = 1;
-	while (n >= 10 || n <= -10)
+	power = 1;
+	while (exponent)
 	{
-		n = n / 10;
-		++len;
+		power = power * n;
+		--exponent;
 	}
-	return (len);
+	return (power);
 }

@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_numlen.c                                        :+:      :+:    :+:   */
+/*   ft_round.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/06 14:36:37 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/28 00:24:10 by rreedy           ###   ########.fr       */
+/*   Created: 2018/12/27 23:15:40 by rreedy            #+#    #+#             */
+/*   Updated: 2018/12/28 00:12:01 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t		ft_numlen(long long int n)
+long	ft_round(double n)
 {
-	size_t	len;
+	long	rn;
 
-	len = 1;
-	while (n >= 10 || n <= -10)
+	if (n >= 0)
 	{
-		n = n / 10;
-		++len;
+		if ((n - (long)n) * 10 > 5)
+			rn = (long)n + 1;
+		else
+			rn = (long)n;
 	}
-	return (len);
+	else
+	{
+		if ((n - (long)n) * -10 > 5)
+			rn = (long)n - 1;
+		else
+			rn = (long)n;
+	}
+	return (rn);
 }

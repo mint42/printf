@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_numlen.c                                        :+:      :+:    :+:   */
+/*   ft_ceiling.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/06 14:36:37 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/28 00:24:10 by rreedy           ###   ########.fr       */
+/*   Created: 2018/12/18 17:25:36 by rreedy            #+#    #+#             */
+/*   Updated: 2018/12/27 23:21:51 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t		ft_numlen(long long int n)
+int		ft_ceiling(double n)
 {
-	size_t	len;
+	int	rn;
 
-	len = 1;
-	while (n >= 10 || n <= -10)
-	{
-		n = n / 10;
-		++len;
-	}
-	return (len);
+	rn = (int)n;
+	if (rn >= 0 && rn < n)
+		++rn;
+	else if (rn < 0 && rn > n)
+		--rn;
+	return (rn);
 }

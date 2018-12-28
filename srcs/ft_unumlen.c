@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_numlen.c                                        :+:      :+:    :+:   */
+/*   ft_unumlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/06 14:36:37 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/28 00:24:10 by rreedy           ###   ########.fr       */
+/*   Created: 2018/12/27 23:43:51 by rreedy            #+#    #+#             */
+/*   Updated: 2018/12/27 23:44:34 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t		ft_numlen(long long int n)
+size_t		ft_unumlen(unsigned long long int n)
 {
 	size_t	len;
 
 	len = 1;
-	while (n >= 10 || n <= -10)
+	while (n >= 10)
 	{
 		n = n / 10;
 		++len;
