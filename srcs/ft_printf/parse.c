@@ -6,14 +6,11 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/14 01:11:50 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/27 23:50:51 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-// look for types with mods in checks
-
 
 char	*parse_unicode(t_sub *sub, va_list ap)
 {
