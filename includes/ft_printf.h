@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/14 21:41:23 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/29 02:19:55 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@
 # define JUST sub->j
 # define LEN sub->len
 
-typedef struct	s_sub
+typedef struct		s_sub
 {
-	char		*s;
-	int			flags;
-	int			type;
-	int			base;
-	int			p;
-	int			w;
-	int			j;
-	size_t		len;
-}				t_sub;
+	char			*s;
+	unsigned int	flags;
+	unsigned int	type;
+	unsigned int	base;
+	int				p;
+	int				w;
+	int				j;
+	size_t			len;
+}					t_sub;
 
 char			*clean(char *s, t_sub sub, char **fmt, size_t *slen);
 int				ft_printf(const char *fmt, ...);
