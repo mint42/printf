@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/27 23:50:33 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/29 02:41:41 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,21 @@ char	*get_wjp(char *fmt, t_sub *sub, va_list ap)
 	return (fmt);
 }
 
+/*
+**	spec = "lLhHjzcCsSdDiIbBoOuUxXpP%(";
+**	spec = "lLhHjzaAeEfFcCsSdDiIbBoOuUxXpP%(";
+**
+**	if (TYPE & 0x2800000 && (*fmt == 'l' || *fmt == 'h'))
+**		TYPE = (*fmt++ == 'l') ? TYPE ^ 0x3000000 : TYPE ^ 0xC00000;
+**	if (TYPE & 0xA0000000 && (*fmt == 'l' || *fmt == 'h'))
+**		TYPE = (*fmt++ == 'l') ? TYPE ^ 0xC0000000 : TYPE ^ 0x30000000;
+**
+**	if (!(TYPE & 0xFFFFE))
+**	if (!(TYPE & 0x3FFFFFE))
+**
+**	25 -> 31
+*/
+
 char	*get_type(char *fmt, t_sub *sub)
 {
 	char	*spec;
@@ -59,13 +74,13 @@ char	*get_type(char *fmt, t_sub *sub)
 
 	TYPE = 0;
 	BASE = 0;
-	spec = "lLhHjzcCsSdDiIbBoOuUxXpP%(";
+	spec = "lLhHjzaAeEfFcCsSdDiIbBoOuUxXpP%(";
 	if (*fmt && (cur = ft_strchr(spec, *fmt)) && (cur - spec) < 6 && ++fmt)
-		TYPE = TYPE | (1 << (25 - (cur - spec)));
-	if (TYPE & 0x2800000 && (*fmt == 'l' || *fmt == 'h'))
-		TYPE = (*fmt++ == 'l') ? TYPE ^ 0x3000000 : TYPE ^ 0xC00000;
+		TYPE = TYPE | (1 << (31 - (cur - spec)));
+	if (TYPE & 0xA0000000 && (*fmt == 'l' || *fmt == 'h'))
+		TYPE = (*fmt++ == 'l') ? TYPE ^ 0xC0000000 : TYPE ^ 0x30000000;
 	if (*fmt && (cur = ft_strchr(spec, *fmt)) && (cur - spec) >= 6 && ++fmt)
-		TYPE = TYPE | (1 << (25 - (cur - spec)));
+		TYPE = TYPE | (1 << (31 - (cur - spec)));
 	if (TYPE & 0xFCC0)
 		BASE = (TYPE & 0xC00) ? 2 : 10;
 	else if (TYPE & 0x33C)
@@ -75,17 +90,22 @@ char	*get_type(char *fmt, t_sub *sub)
 			++fmt;
 	if (TYPE & 0x1 && *fmt == ')' && ++fmt && (*fmt == 'b' || *fmt == 'B'))
 		TYPE = (*fmt++ == 'b') ? TYPE ^ 0x801 : TYPE ^ 0x401;
-	if (!(TYPE & 0xFFFFE))
+	if (!(TYPE & 0x3FFFFFE))
 		TYPE = 0;
 	return (fmt);
 }
+
+/*
+**	(TYPE & 0x3F00000 && TYPE & 0x5514E))
+**	(TYPE & 0xF3000000 && TYPE & 0x5514E))
+*/
 
 int		checks(char **fmt, t_sub *sub)
 {
 	if ((FLAGS & 0x6 && (BASE != 10 || TYPE & 0xC0 || (FLAGS & 0x6) == 0x6)) ||
 		(FLAGS & 0x1 && (BASE != 8 && BASE != 16 && BASE != 2)) ||
 		(FLAGS & 0x8 && TYPE & 0xF000E) ||
-		(TYPE & 0x3F00000 && TYPE & 0x5514E))
+		(TYPE & 0xF3000000 && TYPE & 0x5514E))
 		TYPE = 0;
 	if (!TYPE)
 	{
@@ -100,6 +120,11 @@ int		checks(char **fmt, t_sub *sub)
 	}
 	return (1);
 }
+
+/*
+**	else if (sub.type & 0xA0002 && !(sub.type & 0x3F00000))
+**	else if (sub.type & 0xA0002 && !(sub.type & 0xFC000000))
+*/
 
 t_sub	makesub(char **fmt, va_list ap, int init)
 {
@@ -119,11 +144,11 @@ t_sub	makesub(char **fmt, va_list ap, int init)
 		sub.s = parse_di(&sub, ap);
 	else if (sub.type & 0x0FFC)
 		sub.s = parse_bouxp(&sub, ap);
-	else if (sub.type & 0xA0002 && !(sub.type & 0x3F00000))
+	else if (sub.type & 0xA0002 && !(sub.type & 0xFC000000))
 		sub.s = parse_csp(&sub, ap);
 	else if (sub.type & 0xF0000)
 		sub.s = parse_unicode(&sub, ap);
-//	else if (sub.type & float)
+//	else if (sub.type & 0x3F00000)
 //		sub.s = parse_fae(&sub, ap);
 	if (!sub.s)
 		sub.s = conv_utf8_str(L"¯\\_(ツ)_/¯", sub.s);
