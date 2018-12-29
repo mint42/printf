@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/29 02:19:55 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/29 04:14:02 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@
 /*
 ** flag bits:                                  ^- 0+ #
 ** type bits:         lL hHjz cCsS dDiI bBoO uUxX pP%(
-** type bits:  lLhH jzaA eEfF cCsS dDiI bBoO uUxX pP%(
+** type bits:  lLhH jzgG eEfF cCsS dDiI bBoO uUxX pP%(
 */
 
-# define VALID_FMTS "cCsSpPdDiIbBoOuUxX%lLhHjz1234567890.+- #*()"
+# define VALID_FMTS "gGeEfFcCsSpPdDiIbBoOuUxX%lLhHjz1234567890.+- #*()"
 
 # define S sub->s
 # define FLAGS sub->flags
@@ -64,11 +64,13 @@ char			*get_type(char *fmt, t_sub *sub);
 
 char			*parse_csp(t_sub *sub, va_list ap);
 char			*parse_di(t_sub *sub, va_list ap);
+char			*parse_efg(t_sub *sub, va_list ap);
 char			*parse_bouxp(t_sub *sub, va_list ap);
 char			*parse_unicode(t_sub *sub, va_list ap);
 
 char			*crop_di(t_sub *sub);
 char			*crop_bouxp(t_sub *sub);
+char			*crop_efg(t_sub *sub);
 char			*crop_csp(t_sub *sub);
 char			*crop_unicode(t_sub *sub);
 

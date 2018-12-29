@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 17:21:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/29 02:54:51 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/29 04:08:41 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*get_type(char *fmt, t_sub *sub)
 
 	TYPE = 0;
 	BASE = 0;
-	spec = "lLhHjzaAeEfFcCsSdDiIbBoOuUxXpP%(";
+	spec = "lLhHjzgGeEfFcCsSdDiIbBoOuUxXpP%(";
 	if (*fmt && (cur = ft_strchr(spec, *fmt)) && (cur - spec) < 6 && ++fmt)
 		TYPE = TYPE | (1 << (31 - (cur - spec)));
 	if (TYPE & 0xA0000000 && (*fmt == 'l' || *fmt == 'h'))
@@ -124,7 +124,7 @@ t_sub	makesub(char **fmt, va_list ap, int init)
 	else if (sub.type & 0xF0000)
 		sub.s = parse_unicode(&sub, ap);
 //	else if (sub.type & 0x3F00000)
-//		sub.s = parse_fae(&sub, ap);
+//		sub.s = parse_efg(&sub, ap);
 	if (!sub.s)
 		sub.s = conv_utf8_str(L"¯\\_(ツ)_/¯", sub.s);
 	sub.len = (!sub.type) ? 13 : sub.len;
