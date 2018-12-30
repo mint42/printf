@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/29 04:09:17 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/29 21:54:34 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ char	*parse_csp(t_sub *sub, va_list ap)
 
 char	*parse_efg(t_sub *sub, va_list ap)
 {
-	if (PREC== -1)
-		PREC= 6;
+	if (PREC == -1)
+		PREC = 6;
 	if (TYPE == 0x200000 || TYPE == 0x100000)
 		S = ft_ftoa((float)va_arg(ap, double), PREC);
-	else if (TYPE == 0x80020000 || TYPE == 0x80010000)
+	else if (TYPE == 0x80200000 || TYPE == 0x80100000)
 		S = ft_ftoa(va_arg(ap, double), PREC);
-	else if (TYPE == 0x40020000 || TYPE == 0x40010000)
+	else if (TYPE == 0x40200000 || TYPE == 0x40100000)
 		S = ft_ftoa((double)va_arg(ap, long double), PREC);
 	return ((S) ? crop_efg(sub) : S);
 }
@@ -105,4 +105,19 @@ char	*parse_bouxp(t_sub *sub, va_list ap)
 	else if (!(TYPE & 0xFC000000))
 		S = ft_uitoabase(va_arg(ap, unsigned int), BASE);
 	return ((S) ? crop_bouxp(sub) : S);
+}
+
+char	*parse(t_sub *sub, va_list ap)
+{
+	if (TYPE & 0xF000 || (TYPE & 0xC00 && BASE == 10))
+		S = parse_di(sub, ap);
+	else if (TYPE & 0x0FFC)
+		S = parse_bouxp(sub, ap);
+	else if (TYPE & 0xA0002 && !(TYPE & 0xFC000000))
+		S = parse_csp(sub, ap);
+	else if (TYPE & 0xF0000)
+		S = parse_unicode(sub, ap);
+	else if (TYPE & 0x3F00000)
+		S = parse_efg(sub, ap);
+	return (S);
 }

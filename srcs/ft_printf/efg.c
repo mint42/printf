@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 02:57:08 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/29 04:06:11 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/29 20:02:45 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,9 @@ static void		zeros_efg(t_sub *sub)
 
 static void		flags_efg(t_sub *sub)
 {
-	if (TYPE & 0xF00000)
-	{
-		S = ft_shift(&S, 1, ft_strlen(S) + 1);
-		if (FLAGS & 0x4)
-			S[0] = '+';
-	}
-	else
-	{
-		S = ft_shift(&S, 2, ft_strlen(S) + 2);
-		S[1] = 'x';
-		S[0] = '0';
-	}
+	S = ft_shift(&S, 1, ft_strlen(S) + 1);
+	if (FLAGS & 0x4)
+		S[0] = '+';
 }
 
 static void		width_efg(t_sub *sub)
@@ -53,7 +44,7 @@ static void		width_efg(t_sub *sub)
 
 char			*crop_efg(t_sub *sub)
 {
-	if (FLAGS & 0x1)
+	if (FLAGS & 0x6 && S[0] != '-')
 		flags_efg(sub);
 	LEN = ft_strlen(S);
 	if ((size_t)WIDTH > LEN)
