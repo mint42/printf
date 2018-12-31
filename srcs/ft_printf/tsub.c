@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 21:04:22 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/29 22:20:28 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/31 04:08:26 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static char	*get_sub(char *fmt, t_sub *sub, va_list ap)
 	return (fmt);
 }
 
-t_sub	make_tsub(char **fmt, va_list ap, int init)
+t_sub		make_tsub(char **fmt, va_list ap, int init)
 {
 	t_sub	sub;
 

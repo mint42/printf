@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ftoa.c                                          :+:      :+:    :+:   */
+/*   ft_ftosn.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/07 22:28:49 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/31 04:06:39 by rreedy           ###   ########.fr       */
+/*   Created: 2018/12/31 04:19:45 by rreedy            #+#    #+#             */
+/*   Updated: 2018/12/31 06:56:32 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,39 @@ static char		*make_string(t_fp f, int sign, int precision)
 {
 	char	*s;
 
-	s = ft_strnew(SIGFIGS_I + 1 + precision);
+	if (integer)
+		s = ft_strnew(precision + sign + 4 + (ft_numlen(SIGFIGS_I - sign - 1) + 111111);
+	else
+		s = ft_strnew(precision + sign + 5 + ft_numlen(f.lead_zeros + 1));
+	if (sign)
+		*s = '-';
+	if (precision)
+		s[sign + 1] = '.';
+	s[sign + 2] = '+';
+	s[sign + 3] = 'e';
+	if (f.integer)
+	{
+		ft_nbrcpy_p(f.integer, 1, s + sign);
+		f.integer = f.integer % ft_pow(10, f.len_i - sign - 1),
+		ft_nbrcpy_p(f.integer, precision, s + sign + 3); 
+		if (precision > SIGFIGS_I - sign - 1)
+			ft_nbrcpy_p(f.fraction, precision - SIGFIGS_I - sign - 1, s + precision + 2 + sign);
+		ft_nbrcpy_p(SIGFIGS_I - sign - 1, ft_numlen(SIGFIGS_I - sign - 1), s + ft_strlen(s));
+		return (s);
+	}
+	s[sign + 5 + precision] = '-';
+	ft_nbrcpy_p(f.fraction, precision, s + sign + 5 + f.lead_zeros);
+	ft_nbrcpy_p(f.lead_zeros + 1, ft_numlen(f.lead_zeros + 1), s + precision + 5);
+	return (s);
+}
+static char		*make_string(t_fp f, int sign, int precision)
+{
+	char	*s;
+	int		i;
+
+	i = (sign) ? 1 : 0;
+
+	s = ft_strinit('0', SIGFIGS_I + 1 + precision);
 	if (sign)
 	{
 		*s = '-';
@@ -63,10 +95,10 @@ static char		*make_string(t_fp f, int sign, int precision)
 	}
 	else
 		ft_nbrcpy_p(f.integer, f.len_i, s + f.len_i - 1);
-	if (f.trail_zeros)
-		ft_nbrcpy_p(0, f.trail_zeros, s + SIGFIGS_I - 1);
 	if (precision)
 		s[SIGFIGS_I] = '.';
+	if (f.trail_zeros)
+		ft_nbrcpy_p(0, f.trail_zeros, s + SIGFIGS_I - 1);
 	if (f.lead_zeros)
 		ft_nbrcpy_p(0, f.lead_zeros, s + SIGFIGS_I + f.lead_zeros);
 	if (f.len_f)

@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 17:07:03 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/29 22:37:09 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/31 04:25:12 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void			display_all()
 
 void		random_tests()
 {
+	ft_printf("%%lls	|%lls|\n", "string");
 	ft_printf("%%   %%	|%   %|\n");
 	ft_printf("%%   d	|%   d|\n", 42);
 	ft_printf("%%s		|%s|\n", 0);
@@ -218,11 +219,13 @@ void		fF()
 	ft_printf("%%+f		|%+f|\n", -123.456);
 	// width and justification tests
 	ft_printf("\nWidth and Justification tests\n\n");
-	ft_printf("%%15f	|%15f|\n", 123.456);
-	ft_printf("%%-15f	|%-15f|\n", 123.456);
-	ft_printf("%%^15f	|%^15f|\n", 123.456);
-	ft_printf("%%^-15f	|%^-15f|\n", 123.456);
-	printf("pf%%15f	|%15f|\n", 123.456);
+	ft_printf("%%15f		|%15f|\n", 123.456);
+	ft_printf("%%-15f		|%-15f|\n", 123.456);
+	ft_printf("%%^15f		|%^15f|\n", 123.456);
+	ft_printf("%%^-15f		|%^-15f|\n", 123.456);
+	ft_printf("%%15:1f		|%15:1f|\n", 123.456);
+	ft_printf("%%-15:1f		|%-15:1f|\n", 123.456);
+	printf("pf%%15f			|%15f|\n", 123.456);
 }
 
 void		CS()

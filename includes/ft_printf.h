@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/29 21:13:47 by rreedy           ###   ########.fr       */
+/*   Updated: 2018/12/31 04:11:11 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,19 @@ typedef struct		s_sub
 	size_t			len;
 }					t_sub;
 
-char			*clean(char *s, t_sub sub, char **fmt, size_t *slen);
-int				ft_printf(const char *fmt, ...);
-int				ft_sprintf(char **s, const char *fmt, ...);
-int				ft_printfd(int fd, const char *fmt, ...);
+char				*clean(char *s, t_sub sub, char **fmt, size_t *slen);
+int					ft_printf(const char *fmt, ...);
+int					ft_sprintf(char **s, const char *fmt, ...);
+int					ft_printfd(int fd, const char *fmt, ...);
 
-t_sub			make_tsub(char **fmt, va_list ap, int init);
+t_sub				make_tsub(char **fmt, va_list ap, int init);
 
-char			*parse(t_sub *sub, va_list ap);
+char				*parse(t_sub *sub, va_list ap);
 
-char			*crop_di(t_sub *sub);
-char			*crop_bouxp(t_sub *sub);
-char			*crop_efg(t_sub *sub);
-char			*crop_csp(t_sub *sub);
-char			*crop_unicode(t_sub *sub);
+char				*crop_di(t_sub *sub);
+char				*crop_bouxp(t_sub *sub);
+char				*crop_efg(t_sub *sub);
+char				*crop_csp(t_sub *sub);
+char				*crop_unicode(t_sub *sub);
 
 #endif
