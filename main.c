@@ -30,15 +30,26 @@ void			display_all()
 
 void		random_tests()
 {
-	ft_printf("%%lls	|%lls|\n", "string");
-	ft_printf("%%   %%	|%   %|\n");
-	ft_printf("%%   d	|%   d|\n", 42);
-	ft_printf("%%s		|%s|\n", 0);
-	ft_printf("%%.4s	|%.4s|\n", 0);
-	ft_printf("%%u		|%u|\n", 42);
-	ft_printf("%%c		|%c|\n", 0);
-	ft_printf("%%c		|%c|\n", -0);
-	ft_printf("%%d		|%d|\n", -0);
+	printf("%%e		|%e|\n", 12.75);
+	printf("%%e		|%e|\n", -12.75);
+	printf("%%e		|%e|\n", (double)-1234657890000);
+	printf("%%e		|%e|\n", .001275);
+	printf("%%e		|%e|\n", -.001275);
+	printf("%%e		|%e|\n", -.000000000000000001275);
+	printf("%%.0e		|%.0e|\n", 12.345);
+	printf("%%.2e		|%.2e|\n", 12.345);
+	printf("%%e		|%e|\n", (double)0);
+	printf("%%e		|%e|\n", (double)1);
+	printf("%%e		|%e|\n", (double)-1);
+//	ft_printf("%%lls	|%lls|\n", "string");
+//	ft_printf("%%   %%	|%   %|\n");
+//	ft_printf("%%   d	|%   d|\n", 42);
+//	ft_printf("%%s		|%s|\n", 0);
+//	ft_printf("%%.4s	|%.4s|\n", 0);
+//	ft_printf("%%u		|%u|\n", 42);
+//	ft_printf("%%c		|%c|\n", 0);
+//	ft_printf("%%c		|%c|\n", -0);
+//	ft_printf("%%d		|%d|\n", -0);
 }
 
 void		c()
