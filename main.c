@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 17:07:03 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/31 04:25:12 by rreedy           ###   ########.fr       */
+/*   Updated: 2019/01/02 22:47:56 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "ft_printf.h"
 #include "libft.h"
 
-# define TESTS 12
+# define TESTS 13
 
 static void		jump(int index);
 void			display_menu();
@@ -237,6 +237,23 @@ void		fF()
 	ft_printf("%%15:1f		|%15:1f|\n", 123.456);
 	ft_printf("%%-15:1f		|%-15:1f|\n", 123.456);
 	printf("pf%%15f			|%15f|\n", 123.456);
+}
+
+void		eE()
+{
+	ft_printf("%%e		|%e|\n", 12.000034567);
+	ft_printf("%%e		|%e|\n", 1234567000.1234);
+	ft_printf("%%e		|%e|\n", 10000000000000000000.1234);
+	ft_printf("%%e		|%e|\n", 12.34567);
+	ft_printf("%%e		|%e|\n", 123.4567);
+	ft_printf("%%e		|%e|\n", 1234.567);
+	ft_printf("%%e		|%e|\n", -12.34567);
+	ft_printf("%%e		|%e|\n", -123.4567);
+	ft_printf("%%e		|%e|\n", -1234.567);
+//	ft_printf("%%e		|%e|\n", 12.);
+//	ft_printf("%%e		|%e|\n", 12.345);
+//	ft_printf("%%e		|%e|\n", 12.345);
+//	ft_printf("%%e		|%e|\n", 12.345);
 }
 
 void		CS()
@@ -510,16 +527,17 @@ void		display_menu()
 	ft_printf("\nPlease Choose a Valid Argument:\n\n");
 	ft_printf("1 ->		Check All\n");
 	ft_printf("2 ->		Type %%f %%F\n");
-	ft_printf("3 ->		Type %%b %%B\n");
-	ft_printf("4 ->		Type %%C %%S\n");
-	ft_printf("5 ->		Type %%c\n");
-	ft_printf("6 ->		Type %%p %%P\n");
-	ft_printf("7 ->		Justify\n");
-	ft_printf("8 ->		Middle Justify\n");
-	ft_printf("9 ->		Plus and Space flags\n");
-	ft_printf("10 ->	Leaks\n");
-	ft_printf("11 ->	Undefined Behavior\n");
-	ft_printf("12 ->	random\n");
+	ft_printf("3 ->		Type %%e %%E\n");
+	ft_printf("4 ->		Type %%b %%B\n");
+	ft_printf("5 ->		Type %%C %%S\n");
+	ft_printf("6 ->		Type %%c\n");
+	ft_printf("7 ->		Type %%p %%P\n");
+	ft_printf("8 ->		Justify\n");
+	ft_printf("9 ->		Middle Justify\n");
+	ft_printf("10 ->	Plus and Space flags\n");
+	ft_printf("11 ->	Leaks\n");
+	ft_printf("12 ->	Undefined Behavior\n");
+	ft_printf("13 ->	random\n");
 }
 
 static void		jump(int index)
@@ -529,6 +547,7 @@ static void		jump(int index)
 	{
 		display_all,
 		fF,
+		eE,
 		bB,
 		CS,
 		c,

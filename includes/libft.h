@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:16:02 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/31 04:08:57 by rreedy           ###   ########.fr       */
+/*   Updated: 2019/01/02 19:58:09 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char				*ft_ctoa(int c);
 int					ft_cw(const char *s, int c);
 int					ft_floor(double n);
 char				*ft_ftoa(double n, int precision);
+char				*ft_ftosn(double n, int precision);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);
@@ -78,6 +79,7 @@ void				*ft_memset(void *ptr, int c, size_t len);
 void				*ft_memsec(void *ptr, int c, size_t len);
 size_t				ft_numlen(long long int n);
 size_t				ft_numlen_sign(long long int n);
+size_t				ft_pow(int n, int exponent);
 void				ft_putchar(char c);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putendl(const char *s);

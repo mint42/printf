@@ -6,12 +6,13 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 04:19:45 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/31 06:56:32 by rreedy           ###   ########.fr       */
+/*   Updated: 2019/01/02 22:45:26 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
 static void		ft_nbrcpy_p(long n, int precision, char *s)
 {
 	if (precision > 1)
@@ -23,8 +24,23 @@ static void		ft_nbrcpy_p(long n, int precision, char *s)
 	}
 	*s = ((n % 10) * (n < 0 ? -1 : 1)) + '0';
 }
+*/
+void	ft_nbrcpy_p(long nb, int precision, char *str)
+{
+	if (precision > (int)ft_numlen(nb))
+	{
+		*(str + precision - 1) = '0';
+		ft_nbrcpy_p(nb, precision - 1, str);
+	}
+	else
+	{
+		if (nb >= 10 && precision > 0)
+			ft_nbrcpy_p(nb / 10, precision - 1, str);
+		*(str + precision - 1) = (nb % 10) + '0';
+	}
+}
 
-static t_fp		get_parts(double n, int sign, int precision)
+static t_fp		get_parts(double n, int precision)
 {
 	t_fp	f;
 
@@ -54,33 +70,48 @@ static t_fp		get_parts(double n, int sign, int precision)
 static char		*make_string_pos(t_fp f, int sign, int precision)
 {
 	char	*s;
-
-	// (possible sign)(first sigfig)(dot -> if precision)(rest of number)(e)(+)(exponent)
-	s = ft_strnew(sign + 4 + (precision ? (precision + 1) : 0) + ft_numlen(SIGFIGS_I));
+	char	*cur;
+//	// (possible sign)(first sigfig)(dot -> if precision)(rest of number)(e)(+)(exponent -> min of 2)
+	s = ft_strinit('0', sign + 3 + (precision ? (precision + 1) : 0) + ((ft_numlen(SIGFIGS_I - 1) < 2) ? 2 : ft_numlen(SIGFIGS_I - 1)));
+	cur = s;
 	if (sign)
-		*s = '-';
+		cur[0] = '-';
+//	// copy first digit into string
+	ft_nbrcpy_p(f.integer / ft_pow(10, f.len_i - 1), 1, cur + sign);
+//	// f.integer is now the number excluding the first digit
+//	// f.integer = f.integer % ft_pow(10, f.len_i - 1);
+//	// move cur
 	if (precision)
-		s[sign + 1] = '.';
-	s[sign + (precision ? precision + 1 : 0) + 1] = '+';
-	s[sign + (precision ? precision + 1 : 0) + 2] = 'e';
-	// copy first digit into string
-	ft_nbrcpy_p(f.integer, 1, s + sign);
-	// f.integer is now the number excluding the first digit
-	f.integer = f.integer % ft_pow(10, f.len_i - 1),
-	// copy rest of integer part into string
-	ft_nbrcpy_p(f.integer, precision, s + sign + 4); 
-	// if you can add the fractional part
+	{
+		cur[sign + 1] = '.';
+		cur = cur + sign + 2;
+		ft_nbrcpy_p(f.integer % ft_pow(10, f.len_i - 1), precision, cur);
+	}
+		// if you can, add the fractional part
 	if (precision > (SIGFIGS_I - 1 + f.lead_zeros))
-		ft_nbrcpy_p(f.fraction, precision - SIGFIGS_I - 1 + f.lead_zeros, s + 4 + sign + SIGFIGS_I + f.lead_zeros);
-	ft_nbrcpy_p(SIGFIGS_I - sign - 1, ft_numlen(SIGFIGS_I), s + ft_strlen(s));
+	{
+	   cur = cur + ft_numlen(f.integer % ft_pow(10, f.len_i - 1));
+	   ft_nbrcpy_p(f.fraction, precision, cur);
+	}
+//		cur = cur + sign + precision;
+//	// copy rest of integer part into string
+//	ft_nbrcpy_p(f.integer % ft_pow(10, f.len_i - 1), precision, cur); 
+//	// if you can, add the fractional part
+//	if (precision > (SIGFIGS_I - 1 + f.lead_zeros))
+//		ft_nbrcpy_p(f.fraction, precision - SIGFIGS_I - 1 + f.lead_zeros, s + 4 + sign + SIGFIGS_I + f.lead_zeros);
+//	// add the exponent
+	s[sign + (precision ? precision + 1 : 0) + 1] = 'e';
+	s[sign + (precision ? precision + 1 : 0) + 2] = '+';
+	cur = s + ft_strlen(s) - ft_numlen(SIGFIGS_I - 1);
+	ft_nbrcpy_p(SIGFIGS_I - 1, ft_numlen(SIGFIGS_I - 1), cur);
 	return (s);
 }
+
 static char		*make_string_neg(t_fp f, int sign, int precision)
 {
 	char	*s;
-	int		exponent;
 
-	s = ft_strnew(precision + sign + 5 + ft_numlen(f.lead_zeros + 1));
+	s = ft_strinit('0', precision + sign + 5 + ft_numlen(f.lead_zeros + 1));
 	if (sign)
 		*s = '-';
 	if (precision)
@@ -93,6 +124,7 @@ static char		*make_string_neg(t_fp f, int sign, int precision)
 	return (s);
 }
 
+/*
 static char		*make_string(t_fp f, int sign, int precision)
 {
 	char	*s;
@@ -120,8 +152,9 @@ static char		*make_string(t_fp f, int sign, int precision)
 		ft_nbrcpy_p(0, precision - SIGFIGS_F, s + SIGFIGS_I + precision);
 	return (s);
 }
+*/
 
-char			*ft_ftoa(double n, int precision)
+char			*ft_ftosn(double n, int precision)
 {
 	t_double	doub;
 	t_fp		f;
@@ -140,6 +173,9 @@ char			*ft_ftoa(double n, int precision)
 		else
 			return (ft_strdup((sign) ? "-inf" : "inf"));
 	}
-	f = get_parts(n, sign, precision);
-	return (make_string(f, sign, precision));
+	//f = get_parts(n, sign, precision);
+	f = get_parts(n, precision);
+	if (f.integer > 0 || f.integer < 0)
+		return (make_string_pos(f, sign, precision));
+	return (make_string_neg(f, sign, precision));
 }

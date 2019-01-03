@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/12 14:27:43 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/31 01:59:35 by rreedy           ###   ########.fr       */
+/*   Updated: 2019/01/02 19:51:04 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,10 @@ char	*parse_efg(t_sub *sub, va_list ap)
 		PREC = 6;
 	if (TYPE & 0x80300000)
 		S = ft_ftoa(va_arg(ap, double), PREC);
-	else if (TYPE == 0x40200000 || TYPE == 0x40100000)
+	else if (TYPE == 0x40300000)
 		S = ft_ftoa((double)va_arg(ap, long double), PREC);
+	else if (TYPE & 0x80C00000)
+		S = ft_ftosn(va_arg(ap, double), PREC);
 	return ((S) ? crop_efg(sub) : S);
 }
 
