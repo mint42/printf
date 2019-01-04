@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 04:19:45 by rreedy            #+#    #+#             */
-/*   Updated: 2019/01/02 22:45:26 by rreedy           ###   ########.fr       */
+/*   Updated: 2019/01/03 21:04:51 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	ft_nbrcpy_p(long nb, int precision, char *str)
 	}
 	else
 	{
-		if (nb >= 10 && precision > 0)
+		if ((nb >= 10 || nb <= -10) && precision > 0)
 			ft_nbrcpy_p(nb / 10, precision - 1, str);
-		*(str + precision - 1) = (nb % 10) + '0';
+		*(str + precision - 1) = (((nb < 0) ? -1 : 1) * (nb % 10)) + '0';
 	}
 }
 
@@ -54,7 +54,7 @@ static t_fp		get_parts(double n, int precision)
 	}
 	f.integer = (f.trail_zeros) ? ft_round(n) : (long)n;
 	f.len_i = ft_numlen(f.integer);
-	while (SIGFIGS_F < precision && (f.len_f + SIGFIGS_I) < 17)
+	while (f.len_f < precision && (f.len_f + SIGFIGS_I) < 17)
 	{
 		n = n * 10;
 		if ((long)n || (SIGFIGS_F == precision - 1 && ft_round(n)))
@@ -62,8 +62,7 @@ static t_fp		get_parts(double n, int precision)
 		else
 			++(f.lead_zeros);
 	}
-	f.fraction = ft_round(n);
-//	f.len_i = f.len_i + sign;
+	f.fraction = ft_round(n) - (f.integer * (long)ft_pow(10, f.len_f));
 	return (f);
 }
 
@@ -71,35 +70,25 @@ static char		*make_string_pos(t_fp f, int sign, int precision)
 {
 	char	*s;
 	char	*cur;
-//	// (possible sign)(first sigfig)(dot -> if precision)(rest of number)(e)(+)(exponent -> min of 2)
-	s = ft_strinit('0', sign + 3 + (precision ? (precision + 1) : 0) + ((ft_numlen(SIGFIGS_I - 1) < 2) ? 2 : ft_numlen(SIGFIGS_I - 1)));
+	s = ft_strinit('0', sign + 3 + (precision ? (precision + 1) : 0) +
+		((ft_numlen(SIGFIGS_I - 1) < 2) ? 2 : ft_numlen(SIGFIGS_I - 1)));
 	cur = s;
 	if (sign)
-		cur[0] = '-';
-//	// copy first digit into string
-	ft_nbrcpy_p(f.integer / ft_pow(10, f.len_i - 1), 1, cur + sign);
-//	// f.integer is now the number excluding the first digit
-//	// f.integer = f.integer % ft_pow(10, f.len_i - 1);
-//	// move cur
+		s[0] = '-';
+	ft_nbrcpy_p(f.integer / (long)ft_pow(10, f.len_i - 1), 1, cur + sign);
 	if (precision)
 	{
-		cur[sign + 1] = '.';
+		s[sign + 1] = '.';
 		cur = cur + sign + 2;
-		ft_nbrcpy_p(f.integer % ft_pow(10, f.len_i - 1), precision, cur);
+		ft_nbrcpy_p((f.integer % (long)ft_pow(10, f.len_i - 1)) /
+			(long)ft_pow(10, f.len_i - 1 - precision), precision, cur);
 	}
-		// if you can, add the fractional part
 	if (precision > (SIGFIGS_I - 1 + f.lead_zeros))
 	{
-	   cur = cur + ft_numlen(f.integer % ft_pow(10, f.len_i - 1));
-	   ft_nbrcpy_p(f.fraction, precision, cur);
+		if (f.integer % (long)ft_pow(10, f.len_i - 1))
+			cur = cur + ft_numlen(f.integer % (long)ft_pow(10, f.len_i - 1));
+		ft_nbrcpy_p(f.fraction, f.len_f - 1, cur);
 	}
-//		cur = cur + sign + precision;
-//	// copy rest of integer part into string
-//	ft_nbrcpy_p(f.integer % ft_pow(10, f.len_i - 1), precision, cur); 
-//	// if you can, add the fractional part
-//	if (precision > (SIGFIGS_I - 1 + f.lead_zeros))
-//		ft_nbrcpy_p(f.fraction, precision - SIGFIGS_I - 1 + f.lead_zeros, s + 4 + sign + SIGFIGS_I + f.lead_zeros);
-//	// add the exponent
 	s[sign + (precision ? precision + 1 : 0) + 1] = 'e';
 	s[sign + (precision ? precision + 1 : 0) + 2] = '+';
 	cur = s + ft_strlen(s) - ft_numlen(SIGFIGS_I - 1);
@@ -110,17 +99,24 @@ static char		*make_string_pos(t_fp f, int sign, int precision)
 static char		*make_string_neg(t_fp f, int sign, int precision)
 {
 	char	*s;
+	char	*cur;
 
-	s = ft_strinit('0', precision + sign + 5 + ft_numlen(f.lead_zeros + 1));
+	s = ft_strinit('0', sign + 3 + ((precision) ? precision + 1 : 0) +
+		((ft_numlen(f.lead_zeros + 1) < 2) ? 2 : ft_numlen(f.lead_zeros + 1)));
+	cur = s;
 	if (sign)
-		*s = '-';
+		cur[0] = '-';
+	ft_nbrcpy_p(f.fraction / (long)ft_pow(10, f.len_f - 1), 1, cur + sign);
 	if (precision)
-		s[sign + 1] = '.';
-	s[sign + 2] = '+';
-	s[sign + 3] = 'e';
-	s[sign + 5 + precision] = '-';
-	ft_nbrcpy_p(f.fraction, precision, s + sign + 5 + f.lead_zeros);
-	ft_nbrcpy_p(f.lead_zeros + 1, ft_numlen(f.lead_zeros + 1), s + precision + 5);
+	{
+		cur[sign + 1] = '.';
+		cur = cur + sign + 2;
+		ft_nbrcpy_p(f.fraction % (long)ft_pow(10, f.len_f - 1), precision, cur);
+	}
+	s[sign + (precision ? precision + 1 : 0) + 1] = 'e';
+	s[sign + (precision ? precision + 1 : 0) + 2] = '-';
+	cur = s + ft_strlen(s) - ft_numlen(f.lead_zeros + 1);
+	ft_nbrcpy_p(f.lead_zeros + 1, ft_numlen(f.lead_zeros + 1), cur);
 	return (s);
 }
 
