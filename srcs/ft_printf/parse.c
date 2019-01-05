@@ -60,14 +60,14 @@ char	*parse_efg(t_sub *sub, va_list ap)
 {
 	if (PREC == -1)
 		PREC = 6;
-	if (TYPE & 0x80300000)
+	if (TYPE == 0x300000 || TYPE == 0x80300000)
 		S = ft_ftoa(va_arg(ap, double), PREC);
 	else if (TYPE == 0x40300000)
-		S = ft_ftoa((double)va_arg(ap, long double), PREC);
-	else if (TYPE & 0x80C00000)
+		S = ft_ftoa(va_arg(ap, long double), PREC);
+	else if (TYPE == 0xC00000 || TYPE == 0x80C00000)
 		S = ft_ftosn(va_arg(ap, double), PREC);
 	else if (TYPE == 0x40C00000)
-		S = ft_ftosn((double)va_arg(ap, long double), PREC);
+		S = ft_ftosn(va_arg(ap, long double), PREC);
 	return ((S) ? crop_efg(sub) : S);
 }
 
