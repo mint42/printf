@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pow.c                                           :+:      :+:    :+:   */
+/*   ft_dpow.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,19 +11,6 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-
-size_t	ft_pow(int n, int exponent)
-{
-	long	power;
-
-	power = 1;
-	while (exponent > 0)
-	{
-		power = power * n;
-		--exponent;
-	}
-	return (power);
-}
 
 double	ft_dpow(int n, int exponent)
 {

@@ -48,6 +48,7 @@ int					ft_ceiling(double n);
 char				*ft_crop(char **s, int in, size_t len);
 char				*ft_ctoa(int c);
 int					ft_cw(const char *s, int c);
+double				ft_dpow(int n, int exponent);
 int					ft_floor(double n);
 char				*ft_ftoa(double n, int precision);
 char				*ft_ftosn(double n, int precision);
