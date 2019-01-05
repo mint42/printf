@@ -66,6 +66,8 @@ char	*parse_efg(t_sub *sub, va_list ap)
 		S = ft_ftoa((double)va_arg(ap, long double), PREC);
 	else if (TYPE & 0x80C00000)
 		S = ft_ftosn(va_arg(ap, double), PREC);
+	else if (TYPE == 0x40C00000)
+		S = ft_ftosn(va_arg(ap, long double), PREC);
 	return ((S) ? crop_efg(sub) : S);
 }
 
