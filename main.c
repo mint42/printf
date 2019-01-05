@@ -246,10 +246,9 @@ void		eE()
 	t_double testprint;
 	testprint.l = (1L << 63);
 
-	printf("%%e		|%e|\n", (double)0);
-	printf("%%e		|%e|\n", testprint.d);
 	ft_printf("%%e		|%e|\n", (double)0);
 	ft_printf("%%e		|%e|\n", testprint.d);
+	ft_printf("%%e		|%e|\n", (double)1001);
 	ft_printf("%%e		|%e|\n", 1.2345678900000000);
 	ft_printf("%%e		|%e|\n", 12.345678900000000);
 	ft_printf("%%e		|%e|\n", 123.45678900000000);

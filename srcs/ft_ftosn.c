@@ -12,100 +12,82 @@
 
 #include "libft.h"
 
-static void		nbrcpy_p(long nb, int precision, char *str)
+static void		nbrcpy_p(long n, int precision, char *s)
 {
-	long int	mult;
+	long int	multiplier;
 	int			len;
 	int			i;
 
-	len = ft_numlen(nb);
-	if (precision > len)
-		precision = len;
+	len = ft_numlen(n);
 	i = 0;
-	mult = ft_pow(10, len - 1);
-	while (i < precision)
+	multiplier = ft_pow(10, len - 1);
+	while (s[i] && i < precision)
 	{
-		str[i] = ((nb / mult) % 10) * (nb < 0 ? -1 : 1) + '0';
+		if (i < (precision - len))
+			s[i] = '0';
+		else
+		{
+			s[i] = ((n / multiplier) % 10) * ((n < 0) ? -1 : 1) + '0';
+			multiplier = multiplier / 10;
+		}
 		++i;
-		mult /= 10;
 	}
 }
 
-static t_fp		get_parts(double n, int precision)
+static t_fp		get_parts(double n, int *exponent, int precision)
 {
 	t_fp	f;
+	int		len;
 
-	f.len_f = 0;
-	f.lead_zeros = 0;
-	f.trail_zeros = 0;
-	while (n >= (1UL << 63))
+	if (precision > 15)
+		precision = 15;
+	len = ft_numlen((long)n);
+	while (n && (n > (1UL << 63) || len != precision + 1))
 	{
-		n = n / 10;
-		++(f.trail_zeros);
-	}
-	f.integer = (f.trail_zeros) ? ft_round(n) : (long)n;
-	f.len_i = ft_numlen(f.integer);
-	while (n && f.len_f < precision && (f.len_f + SIGFIGS_I) < 17)
-	{
-		n = n * 10;
-		if ((long)n || (SIGFIGS_F == precision - 1 && ft_round(n)))
-			++(f.len_f);
+		if (n > (1UL << 63) || len > precision + 1)
+		{
+			n = n / 10;
+			++(*exponent);
+		}
 		else
-			++(f.lead_zeros);
+		{
+			n = n * 10;
+			--(*exponent);
+		}
+		len = ft_numlen((long)n);
 	}
-	f.fraction = ft_round(n) - (f.integer * (long)ft_pow(10, f.len_f));
+	f.integer = ft_round(n) / ft_pow(10, precision);
+	f.fraction = ft_round(n) - (f.integer * (long)ft_pow(10, precision));
+	if (n)
+		*exponent = *exponent + precision;
 	return (f);
 }
 
-static char		*make_string_pos(t_fp f, int sign, int precision)
-{
-	char	*s;
-	char	*cur;
-
-	s = ft_strinit('0', sign + 3 + (precision ? (precision + 1) : 0) +
-		((ft_numlen(SIGFIGS_I - 1) < 2) ? 2 : ft_numlen(SIGFIGS_I - 1)));
-	cur = s;
-	if (sign)
-		s[0] = '-';
-	nbrcpy_p(f.integer, 1, cur + sign);
-	if (precision)
-	{
-		s[sign + 1] = '.';
-		cur = cur + sign + 2;
-		nbrcpy_p(f.integer % (long)ft_pow(10, f.len_i - 1), precision, cur);
-	}
-	if (precision > (SIGFIGS_I - 1 + f.lead_zeros))
-	{
-		if (f.integer % (long)ft_pow(10, f.len_i - 1))
-			cur = cur + ft_numlen(f.integer) - 1;
-		nbrcpy_p(f.fraction, f.len_f - 1, cur);
-	}
-	ft_strncpy(s + sign + ((precision) ? precision + 1 : 0) + 1, "e+", 2);
-	cur = s + ft_strlen(s) - ft_numlen(SIGFIGS_I - 1);
-	nbrcpy_p(SIGFIGS_I - 1, ft_numlen(SIGFIGS_I - 1), cur);
-	return (s);
-}
-
-static char		*make_string_neg(t_fp f, int sign, int precision)
+static char		*make_string(t_fp f, int sign, int exponent, int precision)
 {
 	char	*s;
 	char	*cur;
 
 	s = ft_strinit('0', sign + 3 + ((precision) ? precision + 1 : 0) +
-		((ft_numlen(f.lead_zeros + 1) < 2) ? 2 : ft_numlen(f.lead_zeros + 1)));
+		((ft_numlen(exponent) < 2) ? 2 : ft_numlen(exponent)));
 	cur = s;
 	if (sign)
-		cur[0] = '-';
-	nbrcpy_p(f.fraction / (long)ft_pow(10, f.len_f - 1), 1, cur + sign);
+		*cur++ = '-';
+	*cur++ = f.integer + '0';
 	if (precision)
 	{
-		cur[sign + 1] = '.';
-		cur = cur + sign + 2;
-		nbrcpy_p(f.fraction % (long)ft_pow(10, f.len_f - 1), precision, cur);
+		*cur++ = '.';
+		if (precision > 15)
+			nbrcpy_p(f.fraction, 15, cur);
+		else
+			nbrcpy_p(f.fraction, precision, cur);
 	}
-	ft_strncpy(s + sign + ((precision) ? precision + 1 : 0) + 1, "e-", 2);
-	cur = s + ft_strlen(s) - ft_numlen(f.lead_zeros + 1);
-	nbrcpy_p(f.lead_zeros + 1, ft_numlen(f.lead_zeros + 1), cur);
+	if (exponent >= 0)
+		ft_strncpy(s + sign + ((precision) ? precision + 1 : 0) + 1, "e+", 2);
+	else
+		ft_strncpy(s + sign + ((precision) ? precision + 1 : 0) + 1, "e-", 2);
+	cur = s + ft_strlen(s) - ft_numlen(exponent);
+	nbrcpy_p(exponent, ft_numlen(exponent), cur);
 	return (s);
 }
 
@@ -128,8 +110,7 @@ char			*ft_ftosn(double n, int precision)
 		else
 			return (ft_strdup((sign) ? "-inf" : "inf"));
 	}
-	f = get_parts(n, precision);
-	if (!n || f.integer > 0 || f.integer < 0)
-		return (make_string_pos(f, sign, precision));
-	return (make_string_neg(f, sign, precision));
+	exponent = 0;
+	f = get_parts(ft_absd(n), &exponent, precision);
+	return (make_string(f, sign, exponent, precision));
 }
