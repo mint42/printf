@@ -6,17 +6,20 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 17:07:03 by rreedy            #+#    #+#             */
-/*   Updated: 2019/01/03 21:25:11 by rreedy           ###   ########.fr       */
+/*   Updated: 2019/01/05 21:41:43 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
+#include <stdio.h>
+#include <limits.h>
 #include "ft_printf.h"
 #include "libft.h"
 
 # define TESTS 13
 
-static void		jump(int index);
+static void		jumpt(int index);
+
 void			display_menu();
 
 void			display_all()
@@ -25,36 +28,36 @@ void			display_all()
 
 	i = 2;
 	while (i <= TESTS)
-		jump(i++);
+		jumpt(i++);
 }
 
-void		random_tests()
+void			random_tests()
 {
 	printf("%%g		|%.20g|\n", (double)2.500000000000);
 	printf("%e\n", (double)0);
-//	printf("%%e		|%e|\n", 12.75);
-//	printf("%%e		|%e|\n", -12.75);
-//	printf("%%e		|%e|\n", (double)-1234657890000);
-//	printf("%%e		|%e|\n", .001275);
-//	printf("%%e		|%e|\n", -.001275);
-//	printf("%%e		|%e|\n", -.000000000000000001275);
-//	printf("%%.0e		|%.0e|\n", 12.345);
-//	printf("%%.2e		|%.2e|\n", 12.345);
-//	printf("%%e		|%e|\n", (double)0);
-//	printf("%%e		|%e|\n", (double)1);
-//	printf("%%e		|%e|\n", (double)-1);
-//	ft_printf("%%lls	|%lls|\n", "string");
-//	ft_printf("%%   %%	|%   %|\n");
-//	ft_printf("%%   d	|%   d|\n", 42);
-//	ft_printf("%%s		|%s|\n", 0);
-//	ft_printf("%%.4s	|%.4s|\n", 0);
-//	ft_printf("%%u		|%u|\n", 42);
-//	ft_printf("%%c		|%c|\n", 0);
-//	ft_printf("%%c		|%c|\n", -0);
-//	ft_printf("%%d		|%d|\n", -0);
+	printf("%%e		|%e|\n", 12.75);
+	printf("%%e		|%e|\n", -12.75);
+	printf("%%e		|%e|\n", (double)-1234657890000);
+	printf("%%e		|%e|\n", .001275);
+	printf("%%e		|%e|\n", -.001275);
+	printf("%%e		|%e|\n", -.000000000000000001275);
+	printf("%%.0e		|%.0e|\n", 12.345);
+	printf("%%.2e		|%.2e|\n", 12.345);
+	printf("%%e		|%e|\n", (double)0);
+	printf("%%e		|%e|\n", (double)1);
+	printf("%%e		|%e|\n", (double)-1);
+	ft_printf("%%lls	|%lls|\n", "string");
+	ft_printf("%%   %%	|%   %|\n");
+	ft_printf("%%   d	|%   d|\n", 42);
+	ft_printf("%%s		|%s|\n", 0);
+	ft_printf("%%.4s	|%.4s|\n", 0);
+	ft_printf("%%u		|%u|\n", 42);
+	ft_printf("%%c		|%c|\n", 0);
+	ft_printf("%%c		|%c|\n", -0);
+	ft_printf("%%d		|%d|\n", -0);
 }
 
-void		c()
+void			c()
 {
 	ft_printf("\n%%c tests\n\n");
 
@@ -64,7 +67,7 @@ void		c()
 	ft_printf("%%10:5c		|%10:5c|\n", 0);
 }
 
-void		pP()
+void			pP()
 {
 	int		e;
 
@@ -80,7 +83,7 @@ void		pP()
 	ft_printf("%%-13P	|%-13P|\n", &e);
 }
 
-void		fF()
+void			fF()
 {
 	ft_printf("\n%%f tests\n\n");
 
@@ -92,7 +95,7 @@ void		fF()
 	ft_putstr(ft_ftoa(5.0505000F, 5));
 	ft_putchar('\n');
 	ft_putchar('\n');
-	// large int/fraction tests
+
 	ft_printf("\nlarge int/fraction tests\n");
 	ft_printf("ft_printf:\n");
 	ft_printf("%lf\n", 123456789123456789123456789.123456789123456789123456789);
@@ -108,7 +111,7 @@ void		fF()
 	printf("%lf\n", 123456789.123456789);
 	printf("%lf\n", 1234567891234567.89);
 	printf("%lf\n", 123456789123456.789);
-	// Big tests
+
 	ft_printf("\nBig tests\n");
 	ft_printf("\nft_printf:\n");
 	ft_printf("%lf\n\n", 1e300);
@@ -126,7 +129,7 @@ void		fF()
 	printf("%lf\n\n", 1e50);
 	printf("%lf\n\n", 1e24);
 	printf("%lf\n\n", 1e3);
-	// Trailing zeros
+
 	ft_printf("\nTrailing zeros tests\n");
 	ft_printf("\nft_printf:\n");
 	ft_printf("%.25lf\n", 0.252628992900000000000000000);
@@ -134,7 +137,7 @@ void		fF()
 	ft_printf("\nprintf:\n");
 	printf("%.25lf\n", 0.252628992900000000000000000);
 	printf("%.25lf\n", 0.252628992932340986346278998);
-	// Leading zeros
+	
 	ft_printf("\nLeading zeros tests\n");
 	ft_printf("\nft_printf:\n");
 	ft_printf("%.12lf\n", -0.000000000252628);
@@ -152,7 +155,7 @@ void		fF()
 	printf("%.25lf\n", 0.000000000000000002526289929);
 	printf("%.300lf\n", 1.0e-300);
 	printf("%.330lf\n", 2.0e-323);
-	// Normal tests
+
 	ft_printf("\nNormal tests\n");
 	ft_printf("\nft_printf:\n");
 	ft_printf("%.8f\n", 123.4567);
@@ -174,7 +177,7 @@ void		fF()
 	printf("%.12lf\n", 0.000000000252628);
 	printf("%.15lf\n", 0.000000000252628);
 	printf("%.20lf\n", 0.000000000252628);
-	// 5.0505 tests
+
 	ft_printf("\n5.0505 tests\n");
 	ft_printf("\nft_printf:\n");
 	ft_printf("%.3f\n", 5.0505000);
@@ -192,7 +195,7 @@ void		fF()
 	printf("%.6f\n", 5.0505000);
 	printf("%.7f\n", 5.0505000);
 	printf("%.15f\n", 5.0505000000000);
-	// inf nan
+
 	ft_printf("\ninf / -inf / nan tests\n");
 	ft_printf("\nft_printf:\n");
 	ft_printf("%lf\n", INFINITY);
@@ -202,7 +205,7 @@ void		fF()
 	printf("%lf\n", INFINITY);
 	printf("%lf\n", -INFINITY);
 	printf("%lf\n", NAN);
-	// Negative zero tests
+
 	ft_printf("\nNegative Zero\n");
 	t_double testprint;
 	testprint.l = (1L << 63);
@@ -212,7 +215,7 @@ void		fF()
 	ft_printf("\nprintf:\n");
 	printf("zero:	%lf\n", (double)0);
 	printf("-zero:	%lf\n", testprint.d);
-	// Rounding tests
+
 	ft_printf("\nRounding tests\n");
 	ft_printf("\nft_printf:\n");
 	ft_printf("%.6f\n", 1.1230996);
@@ -224,13 +227,13 @@ void		fF()
 	printf("%.6f\n", 1.1230995);
 	printf("%.6f\n", 1.1230985);
 	printf("%.2f\n", 2.3650);
-	//flag tests
+
 	ft_printf("\nplus and space flag tests\n\n");
 	ft_printf("%% f		|% f|\n", 123.456);
 	ft_printf("%%+f		|%+f|\n", 123.456);
 	ft_printf("%% f		|% f|\n", -123.456);
 	ft_printf("%%+f		|%+f|\n", -123.456);
-	// width and justification tests
+
 	ft_printf("\nWidth and Justification tests\n\n");
 	ft_printf("%%15f		|%15f|\n", 123.456);
 	ft_printf("%%-15f		|%-15f|\n", 123.456);
@@ -241,7 +244,7 @@ void		fF()
 	printf("pf%%15f			|%15f|\n", 123.456);
 }
 
-void		eE()
+void			eE()
 {
 	t_double testprint;
 	testprint.l = (1L << 63);
@@ -482,7 +485,7 @@ void		eE()
 	ft_printf("%%.20e		|%.20e|\n", -.00000000000000000000123456789);
 	ft_printf("%%.20e		|%.20e|\n", -.000000000000000000000123456789);
 	ft_printf("%%.20e		|%.20e|\n", -.0000000000000000000000123456789);
-	// inf nan
+
 	ft_printf("\ninf / -inf / nan tests\n");
 	ft_printf("\nft_printf:\n");
 	ft_printf("%le\n", INFINITY);
@@ -492,7 +495,7 @@ void		eE()
 	printf("%le\n", INFINITY);
 	printf("%le\n", -INFINITY);
 	printf("%le\n", NAN);
-	// Rounding tests
+
 	ft_printf("\nRounding tests\n");
 	ft_printf("\nft_printf:\n");
 	ft_printf("%.6e\n", 1.1230996);
@@ -504,13 +507,13 @@ void		eE()
 	printf("%.6e\n", 1.1230995);
 	printf("%.6e\n", 1.1230985);
 	printf("%.2e\n", 2.3650);
-	//flag tests
 	ft_printf("\nplus and space flag tests\n\n");
+
 	ft_printf("%% e		|% e|\n", 123.456);
 	ft_printf("%%+e		|%+e|\n", 123.456);
 	ft_printf("%% e		|% e|\n", -123.456);
 	ft_printf("%%+e		|%+e|\n", -123.456);
-	// width and justification tests
+	
 	ft_printf("\nWidth and Justification tests\n\n");
 	ft_printf("%%15e		|%15e|\n", 123.456);
 	ft_printf("%%-15e		|%-15e|\n", 123.456);
@@ -520,7 +523,7 @@ void		eE()
 	ft_printf("%%-15:1e		|%-15:1e|\n", 123.456);
 }
 
-void		CS()
+void			CS()
 {
 
 	ft_printf("\n%%C tests\n\n");
@@ -568,7 +571,7 @@ void		CS()
 	ft_printf("%%.0S		|%.0S|\n", L"\U0001F9E1 \U0001F49B \U0001F49A \U0001F499 \U0001F49C \U0001F5A4");
 }
 
-void		bB()
+void			bB()
 {
 	ft_printf("\n%%b tests\n\n");
 
@@ -649,7 +652,7 @@ void		bB()
 	ft_printf("%%(6)d		|%(6)d|\n", 42);
 }
 
-void		justify()
+void			justify()
 {
 	ft_printf("\njustified tests\n\n");
 	
@@ -666,7 +669,7 @@ void		justify()
 	ft_printf("%%#15:*o		|%#15:*o|\n", 5, 42);
 }
 
-void		midflag()
+void			midflag()
 {
 	ft_printf("\n mid justified tests\n\n");
 
@@ -683,7 +686,7 @@ void		midflag()
 	ft_printf("%%^15S		|%^15S|\n", L"\U0001F989");
 }
 
-void		plus_and_space()
+void			plus_and_space()
 {
 	ft_printf("\n%%plus and space flags tests\n\n");
 
@@ -702,7 +705,7 @@ void		plus_and_space()
 	}
 }
 
-void		leaks()
+void			leaks()
 {
 	ft_printf("\nLeaks\n\n");
 	
@@ -740,7 +743,7 @@ void		leaks()
 	ft_printf("%C\n", 15000);
 }
 
-void		undefined_behavior()
+void			undefined_behavior()
 {
 	ft_printf("\nUndefined Behavior tests\n\n");
 
@@ -786,7 +789,7 @@ void		undefined_behavior()
 	ft_printf("@main_ftprintf: %###-#0000 33...12..#0+0d\n", 256);
 }
 
-void		display_menu()
+void			display_menu()
 {
 	ft_printf("\nPlease Choose a Valid Argument:\n\n");
 	ft_printf("1 ->		Check All\n");
@@ -804,7 +807,7 @@ void		display_menu()
 	ft_printf("13 ->	random\n");
 }
 
-static void		jump(int index)
+static void		jumpt(int index)
 {
 		
 	static void	(*j[])() = 
@@ -827,7 +830,7 @@ static void		jump(int index)
 	j[index - 1]();
 }
 
-int	main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
 	int		av;
 	int		ac;
@@ -842,7 +845,7 @@ int	main(int argc, char **argv)
 		av = ft_atoi(argv[ac]);
 		if (av == 1)
 		{
-			jump(1);
+			jumpt(1);
 			return (0);
 		}
 		++ac;
@@ -857,7 +860,7 @@ int	main(int argc, char **argv)
 			display_menu();
 			return (0);
 		}
-		jump(av);
+		jumpt(av);
 		++ac;
 	}
 	return (0);

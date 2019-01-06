@@ -6,25 +6,18 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/16 09:16:12 by rreedy            #+#    #+#             */
-/*   Updated: 2018/12/31 04:11:11 by rreedy           ###   ########.fr       */
+/*   Updated: 2019/01/05 21:24:13 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 # include <stdarg.h>
-# include <stdio.h>
 # include <unistd.h>
-# include <stddef.h>
-# include <stdlib.h>
-# include <wchar.h>
-# include <stdint.h>
-# include <limits.h>
 # include "libft.h"
 
 /*
 ** flag bits:                                  ^- 0+ #
-** type bits:         lL hHjz cCsS dDiI bBoO uUxX pP%(
 ** type bits:  lLhH jzgG eEfF cCsS dDiI bBoO uUxX pP%(
 */
 
@@ -59,6 +52,11 @@ int					ft_printfd(int fd, const char *fmt, ...);
 t_sub				make_tsub(char **fmt, va_list ap, int init);
 
 char				*parse(t_sub *sub, va_list ap);
+char				*parse_bouxp(t_sub *sub, va_list ap);
+char				*parse_di(t_sub *sub, va_list ap);
+char				*parse_efg(t_sub *sub, va_list ap);
+char				*parse_unicode(t_sub *sub, va_list ap);
+char				*parse_csp(t_sub *sub, va_list ap);
 
 char				*crop_di(t_sub *sub);
 char				*crop_bouxp(t_sub *sub);
