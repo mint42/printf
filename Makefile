@@ -6,17 +6,18 @@
 #    By: rreedy <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/18 14:31:20 by rreedy            #+#    #+#              #
-#    Updated: 2019/01/02 21:34:07 by rreedy           ###   ########.fr        #
+#    Updated: 2019/03/08 15:10:53 by rreedy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME := libftprintf.a
+NAME := libft.a
 
+CC := gcc
 POBJS := $(patsubst %.c,%.o,$(wildcard ./srcs/ft_printf/*.c))
 LOBJS := $(patsubst %.c,%.o,$(wildcard ./srcs/*.c))
 
 CFLAGS += -Wall -Wextra -Werror -I./includes
-LFLAGS += -L./ -lftprintf
+LFLAGS += -L./ -lft
 
 .PHONY: all clean fclean re
 
@@ -27,10 +28,10 @@ $(NAME): $(POBJS) $(LOBJS)
 	ranlib $(NAME)
 
 test: all main.o
-	$(CC) $(CFLAGS) main.o $(LFLAGS)
+	$(CC) $(CFLAGS) tester.o $(LFLAGS)
 
 clean:
-	@- $(RM) $(LOBJS) $(POBJS) a.out main.o
+	@- $(RM) $(LOBJS) $(POBJS) a.out tester.o
 
 fclean: clean
 	@- $(RM) $(NAME)

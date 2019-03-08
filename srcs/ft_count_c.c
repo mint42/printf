@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_abs.c                                           :+:      :+:    :+:   */
+/*   ft_count_c.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/05 20:37:43 by rreedy            #+#    #+#             */
-/*   Updated: 2019/02/28 17:16:40 by rreedy           ###   ########.fr       */
+/*   Created: 2019/02/21 20:40:14 by rreedy            #+#    #+#             */
+/*   Updated: 2019/03/04 17:49:03 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long long int	ft_abs(long long int n)
+unsigned int	ft_count_c(char *s, char c)
 {
-	return ((n < 0) ? n * -1 : n);
+	unsigned int	count;
+
+	count = 0;
+	while (s && *s)
+	{
+		if (*s == c)
+			++count;
+		++s;
+	}
+	return (count);
 }

@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_abs.c                                           :+:      :+:    :+:   */
+/*   ft_treeiter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/05 20:37:43 by rreedy            #+#    #+#             */
-/*   Updated: 2019/02/28 17:16:40 by rreedy           ###   ########.fr       */
+/*   Created: 2019/01/29 12:52:16 by rreedy            #+#    #+#             */
+/*   Updated: 2019/02/07 12:56:29 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long long int	ft_abs(long long int n)
+void	ft_treeiter(t_binarytree *binarytree, void (*f)())
 {
-	return ((n < 0) ? n * -1 : n);
+	if (binarytree->left)
+		ft_treeiter(binarytree->left, f);
+	f(binarytree);
+	if (binarytree->right)
+		ft_treeiter(binarytree->right, f);
 }

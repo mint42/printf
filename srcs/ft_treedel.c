@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_abs.c                                           :+:      :+:    :+:   */
+/*   ft_treedel.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/05 20:37:43 by rreedy            #+#    #+#             */
-/*   Updated: 2019/02/28 17:16:40 by rreedy           ###   ########.fr       */
+/*   Created: 2019/01/29 12:53:35 by rreedy            #+#    #+#             */
+/*   Updated: 2019/01/29 12:54:00 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long long int	ft_abs(long long int n)
+void	ft_treedel(t_binarytree **binarytree, void (*del)())
 {
-	return ((n < 0) ? n * -1 : n);
+	if (*binarytree)
+	{
+		if ((*binarytree)->left)
+			ft_treedel(&(*binarytree)->left, del);
+		if ((*binarytree)->right)
+			ft_treedel(&(*binarytree)->right, del);
+		ft_treedelone(binarytree, del);
+	}
 }

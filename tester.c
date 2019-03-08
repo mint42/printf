@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 17:07:03 by rreedy            #+#    #+#             */
-/*   Updated: 2019/01/05 21:41:43 by rreedy           ###   ########.fr       */
+/*   Updated: 2019/01/07 17:48:16 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,10 @@ void			display_all()
 
 void			random_tests()
 {
-	printf("%%g		|%.20g|\n", (double)2.500000000000);
-	printf("%e\n", (double)0);
-	printf("%%e		|%e|\n", 12.75);
-	printf("%%e		|%e|\n", -12.75);
-	printf("%%e		|%e|\n", (double)-1234657890000);
-	printf("%%e		|%e|\n", .001275);
-	printf("%%e		|%e|\n", -.001275);
-	printf("%%e		|%e|\n", -.000000000000000001275);
-	printf("%%.0e		|%.0e|\n", 12.345);
-	printf("%%.2e		|%.2e|\n", 12.345);
-	printf("%%e		|%e|\n", (double)0);
-	printf("%%e		|%e|\n", (double)1);
-	printf("%%e		|%e|\n", (double)-1);
+	ft_printf("{%30S}\n", L"我是一只猫。");
+	ft_printf("{%-30S}\n", L"我是一只猫。");
+	printf("{%30S}\n", L"我是一只猫。");
+	printf("{%-30S}\n", L"我是一只猫。");
 	ft_printf("%%lls	|%lls|\n", "string");
 	ft_printf("%%   %%	|%   %|\n");
 	ft_printf("%%   d	|%   d|\n", 42);

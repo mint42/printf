@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_abs.c                                           :+:      :+:    :+:   */
+/*   ft_strrchrb.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/05 20:37:43 by rreedy            #+#    #+#             */
-/*   Updated: 2019/02/28 17:16:40 by rreedy           ###   ########.fr       */
+/*   Created: 2018/04/23 09:18:55 by rreedy            #+#    #+#             */
+/*   Updated: 2019/02/21 19:30:03 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long long int	ft_abs(long long int n)
+char	*ft_strrchrb(const char *s, int c)
 {
-	return ((n < 0) ? n * -1 : n);
+	char	*ptr;
+
+	ptr = (char *)s;
+	while (*s)
+		if (*s++ == (char)c)
+			ptr = (char *)(s - 1);
+	return (((char)c == '\0') ? (char *)s : ptr);
 }

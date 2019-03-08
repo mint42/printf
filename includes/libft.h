@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:16:02 by rreedy            #+#    #+#             */
-/*   Updated: 2019/01/05 20:38:49 by rreedy           ###   ########.fr       */
+/*   Updated: 2019/03/04 17:48:27 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include "ft_binarytree.h"
+# include "ft_printf.h"
 
 # define SIGFIGS_I (f.len_i + f.trail_zeros)
 # define SIGFIGS_F (f.len_f + f.lead_zeros)
@@ -42,14 +44,16 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
-long int			ft_abs(long int n);
+long long int		ft_abs(long long int n);
 double				ft_absd(double n);
 int					ft_atoi(const char *str);
 void				ft_bzero(void *s, size_t len);
 int					ft_ceiling(double n);
+unsigned int		ft_count_c(char *s, char c);
 char				*ft_crop(char **s, int in, size_t len);
 char				*ft_ctoa(int c);
 int					ft_cw(const char *s, int c);
+void				ft_delete_double_array(char ***double_array);
 double				ft_dpow(int n, int exponent);
 int					ft_floor(double n);
 char				*ft_ftoa(double n, int precision);
@@ -118,6 +122,7 @@ int					ft_strnequ(const char *s1, const char *s2, size_t len);
 char				*ft_strnew(size_t size);
 char				*ft_strnstr(const char *s1, const char *s2, size_t len);
 char				*ft_strrchr(const char *s, int c);
+char				*ft_strrchrb(const char *s, int c);
 char				**ft_strsplit(const char *s, char c);
 char				*ft_strstr(const char *s1, const char *s2);
 char				*ft_strsub(const char *s, unsigned int start, size_t len);
