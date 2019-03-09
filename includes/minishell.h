@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/26 12:22:23 by rreedy            #+#    #+#             */
-/*   Updated: 2018/08/31 17:49:24 by rreedy           ###   ########.fr       */
+/*   Created: 2019/03/08 16:16:47 by rreedy            #+#    #+#             */
+/*   Updated: 2019/03/08 18:42:51 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-# include <unistd.h>
-# include <fcntl.h>
+# include <dirent.h>
+# include <sys/stat.h>
+# include <time.h>
+# include <pwd.h>
+# include <grp.h>
+# include <stdlib.h>
+# include <string.h>
+# include <errno.h>
 # include "libft.h"
 
-# define BUFF_SIZE 8
-# define BUF(lst) (((t_file *)(lst->content))->buf)
+# define TOTAL_COMMANDS (8)
 
-typedef struct	s_file
-{
-	char		*buf;
-	int			fide;
-}				t_file;
-
-int				get_next_line(const int fd, char **line);
+void			handle_command(char *input);
 
 #endif
+

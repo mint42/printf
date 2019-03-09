@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:16:02 by rreedy            #+#    #+#             */
-/*   Updated: 2019/03/04 17:48:27 by rreedy           ###   ########.fr       */
+/*   Updated: 2019/03/08 17:46:38 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include "ft_binarytree.h"
 # include "ft_printf.h"
+# include "get_next_line.h"
 
 # define SIGFIGS_I (f.len_i + f.trail_zeros)
 # define SIGFIGS_F (f.len_f + f.lead_zeros)
