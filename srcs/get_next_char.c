@@ -6,7 +6,7 @@
 /*   By: rreedy <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:43:55 by rreedy            #+#    #+#             */
-/*   Updated: 2019/03/08 17:44:01 by rreedy           ###   ########.fr       */
+/*   Updated: 2019/03/09 17:19:06 by rreedy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char		*stresize(char **s, int in, int size)
 	return (str);
 }
 
-static int		fill_line(char **line, char **s, int red)
+static int		fill_line(char **line, char **s, char c, int red)
 {
 	int		len;
 
@@ -32,7 +32,7 @@ static int		fill_line(char **line, char **s, int red)
 		return (-1);
 	if (!red && !ft_strlen(*s))
 		return (0);
-	len = ft_strchr(*s, '\n') ? ft_strchr(*s, '\n') - *s : ft_strlen(*s);
+	len = ft_strchr(*s, c) ? ft_strchr(*s, c) - *s : ft_strlen(*s);
 	*line = ft_strnew(len);
 	if (!*line || red == -1)
 		return (-1);
@@ -82,7 +82,7 @@ int				get_next_char(const int fd, char c, char **line)
 	while (BUF(lst))
 	{
 		if (ft_strchr(BUF(lst), c) || red < BUFF_SIZE)
-			return (fill_line(line, &BUF(lst), red));
+			return (fill_line(line, &BUF(lst), c, red));
 		red = read(fd, BUF(lst) + ft_strlen(BUF(lst)), BUFF_SIZE);
 		if (red == BUFF_SIZE)
 			BUF(lst) = stresize(&BUF(lst), 0, ft_strlen(BUF(lst)) + BUFF_SIZE);
