@@ -5,37 +5,35 @@
 #                                                     +:+ +:+         +:+      #
 #    By: rreedy <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/01/07 18:40:55 by rreedy            #+#    #+#              #
-#    Updated: 2019/03/08 15:17:51 by rreedy           ###   ########.fr        #
+#    Created: 2018/04/18 14:31:20 by rreedy            #+#    #+#              #
+#    Updated: 2019/03/09 16:52:51 by rreedy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME := minishell
-LIB += libft/libft.a
-
-OBJS := $(patsubst %.c,%.o,$(wildcard ./srcs/*.c))
+NAME := libft.a
 
 CC := gcc
-INCLUDES := -I./includes -I./libft/includes
-CFLAGS += -Wall -Wextra -Werror $(INCLUDES)
-LFLAGS += -L./libft -lft
+POBJS := $(patsubst %.c,%.o,$(wildcard ./srcs/ft_printf/*.c))
+LOBJS := $(patsubst %.c,%.o,$(wildcard ./srcs/*.c))
+
+CFLAGS += -Wall -Wextra -Werror -I./includes
+LFLAGS += -L./ -lft
 
 .PHONY: all clean fclean re
 
 all: $(NAME)
 
-$(NAME): $(LIB) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LFLAGS)
+$(NAME): $(POBJS) $(LOBJS)
+	ar rc $(NAME) $(POBJS) $(LOBJS)
+	ranlib $(NAME)
 
-$(LIB):
-	@- make -C libft/ all
+test: all tester.o
+	$(CC) $(CFLAGS) tester.o $(LFLAGS)
 
 clean:
-	@- $(RM) $(OBJS) 
-	@- make -C libft/ clean
+	@- $(RM) $(LOBJS) $(POBJS) a.out tester.o
 
 fclean: clean
 	@- $(RM) $(NAME)
-	@- make -C libft/ fclean
 
 re: fclean all
