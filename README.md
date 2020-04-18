@@ -8,11 +8,11 @@ To set up this project, run `git clone https://github.com/mint42/printf` in the 
 
 Then run the program using `./test`.
 
-If you're interested in making your own tester for this project, the `man printf` page is compatible with ft_printf() as well. The only difference is that classic printf() has undefined behavior warnings at compile time, and this ft_printf() will print a ¯\_(ツ)_/¯ in the place of undefined behavior.
+If you're interested in making your own tester for this project, the `man printf` page is compatible with ft_printf() as well. The only difference is that classic printf() has undefined behavior warnings at compile time, and this ft_printf() will print a [shruggie ¯\_(ツ)_/¯](http://letmegooglethat.com/?q=shruggie) in the place of undefined behavior.
 
 ## Notes
 
-This project is built into a recreated cstdlib. The up-to-date library that is used in all future projects can be found [here](https://github.com/mint42/libft), but this repository is still around for testing purposes. 
+This project is built into a recreated cstdlib. The up-to-date library that is used in future projects can be found [here](https://github.com/mint42/libft), but this repository is still around for testing purposes. 
 
 It currently is only compilable on macOS, but the ft_printf found in my 42 library (linked above) has been updated for linux compatibility.
 
