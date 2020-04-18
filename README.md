@@ -16,8 +16,8 @@ This project is built into a recreated cstdlib. The up-to-date library that is u
 
 It currently is only compilable on macOS, but the ft_printf found in my 42 library (linked above) has been updated for linux compatibility.
 
-Unlike classic printf, this printf does not handle an internal buffer. It uses write() calls to print, so output will follow the flow of the program.
+Unlike classic printf(), this ft_printf() does not handle an internal buffer. It uses write() calls to print, so output will follow the flow of the program.
 
-## Authors
+## Author
 
 [Ari Reedy](https://github.com/mint42/)
