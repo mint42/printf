@@ -1,6 +1,6 @@
 # FT_PRINTF
 
-Ft_printf is a near-total recreation of the C languages printf() function. This project is an exercise in large project management, and also an introduction to variable arguments in C.
+Ft_printf is a near-total recreation of the C language's printf() function. This project is an exercise in large project management, and also an introduction to variable arguments in C.
 
 ## Getting Started
 
@@ -8,7 +8,7 @@ To set up this project, run `git clone https://github.com/mint42/printf` in the 
 
 Then run the program using `./test`.
 
-If you're interested in making your own tester for this project, the `man printf` page is compatible with ft_printf() as well. The only difference is that classic printf() has undefined behavior warnings at compile time, and this printf() will print a ¯\_(ツ)_/¯
+If you're interested in making your own tester for this project, the `man printf` page is compatible with ft_printf() as well. The only difference is that classic printf() has undefined behavior warnings at compile time, and this ft_printf() will print a ¯\_(ツ)_/¯ in the place of undefined behavior.
 
 ## Notes
 
